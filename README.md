@@ -67,4 +67,3 @@ No physical address, testimonials, team section, or Q&A section is included.
 - `public/` — favicon and media assets
 - `docs/` — build specification, implementation prompt, and reference screenshots
 
-
