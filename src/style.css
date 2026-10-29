@@ -117,12 +117,8 @@ h3 { font-size: 1.35rem; line-height: 1.2; letter-spacing: -.035em; }
   backdrop-filter: blur(16px);
 }
 .header-inner { min-height: 78px; display: flex; align-items: center; gap: 28px; }
-.brand { display: inline-flex; align-items: center; gap: 9px; flex: none; }
-.brand-symbol { width: 36px; height: 30px; color: var(--aqua); }
-.brand-name { display: flex; align-items: baseline; color: var(--text); font-size: 1.45rem; font-weight: 750; letter-spacing: -.07em; }
-.brand-name b { font-weight: 750; }
-.brand-name .brand-aqua { color: var(--aqua); }
-.brand-name > span { margin-left: 3px; color: #b9c9c8; font-size: 1.05rem; font-weight: 550; letter-spacing: -.03em; }
+.brand { display: inline-flex; align-items: center; flex: none; }
+.brand-logo { display: block; width: 181px; height: 28px; flex: none; }
 .main-nav { display: flex; align-items: center; justify-content: center; flex: 1; gap: 5px; }
 .nav-item { position: relative; }
 .nav-trigger {
@@ -662,8 +658,7 @@ h3 { font-size: 1.35rem; line-height: 1.2; letter-spacing: -.035em; }
 .footer-email, .footer-audit-link { display: inline-flex; align-items: center; gap: 7px; color: #dcebe6; font-size: .84rem; font-weight: 650; }
 .footer-email svg, .footer-audit-link svg { width: 15px; }
 .footer-audit-link { margin-top: 5px; padding: 0; border: 0; background: transparent; cursor: pointer; }
-.brand-footer .brand-symbol { width: 31px; }
-.brand-footer .brand-name { font-size: 1.25rem; }
+.brand-footer .brand-logo { width: 170px; height: 26px; }
 .footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 22px; min-height: 68px; padding-top: 14px; padding-bottom: 14px; border-top: 1px solid var(--line); color: #8fa5a1; font-size: .69rem; }
 .legal-links { display: flex; flex-wrap: wrap; align-items: center; gap: 21px; }
 .legal-links button { padding: 0; border: 0; background: transparent; color: #a8bebb; cursor: pointer; font-size: inherit; }
@@ -706,8 +701,7 @@ h3 { font-size: 1.35rem; line-height: 1.2; letter-spacing: -.035em; }
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 @media (max-width: 1120px) {
   .header-inner { gap: 13px; }
-  .brand-name { font-size: 1.27rem; }
-  .brand-symbol { width: 31px; }
+  .brand-logo { width: 165px; height: 25.5px; }
   .nav-trigger { padding-inline: 9px; font-size: .83rem; }
   .hero-grid { grid-template-columns: minmax(0,1fr) minmax(400px,.9fr); gap: 38px; }
   .hero-art { min-height: 420px; padding-inline: 16px; }
@@ -878,4 +872,5 @@ h3 { font-size: 1.35rem; line-height: 1.2; letter-spacing: -.035em; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
 
