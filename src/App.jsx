@@ -87,12 +87,20 @@ const auditItems = [
   ['Conversion journey', 'Calls to action and enquiry paths'],
 ];
 
-const aboutLinks = [['About Us', '#about'], ['Our Process', '#process'], ['Selected Work', '#case-studies']];
+const servicePaths = {
+  seo: '/services/seo/',
+  geo: '/services/geo/',
+  leads: '/services/lead-generation/',
+  design: '/services/website-design/',
+  development: '/services/website-development/',
+  growth: '/services/business-growth/',
+};
+const industryPath = (industry) => '/industries/' + industry.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '/';
 
 function Brand({ footer = false }) {
   const logoFilter = footer ? 'brand-logo-key-footer' : 'brand-logo-key-header';
   return (
-    <a className={'brand' + (footer ? ' brand-footer' : '')} href="#top" aria-label="SEOPune360 home">
+    <a className={'brand' + (footer ? ' brand-footer' : '')} href="/" aria-label="SEOPune360 home">
       <svg className="brand-logo" viewBox="0 0 4238 677" aria-hidden="true">
         <defs>
           <clipPath id={logoFilter + '-image-clip'}>
@@ -117,7 +125,58 @@ function ArrowIcon() {
   return <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3.5 9h10m-4-4 4 4-4 4" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /></svg>;
 }
 
-function Header({ onChooseService, onChooseIndustry }) {
+const navigationGroups = [
+  {
+    id: 'services', label: 'Services', href: '/services/', kicker: 'What we do',
+    title: 'Growth, from search to website.',
+    copy: 'Explore the services that help people find your business, understand what you offer, and take the next step.',
+    columns: [
+      { title: 'Search & visibility', items: [
+        ['SEO Services', 'Build lasting visibility in the searches that matter.', servicePaths.seo],
+        ['AI Search & GEO', 'Make your expertise easier to find in AI answers.', servicePaths.geo],
+      ] },
+      { title: 'Digital experience & growth', items: [
+        ['Lead Generation', 'Create a clearer path from discovery to enquiry.', servicePaths.leads],
+        ['Website Design', 'Make your offer clear and easy to act on.', servicePaths.design],
+        ['Website Development', 'Build a fast, accessible website for growth.', servicePaths.development],
+        ['Business Growth', 'Connect search, content, and conversion work.', servicePaths.growth],
+      ] },
+    ],
+  },
+  {
+    id: 'work', label: 'Work', href: '/case-studies/', kicker: 'Selected work',
+    title: 'Client stories and digital experiences.',
+    copy: 'See the businesses in SEOPune360’s published portfolio and the work described in their case studies.',
+    columns: [
+      { title: 'Explore our work', items: [
+        ['Case Studies', 'Read project summaries and reported outcomes.', '/case-studies/'],
+        ['Client Portfolio', 'Browse businesses represented in the portfolio.', '/portfolio/'],
+        ['Products & Platforms', 'Explore product and platform journeys across client work.', '/products/'],
+      ] },
+    ],
+  },
+  {
+    id: 'industries', label: 'Industries', href: '/industries/', kicker: 'Who we work with',
+    title: 'Digital growth for different buying journeys.',
+    copy: 'Find the sectors represented in the current portfolio and see the work published for each.',
+    columns: [
+      { title: 'Industries', items: industries.filter((item) => item.id !== 'All industries').map((item) => [item.label, 'Explore digital growth for ' + item.label.toLowerCase() + ' businesses.', industryPath(item.id)]) },
+    ],
+  },
+  {
+    id: 'company', label: 'Company', href: '/about/', kicker: 'About SEOPune360',
+    title: 'A connected partner for your next stage.',
+    copy: 'Learn how we work, what guides our approach, and how a project moves from discovery to launch.',
+    columns: [
+      { title: 'Get to know us', items: [
+        ['About Us', 'Our approach to search, websites, and business growth.', '/about/'],
+        ['Our Process', 'A clear path from kickoff through launch and support.', '/process/'],
+      ] },
+    ],
+  },
+];
+
+function Header() {
   const [openMenu, setOpenMenu] = useState('');
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileGroup, setMobileGroup] = useState('');
@@ -139,20 +198,10 @@ function Header({ onChooseService, onChooseIndustry }) {
   }, [mobileOpen]);
 
   const closeMenus = () => { setOpenMenu(''); setMobileOpen(false); setMobileGroup(''); };
-  const goToService = (id) => { onChooseService(id); closeMenus(); document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' }); };
-  const goToIndustry = (id) => { onChooseIndustry(id); closeMenus(); document.getElementById('clients')?.scrollIntoView({ behavior: 'smooth' }); };
   const toggleMenu = (name) => setOpenMenu((current) => current === name ? '' : name);
-  const serviceMenus = [
-    { title: 'Design', copy: 'Build a clearer brand experience', action: () => goToService('design') },
-    { title: 'Development', copy: 'Fast, accessible website builds', action: () => goToService('development') },
-    { title: 'Growth', copy: 'Search visibility and lead growth', action: () => goToService('growth') },
-  ];
-
-  const mobileMenus = [
-    { id: 'website', label: 'Website', items: serviceMenus.map((item) => [item.title, item.action]) },
-    { id: 'cases', label: 'Case Studies', items: [['Case Studies', () => { closeMenus(); document.getElementById('case-studies')?.scrollIntoView({ behavior: 'smooth' }); }], ['Portfolios', () => { closeMenus(); document.getElementById('clients')?.scrollIntoView({ behavior: 'smooth' }); }]] },
-    { id: 'industries', label: 'Industries', items: industries.map((item) => [item.label, () => goToIndustry(item.id)]) },
-    { id: 'company', label: 'Company', items: aboutLinks.map(([label, href]) => [label, () => { closeMenus(); document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' }); }]) },
+  const mobileLinks = (group) => [
+    ['View all ' + group.label.toLowerCase(), group.href],
+    ...group.columns.flatMap((column) => column.items.map(([label, , href]) => [label, href])),
   ];
 
   return (
@@ -160,44 +209,26 @@ function Header({ onChooseService, onChooseIndustry }) {
       <div className="container header-inner">
         <Brand />
         <nav className="main-nav" aria-label="Main navigation">
-          <div className={'nav-item' + (openMenu === 'website' ? ' open' : '')} onMouseEnter={() => setOpenMenu('website')} onMouseLeave={() => setOpenMenu('')}>
-            <button className="nav-trigger" aria-expanded={openMenu === 'website'} aria-controls="menu-website" onClick={() => toggleMenu('website')}>Website <span className="chevron" /></button>
-            <div className="mega-menu mega-wide" id="menu-website" aria-hidden={openMenu !== 'website'}>
-              {serviceMenus.map((item) => <button className="mega-card" key={item.title} onClick={item.action}><span>{item.title}</span><small>{item.copy}</small><i><ArrowIcon /></i></button>)}
+          {navigationGroups.map((group) => <div className={'nav-item' + (openMenu === group.id ? ' open' : '')} key={group.id} onMouseEnter={() => setOpenMenu(group.id)} onMouseLeave={() => setOpenMenu('')} onFocus={() => setOpenMenu(group.id)} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setOpenMenu(''); }}>
+            <button className="nav-trigger" aria-expanded={openMenu === group.id} aria-controls={'menu-' + group.id} onClick={() => toggleMenu(group.id)}>{group.label}<span className="chevron" /></button>
+            <div className={'mega-menu mega-' + group.id} id={'menu-' + group.id} aria-hidden={openMenu !== group.id}>
+              <div className="mega-intro"><p className="eyebrow">{group.kicker}</p><h2>{group.title}</h2><p>{group.copy}</p><a className="mega-overview" href={group.href} onClick={closeMenus}>Explore {group.label}<ArrowIcon /></a></div>
+              <div className="mega-columns">{group.columns.map((column) => <div className="mega-column" key={column.title}><h3>{column.title}</h3>{column.items.map(([label, description, href]) => <a className="mega-link" href={href} key={label} onClick={closeMenus}><span><b>{label}</b><small>{description}</small></span><ArrowIcon /></a>)}</div>)}</div>
             </div>
-          </div>
-          <div className={'nav-item' + (openMenu === 'cases' ? ' open' : '')} onMouseEnter={() => setOpenMenu('cases')} onMouseLeave={() => setOpenMenu('')}>
-            <button className="nav-trigger" aria-expanded={openMenu === 'cases'} aria-controls="menu-cases" onClick={() => toggleMenu('cases')}>Case Studies <span className="chevron" /></button>
-            <div className="mega-menu" id="menu-cases" aria-hidden={openMenu !== 'cases'}>
-              <a className="menu-link" href="#case-studies" onClick={closeMenus}>Case Studies <ArrowIcon /></a>
-              <a className="menu-link" href="#clients" onClick={closeMenus}>Portfolios <ArrowIcon /></a>
-            </div>
-          </div>
-          <div className={'nav-item' + (openMenu === 'industries' ? ' open' : '')} onMouseEnter={() => setOpenMenu('industries')} onMouseLeave={() => setOpenMenu('')}>
-            <button className="nav-trigger" aria-expanded={openMenu === 'industries'} aria-controls="menu-industries" onClick={() => toggleMenu('industries')}>Industries <span className="chevron" /></button>
-            <div className="mega-menu industry-menu" id="menu-industries" aria-hidden={openMenu !== 'industries'}>
-              {industries.map((item) => <button className="industry-menu-link" key={item.id} onClick={() => goToIndustry(item.id)}>{item.label}<ArrowIcon /></button>)}
-            </div>
-          </div>
-          <div className={'nav-item' + (openMenu === 'company' ? ' open' : '')} onMouseEnter={() => setOpenMenu('company')} onMouseLeave={() => setOpenMenu('')}>
-            <button className="nav-trigger" aria-expanded={openMenu === 'company'} aria-controls="menu-company" onClick={() => toggleMenu('company')}>Company <span className="chevron" /></button>
-            <div className="mega-menu" id="menu-company">
-              {aboutLinks.map(([label, href]) => <a className="menu-link" href={href} key={label} onClick={closeMenus}>{label}<ArrowIcon /></a>)}
-            </div>
-          </div>
+          </div>)}
         </nav>
-        <a className="button header-call" href={'mailto:' + CONTACT_EMAIL + '?subject=Book%20a%20call%20with%20SEOPune360'}>Book a Call <span className="call-icon">↗</span></a>
+        <a className="button header-call" href="/contact/">Book a Call <span className="call-icon">↗</span></a>
         <button className={'menu-toggle' + (mobileOpen ? ' is-open' : '')} aria-label={mobileOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={mobileOpen} aria-controls="mobile-navigation" onClick={() => setMobileOpen((value) => !value)}>
           <span /><span /><span />
         </button>
       </div>
       <div className={'mobile-nav' + (mobileOpen ? ' is-open' : '')} id="mobile-navigation" aria-hidden={!mobileOpen}>
         <div className="mobile-nav-panel">
-          {mobileMenus.map((group) => <div className="mobile-group" key={group.id}>
+          {navigationGroups.map((group) => <div className="mobile-group" key={group.id}>
             <button className="accordion-trigger" aria-expanded={mobileGroup === group.id} onClick={() => setMobileGroup((current) => current === group.id ? '' : group.id)}>{group.label}<span /></button>
-            {mobileGroup === group.id && <div className="accordion-content">{group.items.map(([label, action]) => <button key={label} onClick={action}>{label}</button>)}</div>}
+            {mobileGroup === group.id && <div className="accordion-content">{mobileLinks(group).map(([label, href]) => <a href={href} key={label} onClick={closeMenus}>{label}<ArrowIcon /></a>)}</div>}
           </div>)}
-          <a className="button header-call mobile-call" href={'mailto:' + CONTACT_EMAIL + '?subject=Book%20a%20call%20with%20SEOPune360'} onClick={closeMenus}>Book a Call <span className="call-icon">↗</span></a>
+          <a className="button header-call mobile-call" href="/contact/" onClick={closeMenus}>Book a Call <span className="call-icon">↗</span></a>
         </div>
       </div>
     </header>
@@ -412,9 +443,9 @@ function Footer({ onCookieSettings, onLegal }) {
     <footer className="site-footer" id="footer">
       <div className="footer-cta"><div className="container footer-cta-inner"><div><p className="eyebrow">Your next growth chapter starts here</p><h2>Let’s make your online presence work harder.</h2></div><a className="button footer-button" href={'mailto:' + CONTACT_EMAIL + '?subject=Let%E2%80%99s%20talk%20about%20SEOPune360'}>Book a Call <ArrowIcon /></a></div></div>
       <div className="container footer-main"><div className="footer-brand-col"><Brand footer /><p>SEO, websites, and growth support for businesses ready to move forward.</p><a className="footer-email" href={'mailto:' + CONTACT_EMAIL}>{CONTACT_EMAIL} <ArrowIcon /></a></div>
-        <div className="footer-column"><h3>Services</h3><a href="#services">SEO Services</a><a href="#services">AI Search & GEO</a><a href="#services">Lead Generation</a><a href="#services">Website Design</a><a href="#services">Website Development</a></div>
-        <div className="footer-column"><h3>Explore</h3><a href="#case-studies">Case Studies</a><a href="#clients">Portfolios</a><a href="#clients">Industries</a><a href="#process">How We Work</a><a href="#about">About Us</a></div>
-        <div className="footer-column footer-contact"><h3>Get in touch</h3><p>Tell us what you’re working toward. We’ll help you find the next step.</p><a className="footer-email" href={'mailto:' + CONTACT_EMAIL}>{CONTACT_EMAIL} <ArrowIcon /></a><button className="footer-audit-link" onClick={() => document.getElementById('audit')?.scrollIntoView({ behavior: 'smooth' })}>Request a website audit <ArrowIcon /></button></div>
+        <div className="footer-column"><h3>Services</h3>{services.map((service) => <a href={servicePaths[service.id]} key={service.id}>{service.title}</a>)}</div>
+        <div className="footer-column"><h3>Explore</h3><a href="/case-studies/">Case Studies</a><a href="/portfolio/">Client Portfolio</a><a href="/products/">Products &amp; Platforms</a><a href="/industries/">Industries</a><a href="/process/">How We Work</a><a href="/about/">About Us</a></div>
+        <div className="footer-column footer-contact"><h3>Get in touch</h3><p>Tell us what you’re working toward. We’ll help you find the next step.</p><a className="footer-email" href={'mailto:' + CONTACT_EMAIL}>{CONTACT_EMAIL} <ArrowIcon /></a><a className="footer-audit-link" href="/contact/">Request a website audit <ArrowIcon /></a></div>
       </div>
       <div className="container footer-bottom"><span>© {year} SEOPune360. All rights reserved.</span><div className="legal-links"><button onClick={() => onLegal('Terms & Conditions')}>Terms &amp; Conditions</button><button onClick={() => onLegal('Privacy Policy')}>Privacy Policy</button><button onClick={onCookieSettings}>Cookie Settings</button></div><a className="back-to-top" href="#top">Back to top ↑</a></div>
     </footer>
@@ -451,7 +482,59 @@ function LegalDialog({ title, onClose }) {
   return <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}><section className="legal-dialog" role="dialog" aria-modal="true" aria-labelledby="legal-title"><div className="dialog-heading"><div><p className="eyebrow">SEOPune360</p><h2 id="legal-title">{title}</h2></div><button className="icon-button" aria-label="Close" onClick={onClose}>×</button></div><p>The {title.toLowerCase()} link is ready, but approved policy wording has not been supplied for this website yet. Add your final business-approved policy text here before publishing.</p><a className="text-link" href={'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('Request SEOPune360 ' + title)}>Request the current policy <ArrowIcon /></a></section></div>;
 }
 
+function InsideHero({ kicker, title, accent, copy }) {
+  return <section className="inside-hero"><div className="container inside-hero-inner"><p className="eyebrow">{kicker}</p><h1>{title} <span>{accent}</span></h1><p>{copy}</p><a className="button" href="/contact/">Let’s talk <ArrowIcon /></a></div></section>;
+}
+
+function ContentCards({ items, render }) {
+  return <div className="container content-card-grid">{items.map((item) => render(item))}</div>;
+}
+
+function PageContent({ path }) {
+  const parts = path.split('/').filter(Boolean);
+  const page = parts[0] || '';
+  const service = page === 'services' && parts[1] ? services.find((item) => servicePaths[item.id] === path) : null;
+  const caseStudy = page === 'case-studies' && parts[1] ? caseStudies.find((item) => item.id === parts[1]) : null;
+  const industry = page === 'industries' && parts[1] ? industries.find((item) => industryPath(item.id) === path) : null;
+  const intro = { services: ['Services', 'Find the right support', 'for your next stage.', 'Explore connected services across search, website experience, lead generation, and growth.'], 'case-studies': ['Client stories', 'Work grounded in', 'real businesses.', 'Browse the client stories and reported outcomes currently published by SEOPune360.'], portfolio: ['Client portfolio', 'Businesses we’ve', 'worked with.', 'Explore businesses represented in the current SEOPune360 client portfolio.'], products: ['Products & platforms', 'Digital journeys,', 'built around people.', 'Explore the client products and platform journeys represented in SEOPune360’s published portfolio.'], industries: ['Industries', 'Different sectors,', 'clear digital paths.', 'Explore the industries represented in the current client portfolio.'], about: ['About SEOPune360', 'Search, websites,', 'and business growth.', 'We bring digital foundations together to help people find your business, understand what you offer, and take the next step.'], process: ['Our process', 'A clear path from', 'kick-off to launch.', 'See how discovery, strategy, design, development, review, and support fit together.'], contact: ['Get in touch', 'Let’s talk about', 'your next step.', 'Tell us what you are working toward and we’ll help identify a useful place to start.'] };
+  let head = intro[page];
+  let items = [];
+  let body = null;
+  if (service) {
+    head = ['Our services', service.title, 'for business growth.', service.summary];
+    body = <section className="section"><div className="container detail-layout"><div><p className="eyebrow">What’s included</p><h2>Focused work, <span>built around your goals.</span></h2><p>{service.summary}</p><a className="button" href="/contact/">Discuss this service <ArrowIcon /></a></div><ul className="detail-points">{service.items.map((item) => <li key={item}><span>↗</span>{item}</li>)}</ul></div></section>;
+  } else if (page === 'services') items = services;
+  else if (caseStudy) {
+    head = [caseStudy.category, caseStudy.label, 'client story.', caseStudy.copy];
+    body = <section className="section"><div className="container"><div className={'case-detail page-case ' + caseStudy.tone}><div className="case-art"><span className="case-art-kicker">SEOPUNE360 · CLIENT STORY</span><div className="case-art-logo">{caseStudy.mark}</div><div className="case-art-bottom"><span>{caseStudy.category}</span><b>STRATEGY / SEARCH / GROWTH</b></div></div><div className="case-copy"><p className="eyebrow">Reported outcomes</p><ul className="case-metrics">{caseStudy.metrics.map((metric) => <li key={metric}><span>✦</span>{metric}</li>)}</ul><a className="text-link" href="/case-studies/">View all case studies <ArrowIcon /></a></div></div><p className="content-note">Outcomes shown are the reported results in the current site content.</p></div></section>;
+  } else if (page === 'case-studies') items = caseStudies;
+  else if (page === 'portfolio' || page === 'products') items = clients;
+  else if (industry) {
+    head = [industry.label + ' digital growth', 'Digital experiences', 'for ' + industry.label + '.', 'Explore the client work currently published for this sector, and the services that can support its next stage.'];
+    items = clients.filter((client) => client.type === industry.label);
+    body = <section className="section"><div className="container">{items.length === 0 ? <div className="empty-state"><h2>No published client case study for this category yet.</h2><p>We can still discuss the search and website needs of your business.</p><a className="button" href="/contact/">Talk with us <ArrowIcon /></a></div> : <><p className="eyebrow">Relevant services</p><div className="simple-links">{services.slice(0, 3).map((item) => <a href={servicePaths[item.id]} key={item.id}>{item.title}<ArrowIcon /></a>)}</div></>}</div></section>;
+  } else if (page === 'industries') items = industries.filter((item) => item.id !== 'All industries');
+  else if (page === 'process') body = <Process />;
+  else if (page === 'about') body = <WhyUs />;
+  else if (page === 'contact') body = <section className="section"><div className="container contact-card"><p className="eyebrow">Start a conversation</p><h2>Tell us what you’re working toward.</h2><p>For a website, search, or growth enquiry, email us with a little context and your website address.</p><a className="button" href={'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('Let’s talk about my business')}>{CONTACT_EMAIL} <ArrowIcon /></a><a className="text-link" href="/">Request a human-led website review <ArrowIcon /></a></div></section>;
+  if (!head) head = ['SEOPune360', 'A practical digital', 'growth partner.', 'Explore services, client stories, and ways to work together.'];
+  useEffect(() => {
+    document.title = `${head[1]} ${head[2].replace(/[.]/g, '')} | SEOPune360`;
+    window.scrollTo(0, 0);
+  }, [path]);
+  const renderCard = (item) => {
+    if (page === 'services') return <a className="content-card" href={servicePaths[item.id]} key={item.id}><span className="card-number">{item.number} / 06</span><h2>{item.title}</h2><p>{item.summary}</p><span className="text-link">Explore service <ArrowIcon /></span></a>;
+    if (page === 'industries' && !industry) return <a className="content-card" href={industryPath(item.id)} key={item.id}><span className="card-number">SECTOR</span><h2>{item.label}</h2><p>Explore the client work and digital growth needs represented in this sector.</p><span className="text-link">Explore industry <ArrowIcon /></span></a>;
+    if (page === 'case-studies') return <a className="content-card" href={'/case-studies/' + item.id + '/'} key={item.id}><span className="card-number">{item.category}</span><h2>{item.label}</h2><p>{item.copy}</p><span className="text-link">Read client story <ArrowIcon /></span></a>;
+    return <article className="content-card" key={item.name}><span className="card-number">{page === 'products' ? 'CLIENT PLATFORM JOURNEY' : item.type.toUpperCase()}</span><h2>{item.name}</h2><p>{item.description}</p>{page === 'products' && <p className="content-note">Portfolio showcase based on published client work; this is not a separate SEOPune360 product catalogue.</p>}{page !== 'products' && <a className="text-link" href="/case-studies/">Browse client stories <ArrowIcon /></a>}</article>;
+  };
+  const titleParts = head[1].split(' ');
+  return <><InsideHero kicker={head[0]} title={titleParts.slice(0, Math.max(1, titleParts.length - 1)).join(' ')} accent={titleParts.length > 1 ? titleParts.slice(-1).join(' ') + (head[2] ? ' ' + head[2] : '') : head[2]} copy={head[3]} />{items.length > 0 && <section className="section"><ContentCards items={items} render={renderCard} />{page === 'industries' && !industry && <p className="container content-note">A published client case study is not currently listed for every sector.</p>}{industry && items.length === 0 && <div className="container empty-state"><h2>No published client case study for this category yet.</h2><p>We can still discuss the search and website needs of your business.</p><a className="button" href="/contact/">Talk with us <ArrowIcon /></a></div>}</section>}{body}</>;
+}
+
 function App() {
+  const cleanPath = window.location.pathname.replace(/\/+$/, '');
+  const path = cleanPath ? cleanPath + '/' : '/';
   const [activeIndustry, setActiveIndustry] = useState('All industries');
   const [activeService, setActiveService] = useState('seo');
   const [activeCase, setActiveCase] = useState('kj-group');
@@ -460,8 +543,8 @@ function App() {
   const [legalTitle, setLegalTitle] = useState('');
 
   return <div className="page-shell">
-    <Header onChooseService={setActiveService} onChooseIndustry={setActiveIndustry} />
-    <main><Hero onPlayShowreel={() => setShowreelOpen(true)} /><ClientSelector activeIndustry={activeIndustry} setActiveIndustry={setActiveIndustry} /><Services activeService={activeService} setActiveService={setActiveService} /><CaseStudies activeCase={activeCase} setActiveCase={setActiveCase} /><Process /><WhyUs /><AuditSection /></main>
+    <Header />
+    <main>{path === '/' ? <><Hero onPlayShowreel={() => setShowreelOpen(true)} /><ClientSelector activeIndustry={activeIndustry} setActiveIndustry={setActiveIndustry} /><Services activeService={activeService} setActiveService={setActiveService} /><CaseStudies activeCase={activeCase} setActiveCase={setActiveCase} /><Process /><WhyUs /><AuditSection /></> : <PageContent path={path} />}</main>
     <Footer onCookieSettings={() => setCookieOpen(true)} onLegal={setLegalTitle} />
     {showreelOpen && <ShowreelModal onClose={() => setShowreelOpen(false)} />}
     {cookieOpen && <CookieDialog onClose={() => setCookieOpen(false)} />}
@@ -470,6 +553,7 @@ function App() {
 }
 
 export default App;
+
 
 
 

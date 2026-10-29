@@ -1,22 +1,17 @@
 # SEOPune360 Website
 
-A responsive React and Vite homepage for SEOPune360. The visual direction keeps the site's deep navy, aqua, mint, and cyan palette while using Flowtrix-inspired motion, hover states, content transitions, and layout patterns.
+A responsive React and Vite website for SEOPune360. Its independent service, client story, portfolio, product/platform, industry, company, and contact pages keep the site's deep navy and aqua identity while using Flowtrix as a reference for navigation, hover states, and editorial page structure.
 
-## Open this project in VS Code
+## Open this project in Codex
 
-1. Open **Visual Studio Code**.
-2. Choose **File → Open Folder…**.
-3. Open this exact folder:
+This repository is synced in the Codex workspace. To preview it in Codex, open a terminal for this project and run:
 
-   `C:\Users\maith\Documents\Codex\2026-10-26\referenced-chatgpt-conversation-this-is-an\outputs\SEOPune360-Website`
+```sh
+npm ci
+npm run dev -- --host 0.0.0.0
+```
 
-4. If VS Code asks whether you trust the folder, choose **Yes, I trust the authors**.
-5. Choose **Terminal → New Terminal**.
-6. Run `npm install` once, then run `npm run dev` and open the local web address Vite prints in the terminal (usually `http://localhost:5173`).
-
-Open the **SEOPune360-Website folder itself**, not the `outputs` folder and not an individual file.
-
-If VS Code says `npm` is not recognized, install Node.js LTS, restart VS Code, and run `npm run dev` again. If the dependencies are missing, run `npm install` once before `npm run dev`.
+Open the local address Vite prints. The project uses `src/App.jsx`, `src/style.css`, and the Vite setup in `vite.config.js`.
 
 ## Build for deployment
 
@@ -31,9 +26,11 @@ The intended custom domain is `seopune360.com`. GitHub Pages must be configured 
 ## What is implemented
 
 - Responsive navigation with working desktop hover/click menus and a mobile accordion menu.
-- Website menu groups for **Design**, **Development**, and **Growth**.
-- Case Studies and Portfolios links, Company/About Us links, and a Book a Call email action.
-- The seven requested industry filters; selecting one updates the client names and descriptions.
+- Independent pages for six services, case studies and individual client stories, client portfolio, products/platform journeys, seven industries, company, process, and contact.
+- Wide desktop hover menus and a linked mobile accordion for Services, Work, Industries, and Company.
+- Each industry page uses existing client portfolio content; no case study is invented for sectors without published client work.
+- The Products & Platforms page presents current client work and is clearly identified as a portfolio showcase, not a separate SEOPune360 product catalogue.
+- The homepage retains the industry filter, service showcase, case-study selector, timeline, about section, and website-audit request.
 - Animated service showcase with hover, focus, and click selection.
 - Interactive client case-study selector with matching project details.
 - Responsive eight-week project timeline.
@@ -64,6 +61,8 @@ No physical address, testimonials, team section, or Q&A section is included.
 
 - `src/App.jsx` — page sections, content, and interactive behavior
 - `src/style.css` — colors, layout, responsive states, and effects
+- `vite.config.js` — independent static HTML entry paths and page metadata for GitHub Pages
 - `public/` — favicon and media assets
 - `docs/` — build specification, implementation prompt, and reference screenshots
+
 
