@@ -90,13 +90,20 @@ const auditItems = [
 const aboutLinks = [['About Us', '#about'], ['Our Process', '#process'], ['Selected Work', '#case-studies']];
 
 function Brand({ footer = false }) {
+  const logoFilter = footer ? 'brand-logo-key-footer' : 'brand-logo-key-header';
   return (
     <a className={'brand' + (footer ? ' brand-footer' : '')} href="#top" aria-label="SEOPune360 home">
-      <svg className="brand-symbol" viewBox="0 0 46 36" aria-hidden="true">
-        <path d="M3 22 17 7h9L12 22h9L8 35H0l9-10H3Z" fill="currentColor" />
-        <path d="M22 22 36 7h9L31 22h9L27 35h-9l9-10h-9Z" fill="currentColor" opacity=".72" />
+      <svg className="brand-logo" viewBox="190 110 2970 460" aria-hidden="true">
+        <defs>
+          <filter id={logoFilter} colorInterpolationFilters="sRGB">
+            <feColorMatrix type="matrix" values="0 0 0 0 0.318
+              0 0 0 0 0.761
+              0 0 0 0 0.737
+              -0.634 -2.135 -0.215 0 2.983" />
+          </filter>
+        </defs>
+        <image href="/seopune360-logo.jpg" width="4238" height="677" filter={`url(#${logoFilter})`} />
       </svg>
-      <span className="brand-name"><b>SEO</b><b className="brand-aqua">Pune</b><span>360</span></span>
     </a>
   );
 }
@@ -458,6 +465,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
