@@ -118,7 +118,8 @@ h3 { font-size: 1.35rem; line-height: 1.2; letter-spacing: -.035em; }
 }
 .header-inner { min-height: 78px; display: flex; align-items: center; gap: 28px; }
 .brand { display: inline-flex; align-items: center; flex: none; }
-.brand-logo { display: block; width: 181px; height: 28px; flex: none; }
+.brand-logo { display: block; width: 220px; height: 35px; flex: none; overflow: visible; }
+.brand-logo-addition { fill: #f7fbfa; font-family: Inter, Arial, sans-serif; font-size: 550px; font-weight: 750; letter-spacing: -26px; }
 .main-nav { display: flex; align-items: center; justify-content: center; flex: 1; gap: 5px; }
 .nav-item { position: relative; }
 .nav-trigger {
@@ -658,7 +659,7 @@ h3 { font-size: 1.35rem; line-height: 1.2; letter-spacing: -.035em; }
 .footer-email, .footer-audit-link { display: inline-flex; align-items: center; gap: 7px; color: #dcebe6; font-size: .84rem; font-weight: 650; }
 .footer-email svg, .footer-audit-link svg { width: 15px; }
 .footer-audit-link { margin-top: 5px; padding: 0; border: 0; background: transparent; cursor: pointer; }
-.brand-footer .brand-logo { width: 170px; height: 26px; }
+.brand-footer .brand-logo { width: 200px; height: 32px; }
 .footer-bottom { display: flex; align-items: center; justify-content: space-between; gap: 22px; min-height: 68px; padding-top: 14px; padding-bottom: 14px; border-top: 1px solid var(--line); color: #8fa5a1; font-size: .69rem; }
 .legal-links { display: flex; flex-wrap: wrap; align-items: center; gap: 21px; }
 .legal-links button { padding: 0; border: 0; background: transparent; color: #a8bebb; cursor: pointer; font-size: inherit; }
@@ -701,7 +702,7 @@ h3 { font-size: 1.35rem; line-height: 1.2; letter-spacing: -.035em; }
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 @media (max-width: 1120px) {
   .header-inner { gap: 13px; }
-  .brand-logo { width: 165px; height: 25.5px; }
+  .brand-logo { width: 195px; height: 31px; }
   .nav-trigger { padding-inline: 9px; font-size: .83rem; }
   .hero-grid { grid-template-columns: minmax(0,1fr) minmax(400px,.9fr); gap: 38px; }
   .hero-art { min-height: 420px; padding-inline: 16px; }
@@ -716,6 +717,7 @@ h3 { font-size: 1.35rem; line-height: 1.2; letter-spacing: -.035em; }
 }
 @media (max-width: 900px) {
   .container { width: min(var(--container),calc(100% - 44px)); }
+  .brand-logo { width: 190px; height: 30px; }
   .main-nav, .header-inner > .header-call { display: none; }
   .header-inner { justify-content: space-between; min-height: 70px; }
   .menu-toggle { display: flex; width: 42px; height: 42px; flex-direction: column; justify-content: center; gap: 5px; padding: 10px; border: 1px solid var(--line); border-radius: 7px; background: rgba(255,255,255,.025); cursor: pointer; }
@@ -761,6 +763,7 @@ h3 { font-size: 1.35rem; line-height: 1.2; letter-spacing: -.035em; }
 @media (max-width: 620px) {
   html { scroll-padding-top: 72px; }
   .container { width: calc(100% - 36px); }
+  .brand-logo { width: 180px; height: 29px; }
   .section { padding: 76px 0; }
   h1 { font-size: clamp(3rem,12.5vw,4.25rem); }
   h2 { font-size: clamp(2.25rem,9.2vw,3.2rem); }
