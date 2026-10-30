@@ -43,6 +43,18 @@ function staticRoutePages() {
         await mkdir(dirname(outputPath), { recursive: true });
         await writeFile(outputPath, page, 'utf8');
       }
+
+      const auditApiUrl = (process.env.VITE_AUDIT_API_URL || '').trim();
+      if (auditApiUrl) {
+        const auditPath = join(outputDirectory, 'audit', 'index.html');
+        const auditHtml = await readFile(auditPath, 'utf8');
+        const escapedApiUrl = auditApiUrl.replaceAll('&', '&amp;').replaceAll('"', '&quot;');
+        const configuredAuditHtml = auditHtml.replace(
+          /<meta name="seo360-audit-api-url" content=""\s*\/>/,
+          `<meta name="seo360-audit-api-url" content="${escapedApiUrl}" />`,
+        );
+        await writeFile(auditPath, configuredAuditHtml, 'utf8');
+      }
     },
   };
 }
@@ -50,4 +62,5 @@ function staticRoutePages() {
 export default defineConfig({
   plugins: [react(), staticRoutePages()],
 });
+
 
