@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Free AI Website & SEO Audit | SEOPune360</title>
+  <!-- Automatically inherit main site stylesheet if present -->
+  <link rel="stylesheet" href="/style.css" onerror="this.remove()" />
+  <link rel="stylesheet" href="/globals.css" onerror="this.remove()" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       CSS VARIABLE BRIDGE — INHERITS FROM MAIN SEOPUNE360.COM STYLESHEET
+       Codex: Replace the fallback hex values below with the exact tokens from
+       the main seopune360.com repository CSS file during Step 1.
+       ========================================================================== */
+    :root {
+      --seo360-primary: var(--primary, var(--brand-color, var(--accent, #2563EB)));
+      --seo360-primary-hover: var(--primary-dark, var(--brand-hover, #1D4ED8));
+      --seo360-primary-soft: color-mix(in srgb, var(--seo360-primary) 16%, transparent);
+      --seo360-primary-glow: color-mix(in srgb, var(--seo360-primary) 35%, transparent);
+
+      --seo360-bg-hero-dark: var(--bg-dark, var(--surface-dark, #0B1120));
+      --seo360-bg-card-dark: var(--card-dark, #111827);
+      --seo360-bg-main: var(--bg-main, var(--background, #F8FAFC));
+      --seo360-bg-card: var(--bg-card, var(--surface, #FFFFFF));
+
+      --seo360-text-white: #F8FAFC;
+      --seo360-text-muted-dark: #94A3B8;
+      --seo360-text-main: var(--text-main, var(--foreground, #0F172A));
+      --seo360-text-muted: var(--text-muted, #475569);
+
+      --seo360-border-dark: rgba(255, 255, 255, 0.12);
+      --seo360-border-light: var(--border-color, #E2E8F0);
+
+      --seo360-status-low: #EF4444;
+      --seo360-status-mod: #F59E0B;
+      --seo360-status-good: #10B981;
+
+      --seo360-font-display: var(--font-heading, 'Sora', 'Plus Jakarta Sans', sans-serif);
+      --seo360-font-sans: var(--font-body, 'Plus Jakarta Sans', 'Inter', sans-serif);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--seo360-font-sans);
+      background: var(--seo360-bg-hero-dark);
+      color: var(--seo360-text-white);
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    .hidden { display: none !important; }
+
+    /* Header */
+    .seo360-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 48px;
+      border-bottom: 1px solid var(--seo360-border-dark);
+      background: color-mix(in srgb, var(--seo360-bg-hero-dark) 92%, transparent);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .seo360-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--seo360-font-display);
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--seo360-text-white);
+      text-decoration: none;
+    }
+
+    .seo360-logo-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: var(--seo360-primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      color: #fff;
+      box-shadow: 0 4px 14px var(--seo360-primary-glow);
+    }
+
+    .seo360-logo span.accent { color: var(--seo360-primary); }
+
+    .seo360-header-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.88rem;
+      color: var(--seo360-text-muted-dark);
+    }
+
+    .seo360-domain-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid var(--seo360-border-dark);
+      padding: 6px 14px;
+      border-radius: 999px;
+      color: var(--seo360-text-white);
+      font-weight: 600;
+    }
+
+    /* Stage 1: Homepage Input Section */
+    #stage-home {
+      min-height: calc(100vh - 73px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 64px 24px;
+      background:
+        radial-gradient(circle at 85% 30%, var(--seo360-primary-glow) 0%, transparent 55%),
+        var(--seo360-bg-hero-dark);
+    }
+
+    .seo360-home-grid {
+      max-width: 1180px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .seo360-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--seo360-primary-soft);
+      border: 1px solid var(--seo360-primary);
+      color: var(--seo360-primary);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+
+    .seo360-h1 {
+      font-family: var(--seo360-font-display);
+      font-size: clamp(2.4rem, 4.4vw, 3.7rem);
+      line-height: 1.12;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+
+    .seo360-h1 .accent { color: var(--seo360-primary); }
+
+    .seo360-input-group {
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--seo360-border-dark);
+      border-radius: 12px;
+      padding: 6px;
+      max-width: 540px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .seo360-input-group:focus-within {
+      border-color: var(--seo360-primary);
+      box-shadow: 0 0 0 3px var(--seo360-primary-soft);
+    }
+
+    .seo360-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--seo360-text-white);
+      font-size: 1rem;
+      padding: 12px 16px;
+    }
+
+    .seo360-btn-primary {
+      background: var(--seo360-primary);
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 13px 24px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      white-space: nowrap;
+    }
+
+    .seo360-btn-primary:hover {
+      background: var(--seo360-primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .seo360-subnote {
+      font-size: 0.84rem;
+      color: var(--seo360-text-muted-dark);
+      margin-bottom: 24px;
+    }
+
+    .seo360-subnote strong { color: var(--seo360-primary); }
+
+    /* Stage 2: Laser Viewfinder Scanner */
+    #stage-scanning {
+      min-height: calc(100vh - 73px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 24px 0;
+      background:
+        radial-gradient(circle at 50% 95%, var(--seo360-primary-soft), transparent 60%),
+        var(--seo360-bg-hero-dark);
+    }
+
+    .scan-heading {
+      font-family: var(--seo360-font-display);
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .scan-badge-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--seo360-primary-soft);
+      border: 1px solid var(--seo360-primary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .scan-subtitle {
+      font-size: 1.05rem;
+      color: var(--seo360-text-muted-dark);
+      margin-bottom: 18px;
+      min-height: 26px;
+    }
+
+    .scan-subtitle strong { color: var(--seo360-text-white); }
+
+    .scan-progress-bar-wrap {
+      width: 240px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 36px;
+    }
+
+    .scan-progress-bar-fill {
+      height: 100%;
+      width: 12%;
+      background: var(--seo360-primary);
+      border-radius: 999px;
+      transition: width 0.45s ease;
+      box-shadow: 0 0 12px var(--seo360-primary);
+    }
+
+    .viewfinder-box {
+      position: relative;
+      width: 100%;
+      max-width: 860px;
+      height: 470px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--seo360-border-dark);
+      border-radius: 20px 20px 0 0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .vf-corner {
+      position: absolute;
+      width: 36px;
+      height: 36px;
+      border-color: var(--seo360-primary);
+      border-style: solid;
+      z-index: 5;
+    }
+    .vf-corner.tl { top: 0; left: 0; border-width: 4px 0 0 4px; border-top-left-radius: 18px; }
+    .vf-corner.tr { top: 0; right: 0; border-width: 4px 4px 0 0; border-top-right-radius: 18px; }
+    .vf-corner.bl { bottom: 16px; left: 0; border-width: 0 0 4px 4px; border-bottom-left-radius: 12px; }
+    .vf-corner.br { bottom: 16px; right: 0; border-width: 0 4px 4px 0; border-bottom-right-radius: 12px; }
+
+    .vf-laser {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--seo360-primary);
+      box-shadow: 0 0 14px 2px var(--seo360-primary), 0 0 28px 6px var(--seo360-primary-glow);
+      z-index: 4;
+      animation: laserSweep 3.2s ease-in-out infinite alternate;
+    }
+
+    @keyframes laserSweep {
+      0% { top: 6%; }
+      100% { top: 92%; }
+    }
+
+    .vf-status-pill {
+      z-index: 2;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--seo360-border-dark);
+      padding: 8px 18px;
+      border-radius: 999px;
+      color: var(--seo360-text-muted-dark);
+      font-size: 0.95rem;
+    }
+
+    .vf-screenshot {
+      position: absolute;
+      inset: 14px 14px 0 14px;
+      width: calc(100% - 28px);
+      height: calc(100% - 14px);
+      object-fit: cover;
+      object-position: top center;
+      border-radius: 12px 12px 0 0;
+      opacity: 0;
+      transition: opacity 0.7s ease;
+      z-index: 3;
+    }
+
+    .vf-screenshot.visible { opacity: 1; }
+
+    /* Stage 3: Report Hero Banner */
+    .report-hero {
+      padding: 64px 48px 84px;
+      background:
+        radial-gradient(circle at 92% 20%, var(--seo360-primary-glow), transparent 45%),
+        var(--seo360-bg-hero-dark);
+      border-bottom: 1px solid var(--seo360-border-dark);
+    }
+
+    .report-hero-grid {
+      max-width: 1220px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .report-hero-title {
+      font-family: var(--seo360-font-display);
+      font-size: clamp(2.3rem, 4.2vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.12;
+      margin-bottom: 18px;
+    }
+
+    .report-hero-title .domain-accent {
+      color: var(--seo360-primary);
+      word-break: break-all;
+    }
+
+    .report-hero-sub {
+      color: var(--seo360-text-muted-dark);
+      font-size: 1.08rem;
+      margin-bottom: 32px;
+    }
+
+    .btn-light {
+      display: inline-block;
+      background: #FFFFFF;
+      color: var(--seo360-text-main);
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 14px 26px;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+
+    .mockup-container {
+      position: relative;
+      padding-bottom: 36px;
+      padding-left: 36px;
+    }
+
+    .browser-window {
+      background: #FFFFFF;
+      border-radius: 16px;
+      border: 6px solid var(--seo360-primary);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+    }
+
+    .browser-bar {
+      background: #F1F5F9;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid #E2E8F0;
+    }
+
+    .browser-dots { display: flex; gap: 6px; }
+    .browser-dots span { width: 10px; height: 10px; border-radius: 50%; }
+    .browser-dots span:nth-child(1) { background: #EF4444; }
+    .browser-dots span:nth-child(2) { background: #F59E0B; }
+    .browser-dots span:nth-child(3) { background: #10B981; }
+
+    .browser-url {
+      flex: 1;
+      background: #FFFFFF;
+      border-radius: 6px;
+      padding: 4px 12px;
+      font-size: 0.75rem;
+      color: #475569;
+      text-align: center;
+      border: 1px solid #E2E8F0;
+    }
+
+    .browser-img {
+      width: 100%;
+      height: 310px;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+
+    .score-overlay-card {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 248px;
+      background: rgba(15, 23, 42, 0.96);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--seo360-border-dark);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
+      z-index: 10;
+    }
+
+    .score-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+    }
+
+    .score-number {
+      font-family: var(--seo360-font-display);
+      font-size: 2rem;
+      font-weight: 800;
+    }
+
+    .score-number small {
+      font-size: 0.85rem;
+      color: var(--seo360-text-muted-dark);
+    }
+
+    .seg-bars-20 {
+      display: grid;
+      grid-template-columns: repeat(20, 1fr);
+      gap: 3px;
+      height: 18px;
+      margin-bottom: 16px;
+    }
+
+    .seg-bar { background: rgba(255, 255, 255, 0.14); border-radius: 2px; }
+    .seg-bar.on { background: #FFFFFF; }
+
+    .sub-bar-group { margin-top: 10px; }
+    .sub-bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.73rem;
+      margin-bottom: 5px;
+    }
+    .sub-bar-track {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 3px;
+      height: 5px;
+    }
+    .sub-seg { background: rgba(255, 255, 255, 0.14); border-radius: 2px; }
+    .sub-seg.low { background: var(--seo360-status-low); }
+    .sub-seg.mod { background: var(--seo360-status-mod); }
+    .sub-seg.good { background: var(--seo360-status-good); }
+
+    /* Stage 4: Light Report Body */
+    .report-body {
+      background: var(--seo360-bg-main);
+      color: var(--seo360-text-main);
+      padding: 64px 48px 96px;
+    }
+
+    .report-body-grid {
+      max-width: 1220px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 44px;
+      align-items: start;
+    }
+
+    .report-sidebar {
+      position: sticky;
+      top: 96px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .sidebar-box {
+      background: var(--seo360-bg-card);
+      border: 1px solid var(--seo360-border-light);
+      border-radius: 12px;
+      padding: 16px 18px;
+    }
+
+    .jump-toggle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+    }
+
+    .jump-links {
+      list-style: none;
+      margin-top: 14px;
+      border-top: 1px solid var(--seo360-border-light);
+      padding-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .jump-links a {
+      text-decoration: none;
+      color: var(--seo360-text-muted);
+      font-size: 0.86rem;
+      display: block;
+      padding: 3px 0;
+    }
+
+    .jump-links a:hover, .jump-links a.active {
+      color: var(--seo360-primary);
+      font-weight: 700;
+    }
+
+    .pdf-link {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--seo360-text-main);
+      text-decoration: underline;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .cta-box-dark {
+      background:
+        radial-gradient(circle at 85% 15%, var(--seo360-primary-glow), transparent 55%),
+        var(--seo360-bg-hero-dark);
+      color: var(--seo360-text-white);
+      border-radius: 16px;
+      padding: 26px 22px;
+    }
+
+    .cta-avatars { display: flex; margin-bottom: 16px; }
+    .cta-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: var(--seo360-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      border: 2px solid var(--seo360-bg-hero-dark);
+    }
+    .cta-avatar:nth-child(2) { margin-left: -10px; background: #334155; }
+
+    .cta-box-title {
+      font-family: var(--seo360-font-display);
+      font-size: 1.28rem;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 18px;
+    }
+
+    .btn-book {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      background: #FFFFFF;
+      color: var(--seo360-text-main);
+      font-weight: 700;
+      padding: 13px;
+      border-radius: 10px;
+      text-decoration: none;
+    }
+
+    .share-row { display: flex; gap: 8px; margin-top: 8px; }
+    .share-icon-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      background: var(--seo360-bg-card);
+      border: 1px solid var(--seo360-border-light);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--seo360-text-main);
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .radar-card, .finding-card {
+      background: var(--seo360-bg-card);
+      border: 1px solid var(--seo360-border-light);
+      border-radius: 18px;
+      padding: 34px;
+      margin-bottom: 24px;
+    }
+
+    .radar-wrap {
+      position: relative;
+      max-width: 580px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    #radarCanvas { width: 100%; height: auto; cursor: crosshair; }
+
+    .radar-tooltip {
+      position: absolute;
+      background: var(--seo360-bg-hero-dark);
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      pointer-events: none;
+      transform: translate(-50%, -125%);
+      white-space: nowrap;
+    }
+
+    .finding-head {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      padding-bottom: 16px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid var(--seo360-border-light);
+    }
+
+    .finding-head h3 {
+      font-family: var(--seo360-font-display);
+      font-size: 1.4rem;
+    }
+
+    .finding-score {
+      font-weight: 700;
+      color: var(--seo360-primary);
+    }
+
+    .finding-row {
+      display: flex;
+      gap: 12px;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--seo360-border-light);
+      font-size: 0.94rem;
+      line-height: 1.55;
+    }
+    .finding-row:last-child { border-bottom: none; }
+
+    .badge-prio {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 5px;
+      margin-left: 6px;
+    }
+    .badge-High { background: #FEE2E2; color: #B91C1C; }
+    .badge-Medium { background: #FEF3C7; color: #B45309; }
+    .badge-Low { background: #E0E7FF; color: #3730A3; }
+
+    @media (max-width: 960px) {
+      .seo360-home-grid, .report-hero-grid, .report-body-grid { grid-template-columns: 1fr; }
+      .report-sidebar { position: static; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="seo360-header">
+    <a href="/" class="seo360-logo">
+      <span class="seo360-logo-mark">360</span>
+      <span>SEO<span class="accent">Pune</span>360</span>
+    </a>
+    <div class="seo360-header-meta" id="header-meta">
+      <span>Audit by SEOPune360</span>
+      <span class="seo360-domain-pill">🌐 <span id="header-domain">shawtoyotapune.com</span></span>
+    </div>
+  </header>
+
+  <!-- STAGE 1: HOMEPAGE INPUT -->
+  <section id="stage-home">
+    <div class="seo360-home-grid">
+      <div>
+        <div class="seo360-badge">▲ Digital Growth Partner · Pune</div>
+        <h1 class="seo360-h1">
+          Find Out What’s Stopping Your Website From <span class="accent">Generating Leads.</span>
+        </h1>
+        <form id="audit-form" class="seo360-input-group">
+          <input type="text" id="domain-input" class="seo360-input" placeholder="Enter your website URL (e.g. example.com)" required />
+          <button type="submit" class="seo360-btn-primary">Scan my website</button>
+        </form>
+        <div class="seo360-subnote">
+          <strong>Preview</strong> • Laser Viewfinder demo. No live crawl or SEO tests yet.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STAGE 2: LASER SCANNER -->
+  <section id="stage-scanning" class="hidden">
+    <h1 class="scan-heading">Laser Viewfinder <span class="scan-badge-icon">🔍</span> preview</h1>
+    <div class="scan-subtitle" id="scan-subtitle">Getting started</div>
+    <div class="scan-progress-bar-wrap">
+      <div class="scan-progress-bar-fill" id="scan-progress"></div>
+    </div>
+    <div class="viewfinder-box">
+      <div class="vf-corner tl"></div>
+      <div class="vf-corner tr"></div>
+      <div class="vf-corner bl"></div>
+      <div class="vf-corner br"></div>
+      <div class="vf-laser"></div>
+      <div class="vf-status-pill" id="vf-status">Preparing your report preview...</div>
+      <img id="vf-img" class="vf-screenshot" alt="Website screenshot preview" />
+    </div>
+  </section>
+
+  <!-- STAGE 3 & 4: REPORT -->
+  <div id="stage-report" class="hidden">
+    <section class="report-hero">
+      <div class="report-hero-grid">
+        <div>
+          <h1 class="report-hero-title">
+            Sample report preview for <br />
+            <span class="domain-accent" id="report-domain">shawtoyotapune.com</span>
+          </h1>
+          <p class="report-hero-sub" id="report-verdict">Illustrative sample findings only. No live crawl or SEO tests have been run for this website.</p>
+          <a href="#full-report-body" class="btn-light">Access full report</a>
+        </div>
+        <div class="mockup-container">
+          <div class="browser-window">
+            <div class="browser-bar">
+              <div class="browser-dots"><span></span><span></span><span></span></div>
+              <div class="browser-url" id="browser-url">shawtoyotapune.com</div>
+            </div>
+            <img id="report-screenshot" class="browser-img" alt="Captured Website" />
+          </div>
+          <div class="score-overlay-card">
+            <div class="score-head">
+              <div class="score-number"><span id="overall-score">50</span> <small>/100</small></div>
+              <span style="font-size: 0.78rem; color: var(--seo360-text-muted-dark);">Sample score</span>
+            </div>
+            <div class="seg-bars-20" id="seg-bars-20"></div>
+            <div class="sub-bar-group">
+              <div class="sub-bar-label"><span>Visual</span><span style="color:var(--seo360-status-low);font-weight:700;">Low</span></div>
+              <div class="sub-bar-track" data-fill="5" data-tone="low"></div>
+            </div>
+            <div class="sub-bar-group">
+              <div class="sub-bar-label"><span>Clarity</span><span style="color:var(--seo360-status-low);font-weight:700;">Low</span></div>
+              <div class="sub-bar-track" data-fill="4" data-tone="low"></div>
+            </div>
+            <div class="sub-bar-group">
+              <div class="sub-bar-label"><span>Technical</span><span style="color:var(--seo360-status-mod);font-weight:700;">Moderate</span></div>
+              <div class="sub-bar-track" data-fill="7" data-tone="mod"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="report-body" id="full-report-body">
+      <div class="report-body-grid">
+        <aside class="report-sidebar">
+          <div class="sidebar-box">
+            <div class="jump-toggle"><span>Jump to</span><span>⌄</span></div>
+            <ul class="jump-links" id="jump-links"></ul>
+            <button class="pdf-link" onclick="window.print()">Download PDF</button>
+          </div>
+          <div class="cta-box-dark">
+            <div class="cta-avatars">
+              <div class="cta-avatar">PR</div>
+              <div class="cta-avatar">360</div>
+            </div>
+            <div class="cta-box-title">Want us to fix these for you?</div>
+            <a href="/contact" class="btn-book">📅 Book a call</a>
+          </div>
+          <div>
+            <div style="font-size: 0.85rem; font-weight: 700;">Share this audit</div>
+            <div class="share-row">
+              <button class="share-icon-btn" onclick="navigator.clipboard.writeText(window.location.href)">🔗</button>
+              <a class="share-icon-btn" href="https://www.linkedin.com/sharing/share-offsite/" target="_blank">in</a>
+              <a class="share-icon-btn" href="https://x.com/intent/tweet" target="_blank">𝕏</a>
+              <a class="share-icon-btn" href="https://www.facebook.com/sharer/sharer.php" target="_blank">f</a>
+              <a class="share-icon-btn" href="https://wa.me/918483837969" target="_blank">💬</a>
+            </div>
+          </div>
+        </aside>
+
+        <main>
+          <div class="radar-card">
+            <div class="radar-wrap">
+              <canvas id="radarCanvas" width="600" height="500"></canvas>
+              <div id="radarTooltip" class="radar-tooltip hidden"></div>
+              <p style="color: var(--seo360-text-muted); margin-top: 10px; font-size: 0.94rem;">Hover a point to see its score</p>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 20px;">
+            <h2 style="font-family: var(--seo360-font-display); font-size: 1.8rem;">Findings by category</h2>
+            <p style="color: var(--seo360-text-muted); font-size: 0.94rem;">Scores are the share of rubric checks a category passed, not a judgement call. A category with nothing to fix scores 100.</p>
+          </div>
+
+          <div id="findings-list"></div>
+        </main>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const CATEGORIES = [
+      { id: "positioning", name: "Positioning", score: 40, passed: ["Offer stated plainly on homepage.", "Copy avoids empty jargon.", "Pricing expectations are set."], fixes: [{ text: "Update homepage H1 to clearly state the target audience and primary outcome.", prio: "High" }, { text: "Add a 4-step 'How It Works / How to Buy' section on /.", prio: "Medium" }] },
+      { id: "differentiation", name: "Differentiation", score: 15, passed: [], fixes: [{ text: "Add clear 'Why Choose Us' value props above the fold.", prio: "High" }, { text: "Highlight awards, certifications, or SLA guarantees.", prio: "High" }] },
+      { id: "target-audience", name: "Target audience", score: 35, passed: ["Local Pune service area is referenced in navigation and footer."], fixes: [{ text: "Call out specific buyer personas and industries served on /.", prio: "High" }] },
+      { id: "website-structure", name: "Website structure", score: 75, passed: ["Primary navigation clearly links to core service and contact pages."], fixes: [{ text: "Add internal contextual links and breadcrumb schema across service pages.", prio: "Medium" }] },
+      { id: "social-proof", name: "Social proof", score: 20, passed: ["Brand logos and imagery are visible."], fixes: [{ text: "Embed verified Google review ratings and client case study metrics on /.", prio: "High" }] },
+      { id: "brand-consistency", name: "Brand consistency", score: 65, passed: ["Consistent visual hierarchy across desktop and mobile."], fixes: [{ text: "Standardize CTA button labels across secondary landing pages.", prio: "Low" }] },
+      { id: "conversion-paths", name: "Conversion paths", score: 55, passed: ["Direct phone and WhatsApp enquiry triggers are accessible."], fixes: [{ text: "Add response-time microcopy under lead capture forms.", prio: "Medium" }] },
+      { id: "seo-aeo", name: "SEO and AEO", score: 40, passed: ["Homepage is indexable and returns HTTP 200."], fixes: [{ text: "Add FAQPage and LocalBusiness JSON-LD schema for AI answer engine visibility.", prio: "High" }] },
+      { id: "metadata-technical", name: "Metadata and technical", score: 70, passed: ["HTTPS and robots.txt are accessible."], fixes: [{ text: "Add unique 155-character meta descriptions on secondary pages.", prio: "Medium" }] }
+    ];
+
+    function getPrimaryColor() {
+      return getComputedStyle(document.documentElement).getPropertyValue("--seo360-primary").trim() || "#2563EB";
+    }
+
+    function renderHeroBars(score) {
+      const wrap = document.getElementById("seg-bars-20");
+      wrap.innerHTML = "";
+      const active = Math.round((score / 100) * 20);
+      for (let i = 0; i < 20; i++) {
+        const d = document.createElement("div");
+        d.className = "seg-bar" + (i < active ? " on" : "");
+        wrap.appendChild(d);
+      }
+      document.querySelectorAll(".sub-bar-track").forEach(track => {
+        track.innerHTML = "";
+        const fill = Number(track.dataset.fill);
+        const tone = track.dataset.tone;
+        for (let i = 0; i < 12; i++) {
+          const s = document.createElement("div");
+          s.className = "sub-seg" + (i < fill ? ` ${tone}` : "");
+          track.appendChild(s);
+        }
+      });
+    }
+
+    function renderFindings() {
+      const jump = document.getElementById("jump-links");
+      const list = document.getElementById("findings-list");
+      jump.innerHTML = "";
+      list.innerHTML = "";
+      CATEGORIES.forEach((c, idx) => {
+        jump.innerHTML += `<li><a href="#cat-${c.id}" class="${idx === 0 ? 'active' : ''}">${c.name}</a></li>`;
+        const passed = c.passed.map(p => `<div class="finding-row"><span style="color:var(--seo360-status-good);font-weight:800;">✓</span><div>${p}</div></div>`).join("");
+        const fixes = c.fixes.map(f => `<div class="finding-row"><span style="color:var(--seo360-status-low);font-weight:800;">×</span><div>${f.text}<span class="badge-prio badge-${f.prio}">${f.prio}</span></div></div>`).join("");
+        list.innerHTML += `
+          <div class="finding-card" id="cat-${c.id}">
+            <div class="finding-head"><h3>${c.name}</h3><span class="finding-score">${c.score}/100</span></div>
+            ${passed}
+            ${fixes ? `<div style="color:var(--seo360-status-low);font-weight:700;margin:14px 0 8px;font-size:0.9rem;">What to fix?</div>${fixes}` : ""}
+          </div>`;
+      });
+    }
+
+    function drawRadar() {
+      const canvas = document.getElementById("radarCanvas");
+      const ctx = canvas.getContext("2d");
+      const tooltip = document.getElementById("radarTooltip");
+      const primary = getPrimaryColor();
+      const cx = canvas.width / 2, cy = canvas.height / 2 + 10, R = 165, N = CATEGORIES.length;
+      const step = (Math.PI * 2) / N, start = -Math.PI / 2;
+      let pts = [];
+
+      function paint(hover = -1) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let l = 1; l <= 5; l++) {
+          const r = (R / 5) * l;
+          ctx.beginPath();
+          for (let i = 0; i < N; i++) {
+            const a = start + i * step;
+            i === 0 ? ctx.moveTo(cx + r * Math.cos(a), cy + r * Math.sin(a)) : ctx.lineTo(cx + r * Math.cos(a), cy + r * Math.sin(a));
+          }
+          ctx.closePath();
+          ctx.strokeStyle = "#E2E8F0";
+          ctx.stroke();
+        }
+        ctx.font = "500 13px sans-serif";
+        ctx.fillStyle = "#334155";
+        for (let i = 0; i < N; i++) {
+          const a = start + i * step;
+          ctx.beginPath();
+          ctx.moveTo(cx, cy);
+          ctx.lineTo(cx + R * Math.cos(a), cy + R * Math.sin(a));
+          ctx.strokeStyle = "#E2E8F0";
+          ctx.stroke();
+          const lx = cx + (R + 32) * Math.cos(a), ly = cy + (R + 32) * Math.sin(a);
+          ctx.textAlign = Math.abs(Math.cos(a)) < 0.15 ? "center" : (Math.cos(a) > 0 ? "left" : "right");
+          ctx.textBaseline = "middle";
+          ctx.fillText(CATEGORIES[i].name, lx, ly);
+        }
+        pts = [];
+        ctx.beginPath();
+        for (let i = 0; i < N; i++) {
+          const a = start + i * step;
+          const r = R * (Math.max(CATEGORIES[i].score, 6) / 100);
+          const x = cx + r * Math.cos(a), y = cy + r * Math.sin(a);
+          pts.push({ x, y, name: CATEGORIES[i].name, score: CATEGORIES[i].score });
+          i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.fillStyle = primary + "26";
+        ctx.fill();
+        ctx.strokeStyle = primary;
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+        pts.forEach((p, idx) => {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, idx === hover ? 8 : 5.5, 0, Math.PI * 2);
+          ctx.fillStyle = primary;
+          ctx.fill();
+          ctx.strokeStyle = "#FFFFFF";
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        });
+      }
+      paint();
+      canvas.onmousemove = (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const mx = (e.clientX - rect.left) * (canvas.width / rect.width);
+        const my = (e.clientY - rect.top) * (canvas.height / rect.height);
+        const idx = pts.findIndex(p => Math.hypot(mx - p.x, my - p.y) < 16);
+        paint(idx);
+        if (idx !== -1) {
+          tooltip.classList.remove("hidden");
+          tooltip.style.left = `${(pts[idx].x / canvas.width) * 100}%`;
+          tooltip.style.top = `${(pts[idx].y / canvas.height) * 100}%`;
+          tooltip.textContent = `${pts[idx].name}: ${pts[idx].score}/100`;
+        } else {
+          tooltip.classList.add("hidden");
+        }
+      };
+    }
+
+    function startScan(rawDomain) {
+      const domain = rawDomain.trim().toLowerCase().replace(/^https?:\/\//, "").replace(/^www\./, "").split("/")[0] || "shawtoyotapune.com";
+      document.getElementById("header-domain").textContent = domain;
+      document.getElementById("report-domain").textContent = domain;
+      document.getElementById("browser-url").textContent = domain;
+
+      document.getElementById("stage-home").classList.add("hidden");
+      document.getElementById("stage-scanning").classList.remove("hidden");
+
+      const shot = `https://api.microlink.io/?url=https://${encodeURIComponent(domain)}&screenshot=true&meta=false&embed=screenshot.url`;
+      const vfImg = document.getElementById("vf-img");
+      vfImg.src = shot;
+      document.getElementById("report-screenshot").src = shot;
+
+      const steps = [
+        { t: 0,    w: "16%", sub: "Opening the viewfinder", msg: "Preparing the preview...", img: false },
+        { t: 1800, w: "38%", sub: "Loading your <strong>homepage screenshot</strong>", msg: "Capturing a website preview...", img: false },
+        { t: 3600, w: "64%", sub: "Building the <strong>sample report</strong>", msg: "Preparing sample review areas...", img: true },
+        { t: 5400, w: "88%", sub: "Preparing the <strong>illustrative scorecard</strong>", msg: "Almost there...", img: true },
+        { t: 7000, w: "100%", sub: "Your sample report is ready", msg: "Loading the preview...", img: true }
+      ];
+
+      steps.forEach(s => setTimeout(() => {
+        document.getElementById("scan-progress").style.width = s.w;
+        document.getElementById("scan-subtitle").innerHTML = s.sub;
+        document.getElementById("vf-status").textContent = s.msg;
+        if (s.img) vfImg.classList.add("visible");
+      }, s.t));
+
+      setTimeout(() => {
+        document.getElementById("stage-scanning").classList.add("hidden");
+        document.getElementById("stage-report").classList.remove("hidden");
+        renderHeroBars(50);
+        renderFindings();
+        drawRadar();
+      }, 8000);
+    }
+
+    document.getElementById("audit-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      startScan(document.getElementById("domain-input").value);
+    });
+
+    // Auto-start scan if ?domain= query param is passed from seopune360.com homepage
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("domain")) {
+      document.getElementById("domain-input").value = urlParams.get("domain");
+      startScan(urlParams.get("domain"));
+    }
+  </script>
+</body>
+</html>
+
