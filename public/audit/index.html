@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="seo360-audit-api-url" content="" />
   <title>Laser Viewfinder Audit Preview | SEOPune360</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -507,6 +508,32 @@
     .sub-seg.mod { background: var(--seo360-status-mod); }
     .sub-seg.good { background: var(--seo360-status-good); }
 
+    .pagespeed-panel, .crawl-summary {
+      background: var(--seo360-bg-card);
+      border: 1px solid var(--seo360-border-light);
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 24px;
+    }
+    .pagespeed-panel h2, .crawl-summary h2 { font-size: 1.25rem; margin: 0 0 7px; }
+    .pagespeed-panel p, .crawl-summary p { color: var(--seo360-text-muted); margin: 0; font-size: .92rem; }
+    .psi-device-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
+    .psi-device-card { background: var(--seo360-bg-raised); border: 1px solid var(--seo360-border-light); border-radius: 11px; padding: 16px; }
+    .psi-device-card h3 { margin: 0 0 6px; font-size: 1rem; }
+    .psi-score { color: var(--seo360-primary); font-size: 1.65rem; font-weight: 800; }
+    .psi-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin-top: 12px; }
+    .psi-metric { border-top: 1px solid var(--seo360-border-light); padding-top: 8px; }
+    .psi-metric strong { display: block; font-size: .85rem; }
+    .psi-metric span { color: var(--seo360-text-muted); font-size: .76rem; }
+    .psi-unavailable { color: var(--seo360-text-muted); padding-top: 14px; }
+    .crawl-pages { display: grid; gap: 7px; margin: 14px 0 0; padding: 0; list-style: none; }
+    .crawl-pages li { display: flex; gap: 10px; align-items: flex-start; font-size: .85rem; }
+    .crawl-pages a { color: var(--seo360-primary); overflow-wrap: anywhere; }
+    .crawl-status { min-width: 40px; font-weight: 700; }
+    #stage-error { max-width: 760px; margin: 80px auto; padding: 32px; background: var(--seo360-bg-card-dark); border: 1px solid var(--seo360-border-dark); border-radius: 18px; text-align: center; color: var(--seo360-text-white); }
+    #stage-error p { color: var(--seo360-text-muted-dark); line-height: 1.6; }
+    #stage-error button { border: 0; border-radius: 8px; background: var(--seo360-primary); color: #07131d; padding: 12px 18px; font-weight: 800; cursor: pointer; }
+
     /* Stage 4: Report Body */
     .report-body {
       background: var(--seo360-bg-main);
@@ -521,6 +548,10 @@
       grid-template-columns: 300px 1fr;
       gap: 44px;
       align-items: start;
+    }
+
+    @media (max-width: 700px) {
+      .psi-device-grid { grid-template-columns: 1fr; }
     }
 
     .report-sidebar {
@@ -746,8 +777,8 @@
           <input type="text" id="domain-input" class="seo360-input" placeholder="Enter your website URL (e.g. example.com)" required />
           <button type="submit" class="seo360-btn-primary">Scan my website</button>
         </form>
-        <div class="seo360-subnote">
-          <strong>Preview</strong> • Laser Viewfinder demo. No live crawl or SEO tests yet.
+    <div class="seo360-subnote" id="audit-mode-note">
+      <strong>Live audit</strong> • Crawl up to 25 pages and check PageSpeed on mobile and desktop.
         </div>
       </div>
     </div>
@@ -755,7 +786,7 @@
 
   <!-- STAGE 2: LASER SCANNER -->
   <section id="stage-scanning" class="hidden">
-    <h1 class="scan-heading">Laser Viewfinder <span class="scan-badge-icon">🔍</span> preview</h1>
+    <h1 class="scan-heading" id="scan-heading">Laser Viewfinder <span class="scan-badge-icon">🔍</span> live audit</h1>
     <div class="scan-subtitle" id="scan-subtitle">Getting started</div>
     <div class="scan-progress-bar-wrap">
       <div class="scan-progress-bar-fill" id="scan-progress"></div>
@@ -766,9 +797,15 @@
       <div class="vf-corner bl"></div>
       <div class="vf-corner br"></div>
       <div class="vf-laser"></div>
-      <div class="vf-status-pill" id="vf-status">Preparing your report preview...</div>
+      <div class="vf-status-pill" id="vf-status">Preparing your live scan...</div>
       <img id="vf-img" class="vf-screenshot" alt="Website screenshot preview" />
     </div>
+  </section>
+
+  <section id="stage-error" class="hidden" role="alert">
+    <h1>We couldn’t complete this audit</h1>
+    <p id="scan-error-message">Please check the website address and try again.</p>
+    <button type="button" onclick="window.location.href='/audit/'">Try another website</button>
   </section>
 
   <!-- STAGE 3 & 4: REPORT -->
@@ -776,11 +813,11 @@
     <section class="report-hero">
       <div class="report-hero-grid">
         <div>
-          <h1 class="report-hero-title">
-            Sample report preview for <br />
+          <h1 class="report-hero-title" id="report-title">
+            Live audit for <br />
             <span class="domain-accent" id="report-domain">Your website</span>
           </h1>
-          <p class="report-hero-sub" id="report-verdict">Illustrative sample findings only. No live crawl or SEO tests have been run for this website.</p>
+          <p class="report-hero-sub" id="report-verdict">The live crawl and PageSpeed Insights checks are ready.</p>
           <a href="#full-report-body" class="btn-light">Access full report</a>
         </div>
         <div class="mockup-container">
@@ -794,21 +831,9 @@
           <div class="score-overlay-card">
             <div class="score-head">
               <div class="score-number"><span id="overall-score">50</span> <small>/100</small></div>
-              <span style="font-size: 0.78rem; color: var(--seo360-text-muted-dark);">Sample score</span>
+              <span id="score-source" style="font-size: 0.78rem; color: var(--seo360-text-muted-dark);">Live audit score</span>
             </div>
             <div class="seg-bars-20" id="seg-bars-20"></div>
-            <div class="sub-bar-group">
-              <div class="sub-bar-label"><span>Visual</span><span style="color:var(--seo360-status-low);font-weight:700;">Low</span></div>
-              <div class="sub-bar-track" data-fill="5" data-tone="low"></div>
-            </div>
-            <div class="sub-bar-group">
-              <div class="sub-bar-label"><span>Clarity</span><span style="color:var(--seo360-status-low);font-weight:700;">Low</span></div>
-              <div class="sub-bar-track" data-fill="4" data-tone="low"></div>
-            </div>
-            <div class="sub-bar-group">
-              <div class="sub-bar-label"><span>Technical</span><span style="color:var(--seo360-status-mod);font-weight:700;">Moderate</span></div>
-              <div class="sub-bar-track" data-fill="7" data-tone="mod"></div>
-            </div>
           </div>
         </div>
       </div>
@@ -843,6 +868,17 @@
         </aside>
 
         <main>
+          <section id="pagespeed-panel" class="pagespeed-panel hidden" aria-live="polite">
+            <h2>PageSpeed Insights</h2>
+            <p>Google Lighthouse lab checks for the scanned homepage.</p>
+            <div id="psi-unavailable" class="psi-unavailable hidden"></div>
+            <div class="psi-device-grid" id="psi-device-grid"></div>
+          </section>
+          <section class="crawl-summary" id="crawl-summary">
+            <h2>Pages checked</h2>
+            <p id="scan-summary">This preview does not perform a live crawl.</p>
+            <ul class="crawl-pages" id="crawl-pages"></ul>
+          </section>
           <div class="radar-card">
             <div class="radar-wrap">
               <canvas id="radarCanvas" width="600" height="500"></canvas>
@@ -863,7 +899,7 @@
   </div>
 
   <script>
-    const CATEGORIES = [
+    let CATEGORIES = [
       { id: "positioning", name: "Positioning", score: 40, passed: ["Offer stated plainly on homepage.", "Copy avoids empty jargon.", "Pricing expectations are set."], fixes: [{ text: "Update homepage H1 to clearly state the target audience and primary outcome.", prio: "High" }, { text: "Add a 4-step 'How It Works / How to Buy' section on /.", prio: "Medium" }] },
       { id: "differentiation", name: "Differentiation", score: 15, passed: [], fixes: [{ text: "Add clear 'Why Choose Us' value props above the fold.", prio: "High" }, { text: "Highlight awards, certifications, or SLA guarantees.", prio: "High" }] },
       { id: "target-audience", name: "Target audience", score: 35, passed: ["Local Pune service area is referenced in navigation and footer."], fixes: [{ text: "Call out specific buyer personas and industries served on /.", prio: "High" }] },
@@ -874,6 +910,16 @@
       { id: "seo-aeo", name: "SEO and AEO", score: 40, passed: ["Homepage is indexable and returns HTTP 200."], fixes: [{ text: "Add FAQPage and LocalBusiness JSON-LD schema for AI answer engine visibility.", prio: "High" }] },
       { id: "metadata-technical", name: "Metadata and technical", score: 70, passed: ["HTTPS and robots.txt are accessible."], fixes: [{ text: "Add unique 155-character meta descriptions on secondary pages.", prio: "Medium" }] }
     ];
+    const AUDIT_API_URL = document.querySelector('meta[name="seo360-audit-api-url"]')?.content.trim() || "";
+    if (!AUDIT_API_URL) {
+      document.getElementById("audit-mode-note").innerHTML = "<strong>Preview</strong> • The live crawler and PageSpeed checks are waiting for the Vercel API connection.";
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"
+      })[char]);
+    }
 
     function getPrimaryColor() {
       return getComputedStyle(document.documentElement).getPropertyValue("--seo360-primary").trim() || "#33e1d0";
@@ -888,16 +934,6 @@
         d.className = "seg-bar" + (i < active ? " on" : "");
         wrap.appendChild(d);
       }
-      document.querySelectorAll(".sub-bar-track").forEach(track => {
-        track.innerHTML = "";
-        const fill = Number(track.dataset.fill);
-        const tone = track.dataset.tone;
-        for (let i = 0; i < 12; i++) {
-          const s = document.createElement("div");
-          s.className = "sub-seg" + (i < fill ? ` ${tone}` : "");
-          track.appendChild(s);
-        }
-      });
     }
 
     function renderFindings() {
@@ -906,12 +942,17 @@
       jump.innerHTML = "";
       list.innerHTML = "";
       CATEGORIES.forEach((c, idx) => {
-        jump.innerHTML += `<li><a href="#cat-${c.id}" class="${idx === 0 ? 'active' : ''}">${c.name}</a></li>`;
-        const passed = c.passed.map(p => `<div class="finding-row"><span style="color:var(--seo360-status-good);font-weight:800;">✓</span><div>${p}</div></div>`).join("");
-        const fixes = c.fixes.map(f => `<div class="finding-row"><span style="color:var(--seo360-status-low);font-weight:800;">×</span><div>${f.text}<span class="badge-prio badge-${f.prio}">${f.prio}</span></div></div>`).join("");
+        const id = escapeHtml(c.id);
+        const name = escapeHtml(c.name);
+        jump.innerHTML += `<li><a href="#cat-${id}" class="${idx === 0 ? 'active' : ''}">${name}</a></li>`;
+        const passed = c.passed.map(p => `<div class="finding-row"><span style="color:var(--seo360-status-good);font-weight:800;">✓</span><div>${escapeHtml(p)}</div></div>`).join("");
+        const fixes = c.fixes.map(f => {
+          const prio = ["High", "Medium", "Low"].includes(f.prio) ? f.prio : "Medium";
+          return `<div class="finding-row"><span style="color:var(--seo360-status-low);font-weight:800;">×</span><div>${escapeHtml(f.text)}<span class="badge-prio badge-${prio}">${prio}</span></div></div>`;
+        }).join("");
         list.innerHTML += `
-          <div class="finding-card" id="cat-${c.id}">
-            <div class="finding-head"><h3>${c.name}</h3><span class="finding-score">${c.score}/100</span></div>
+          <div class="finding-card" id="cat-${id}">
+            <div class="finding-head"><h3>${name}</h3><span class="finding-score">${Number(c.score) || 0}/100</span></div>
             ${passed}
             ${fixes ? `<div style="color:var(--seo360-status-low);font-weight:700;margin:14px 0 8px;font-size:0.9rem;">What to fix?</div>${fixes}` : ""}
           </div>`;
@@ -1001,42 +1042,192 @@
       };
     }
 
-    function startScan(rawDomain) {
-      const domain = rawDomain.trim().toLowerCase().replace(/^https?:\/\//, "").replace(/^www\./, "").split("/")[0] || "example.com";
+    function showReport() {
+      document.getElementById("stage-scanning").classList.add("hidden");
+      document.getElementById("stage-error").classList.add("hidden");
+      document.getElementById("stage-report").classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function renderDeviceResult(result, label) {
+      if (!result) return `<article class="psi-device-card"><h3>${label}</h3><p>PageSpeed results are unavailable for this device.</p></article>`;
+      const score = result.scores.performance ?? "—";
+      const metrics = (result.metrics || []).map((metric) => `
+        <div class="psi-metric"><strong>${escapeHtml(metric.value)}</strong><span>${escapeHtml(metric.label)}</span></div>`).join("");
+      const fieldLabels = {
+        LARGEST_CONTENTFUL_PAINT_MS: "Real-user LCP",
+        CUMULATIVE_LAYOUT_SHIFT_SCORE: "Real-user CLS",
+        INTERACTION_TO_NEXT_PAINT: "Real-user INP",
+        FIRST_CONTENTFUL_PAINT_MS: "Real-user FCP",
+      };
+      const fieldMetrics = (result.fieldMetrics || []).map((metric) => {
+        const label = fieldLabels[metric.id] || "Real-user metric";
+        let value = `${metric.percentile}`;
+        if (metric.id.endsWith("_MS") && Number.isFinite(metric.percentile)) value = `${(metric.percentile / 1000).toFixed(1)} s`;
+        if (metric.id === "CUMULATIVE_LAYOUT_SHIFT_SCORE" && Number.isFinite(metric.percentile)) value = (metric.percentile / 1000).toFixed(3);
+        return `<div class="psi-metric"><strong>${escapeHtml(value)}</strong><span>${escapeHtml(label)} · ${escapeHtml(metric.category || "field data")}</span></div>`;
+      }).join("");
+      const otherScores = [
+        ["SEO", result.scores.seo],
+        ["Accessibility", result.scores.accessibility],
+        ["Best practices", result.scores.bestPractices],
+      ].filter(([, value]) => value !== null).map(([name, value]) => `${name} ${value}`).join(" · ");
+      const recommendations = (result.opportunities || []).slice(0, 3).map((item) => `<li>${escapeHtml(item.title)}${item.displayValue ? ` — ${escapeHtml(item.displayValue)}` : ""}</li>`).join("");
+      return `<article class="psi-device-card">
+        <h3>${label}</h3>
+        <div class="psi-score">${score}<small style="font-size:.8rem;color:var(--seo360-text-muted)"> /100 performance</small></div>
+        ${otherScores ? `<p>${escapeHtml(otherScores)}</p>` : ""}
+        <div class="psi-metrics">${metrics}${fieldMetrics}</div>
+        ${recommendations ? `<details style="margin-top:12px"><summary>Performance opportunities</summary><ul>${recommendations}</ul></details>` : ""}
+      </article>`;
+    }
+
+    function renderPageSpeed(pageSpeed) {
+      const panel = document.getElementById("pagespeed-panel");
+      const grid = document.getElementById("psi-device-grid");
+      const unavailable = document.getElementById("psi-unavailable");
+      panel.classList.remove("hidden");
+      grid.innerHTML = "";
+      if (!pageSpeed || pageSpeed.status !== "complete") {
+        unavailable.textContent = pageSpeed?.error || "PageSpeed Insights did not return results for this scan.";
+        unavailable.classList.remove("hidden");
+        return;
+      }
+      unavailable.classList.add("hidden");
+      grid.innerHTML = renderDeviceResult(pageSpeed.mobile, "Mobile") + renderDeviceResult(pageSpeed.desktop, "Desktop");
+    }
+
+    function renderCrawl(scan) {
+      const pages = Array.isArray(scan?.pages) ? scan.pages : [];
+      const analyzed = Number(scan?.pagesAnalyzed || 0);
+      const attempted = Number(scan?.pagesAttempted || pages.length);
+      const limit = Number(scan?.pageLimit || 25);
+      const note = scan?.truncated ? ` The crawl reached its ${limit}-page limit; run another audit to continue reviewing priority pages.` : "";
+      document.getElementById("scan-summary").textContent = `Analyzed ${analyzed} HTML page(s) and checked ${attempted} page request(s).${note}`;
+      document.getElementById("crawl-pages").innerHTML = pages.map((page) => {
+        const status = page.robotsBlocked ? "Robots" : page.status || "Error";
+        const label = page.error ? `${status} — ${page.error}` : `${status} — ${page.status >= 200 && page.status < 400 ? "OK" : "Review"}`;
+        return `<li><span class="crawl-status">${escapeHtml(status)}</span><a href="${escapeHtml(page.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(page.url)}</a><span>${escapeHtml(label)}</span></li>`;
+      }).join("");
+    }
+
+    function renderLiveReport(result) {
+      CATEGORIES = result.categories;
+      const domain = new URL(result.scan.website).hostname.replace(/^www\./, "");
+      document.getElementById("report-title").innerHTML = `Live audit for <br /><span class="domain-accent" id="report-domain">${escapeHtml(domain)}</span>`;
+      document.getElementById("report-verdict").textContent = `Live crawl analyzed ${result.scan.pagesAnalyzed} page(s) across up to ${result.scan.pageLimit} URLs. PageSpeed Insights ran on mobile and desktop where available.`;
+      document.getElementById("score-source").textContent = "Live crawl + Lighthouse";
+      document.getElementById("overall-score").textContent = result.overallScore;
+      renderHeroBars(result.overallScore);
+      renderPageSpeed(result.pageSpeed);
+      renderCrawl(result.scan);
+      renderFindings();
+      drawRadar();
+      showReport();
+    }
+
+    function renderSampleReport(domain) {
+      document.getElementById("scan-heading").textContent = "Laser Viewfinder — preview";
+      document.getElementById("scan-subtitle").textContent = "Showing the illustrative report preview";
+      document.getElementById("report-title").innerHTML = `Preview report for <br /><span class="domain-accent" id="report-domain">${escapeHtml(domain)}</span>`;
+      document.getElementById("report-verdict").textContent = "Illustrative sample findings only. The live audit service is not connected to this preview yet.";
+      document.getElementById("score-source").textContent = "Sample score";
+      document.getElementById("overall-score").textContent = "50";
+      document.getElementById("pagespeed-panel").classList.add("hidden");
+      document.getElementById("scan-summary").textContent = "This preview does not perform a live crawl.";
+      document.getElementById("crawl-pages").innerHTML = "";
+      renderHeroBars(50);
+      renderFindings();
+      drawRadar();
+      showReport();
+    }
+
+    function showScanError(message) {
+      document.getElementById("stage-scanning").classList.add("hidden");
+      document.getElementById("stage-error").classList.remove("hidden");
+      document.getElementById("scan-error-message").textContent = message;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    async function startScan(rawDomain) {
+      const raw = rawDomain.trim();
+      let targetUrl;
+      try {
+        targetUrl = new URL(/^https?:\/\//i.test(raw) ? raw : `https://${raw}`);
+      } catch {
+        showScanError("Enter a valid public website address, such as yourbusiness.com.");
+        return;
+      }
+      if (!["http:", "https:"].includes(targetUrl.protocol)) {
+        showScanError("Enter a public HTTP or HTTPS website address.");
+        return;
+      }
+      if (targetUrl.username || targetUrl.password || (targetUrl.port && !((targetUrl.protocol === "https:" && targetUrl.port === "443") || (targetUrl.protocol === "http:" && targetUrl.port === "80")))) {
+        showScanError("Enter a public website address without login details or a custom port.");
+        return;
+      }
+      const domain = targetUrl.hostname.replace(/^www\./, "");
       document.getElementById("header-domain").textContent = domain;
-      document.getElementById("report-domain").textContent = domain;
       document.getElementById("browser-url").textContent = domain;
-
       document.getElementById("stage-home").classList.add("hidden");
+      document.getElementById("stage-error").classList.add("hidden");
+      document.getElementById("stage-report").classList.add("hidden");
       document.getElementById("stage-scanning").classList.remove("hidden");
-
-      const shot = `https://api.microlink.io/?url=https://${encodeURIComponent(domain)}&screenshot=true&meta=false&embed=screenshot.url`;
+      document.getElementById("scan-progress").style.width = "10%";
+      document.getElementById("scan-heading").textContent = "Laser Viewfinder — live audit";
+      targetUrl.search = "";
+      targetUrl.hash = "";
+      const screenshotTarget = targetUrl.href;
+      const shot = `https://api.microlink.io/?url=${encodeURIComponent(screenshotTarget)}&screenshot=true&meta=false&embed=screenshot.url`;
       const vfImg = document.getElementById("vf-img");
+      vfImg.classList.remove("visible");
       vfImg.src = shot;
       document.getElementById("report-screenshot").src = shot;
 
-      const steps = [
-        { t: 0,    w: "16%", sub: "Opening the viewfinder", msg: "Preparing the preview...", img: false },
-        { t: 1800, w: "38%", sub: "Loading your <strong>homepage screenshot</strong>", msg: "Capturing a website preview...", img: false },
-        { t: 3600, w: "64%", sub: "Building the <strong>sample report</strong>", msg: "Preparing sample review areas...", img: true },
-        { t: 5400, w: "88%", sub: "Preparing the <strong>illustrative scorecard</strong>", msg: "Almost there...", img: true },
-        { t: 7000, w: "100%", sub: "Your sample report is ready", msg: "Loading the preview...", img: true }
-      ];
+      if (!AUDIT_API_URL) {
+        document.getElementById("scan-subtitle").textContent = "The live scanner is not connected in this build";
+        document.getElementById("vf-status").textContent = "Showing the clearly labeled preview report...";
+        document.getElementById("scan-progress").style.width = "100%";
+        vfImg.classList.add("visible");
+        setTimeout(() => renderSampleReport(domain), 900);
+        return;
+      }
 
-      steps.forEach(s => setTimeout(() => {
-        document.getElementById("scan-progress").style.width = s.w;
-        document.getElementById("scan-subtitle").innerHTML = s.sub;
-        document.getElementById("vf-status").textContent = s.msg;
-        if (s.img) vfImg.classList.add("visible");
-      }, s.t));
+      const startedAt = Date.now();
+      const progressTimer = setInterval(() => {
+        const seconds = Math.floor((Date.now() - startedAt) / 1000);
+        const progress = Math.min(90, 12 + seconds * 2);
+        document.getElementById("scan-progress").style.width = `${progress}%`;
+        const stage = seconds < 4
+          ? ["Checking the homepage", "Reading robots.txt and the sitemap"]
+          : seconds < 10
+            ? ["Crawling internal pages", "Checking page titles and headings"]
+            : ["Running Google PageSpeed Insights", "Preparing mobile and desktop results"];
+        const label = stage[Math.floor(seconds / 3) % stage.length];
+        document.getElementById("scan-subtitle").textContent = label;
+        document.getElementById("vf-status").textContent = seconds < 10 ? "Scanning up to 25 public pages..." : "Waiting for Google Lighthouse checks...";
+        if (seconds > 1) vfImg.classList.add("visible");
+      }, 900);
 
-      setTimeout(() => {
-        document.getElementById("stage-scanning").classList.add("hidden");
-        document.getElementById("stage-report").classList.remove("hidden");
-        renderHeroBars(50);
-        renderFindings();
-        drawRadar();
-      }, 8000);
+      try {
+        const response = await fetch(AUDIT_API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ website: targetUrl.href }),
+        });
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.error || `The audit service returned an error (${response.status}).`);
+        if (!result.scan || !Array.isArray(result.categories)) throw new Error("The audit service returned an incomplete report. Please try again.");
+        clearInterval(progressTimer);
+        document.getElementById("scan-progress").style.width = "100%";
+        document.getElementById("scan-subtitle").textContent = "Live audit complete";
+        document.getElementById("vf-status").textContent = "Your live crawl and checks are ready.";
+        vfImg.classList.add("visible");
+        setTimeout(() => renderLiveReport(result), 350);
+      } catch (error) {
+        clearInterval(progressTimer);
+        showScanError(error.message || "The audit service could not reach this website. Please try again.");
+      }
     }
 
     document.getElementById("audit-form").addEventListener("submit", (e) => {
