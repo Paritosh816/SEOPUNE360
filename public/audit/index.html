@@ -4,42 +4,40 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Laser Viewfinder Audit Preview | SEOPune360</title>
-  <!-- Automatically inherit main site stylesheet if present -->
-  <link rel="stylesheet" href="/style.css" onerror="this.remove()" />
-  <link rel="stylesheet" href="/globals.css" onerror="this.remove()" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     /* ==========================================================================
-       CSS VARIABLE BRIDGE — INHERITS FROM MAIN SEOPUNE360.COM STYLESHEET
+       SEOPUNE360 SITE THEME
        ========================================================================== */
     :root {
-      --seo360-primary: var(--primary, var(--brand-color, var(--accent, #2563EB)));
-      --seo360-primary-hover: var(--primary-dark, var(--brand-hover, #1D4ED8));
-      --seo360-primary-soft: color-mix(in srgb, var(--seo360-primary) 16%, transparent);
-      --seo360-primary-glow: color-mix(in srgb, var(--seo360-primary) 35%, transparent);
+      --seo360-primary: #33e1d0;
+      --seo360-primary-hover: #37d6ff;
+      --seo360-primary-soft: rgba(51, 225, 208, .12);
+      --seo360-primary-glow: rgba(51, 225, 208, .22);
 
-      --seo360-bg-hero-dark: var(--bg-dark, var(--surface-dark, #0B1120));
-      --seo360-bg-card-dark: var(--card-dark, #111827);
-      --seo360-bg-main: var(--bg-main, var(--background, #F8FAFC));
-      --seo360-bg-card: var(--bg-card, var(--surface, #FFFFFF));
+      --seo360-bg-hero-dark: #07131d;
+      --seo360-bg-card-dark: #101f2d;
+      --seo360-bg-raised: #132738;
+      --seo360-bg-main: #07131d;
+      --seo360-bg-card: #101f2d;
 
-      --seo360-text-white: #F8FAFC;
-      --seo360-text-muted-dark: #94A3B8;
-      --seo360-text-main: var(--text-main, var(--foreground, #0F172A));
-      --seo360-text-muted: var(--text-muted, #475569);
+      --seo360-text-white: #edf7f3;
+      --seo360-text-muted-dark: #b6c5d2;
+      --seo360-text-main: #edf7f3;
+      --seo360-text-muted: #b6c5d2;
 
-      --seo360-border-dark: rgba(255, 255, 255, 0.12);
-      --seo360-border-light: var(--border-color, #E2E8F0);
+      --seo360-border-dark: rgba(185, 222, 216, .18);
+      --seo360-border-light: rgba(185, 222, 216, .18);
 
-      --seo360-status-low: #EF4444;
-      --seo360-status-mod: #F59E0B;
-      --seo360-status-good: #10B981;
+      --seo360-status-low: #f87171;
+      --seo360-status-mod: #fbbf24;
+      --seo360-status-good: #34d399;
 
-      --seo360-font-display: var(--font-heading, 'Sora', 'Plus Jakarta Sans', sans-serif);
-      --seo360-font-sans: var(--font-body, 'Plus Jakarta Sans', 'Inter', sans-serif);
+      --seo360-font-display: Inter, "DM Sans", Arial, sans-serif;
+      --seo360-font-sans: Inter, "DM Sans", Arial, sans-serif;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -48,6 +46,7 @@
       font-family: var(--seo360-font-sans);
       background: var(--seo360-bg-hero-dark);
       color: var(--seo360-text-white);
+      color-scheme: dark;
       overflow-x: hidden;
       scroll-behavior: smooth;
     }
@@ -88,7 +87,7 @@
       align-items: center;
       justify-content: center;
       font-size: 0.9rem;
-      color: #fff;
+      color: #072027;
       box-shadow: 0 4px 14px var(--seo360-primary-glow);
     }
 
@@ -189,7 +188,7 @@
 
     .seo360-btn-primary {
       background: var(--seo360-primary);
-      color: #FFFFFF;
+      color: #072027;
       font-weight: 700;
       font-size: 0.95rem;
       padding: 13px 24px;
@@ -203,6 +202,13 @@
     .seo360-btn-primary:hover {
       background: var(--seo360-primary-hover);
       transform: translateY(-1px);
+    }
+
+    .seo360-btn-primary:focus-visible, .btn-light:focus-visible, .btn-book:focus-visible,
+    .pdf-link:focus-visible, .share-icon-btn:focus-visible, .seo360-logo:focus-visible,
+    .jump-links a:focus-visible {
+      outline: 2px solid var(--seo360-primary-hover);
+      outline-offset: 3px;
     }
 
     .seo360-subnote {
@@ -318,7 +324,7 @@
 
     .vf-status-pill {
       z-index: 2;
-      background: rgba(15, 23, 42, 0.8);
+      background: rgba(16, 31, 45, 0.9);
       border: 1px solid var(--seo360-border-dark);
       padding: 8px 18px;
       border-radius: 999px;
@@ -380,14 +386,17 @@
 
     .btn-light {
       display: inline-block;
-      background: #FFFFFF;
-      color: var(--seo360-text-main);
+      background: var(--seo360-primary);
+      color: #072027;
       font-weight: 700;
       font-size: 0.95rem;
       padding: 14px 26px;
       border-radius: 8px;
       text-decoration: none;
+      transition: background .2s ease, transform .2s ease;
     }
+
+    .btn-light:hover, .btn-book:hover { background: var(--seo360-primary-hover); transform: translateY(-1px); }
 
     .mockup-container {
       position: relative;
@@ -396,7 +405,7 @@
     }
 
     .browser-window {
-      background: #FFFFFF;
+      background: var(--seo360-bg-card-dark);
       border-radius: 16px;
       border: 6px solid var(--seo360-primary);
       box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
@@ -404,12 +413,12 @@
     }
 
     .browser-bar {
-      background: #F1F5F9;
+      background: var(--seo360-bg-raised);
       padding: 10px 16px;
       display: flex;
       align-items: center;
       gap: 12px;
-      border-bottom: 1px solid #E2E8F0;
+      border-bottom: 1px solid var(--seo360-border-dark);
     }
 
     .browser-dots { display: flex; gap: 6px; }
@@ -420,13 +429,13 @@
 
     .browser-url {
       flex: 1;
-      background: #FFFFFF;
+      background: var(--seo360-bg-card-dark);
       border-radius: 6px;
       padding: 4px 12px;
       font-size: 0.75rem;
-      color: #475569;
+      color: var(--seo360-text-muted-dark);
       text-align: center;
-      border: 1px solid #E2E8F0;
+      border: 1px solid var(--seo360-border-dark);
     }
 
     .browser-img {
@@ -442,7 +451,7 @@
       bottom: 0;
       left: 0;
       width: 248px;
-      background: rgba(15, 23, 42, 0.96);
+      background: rgba(16, 31, 45, 0.96);
       backdrop-filter: blur(16px);
       border: 1px solid var(--seo360-border-dark);
       border-radius: 14px;
@@ -478,7 +487,7 @@
     }
 
     .seg-bar { background: rgba(255, 255, 255, 0.14); border-radius: 2px; }
-    .seg-bar.on { background: #FFFFFF; }
+    .seg-bar.on { background: var(--seo360-primary); }
 
     .sub-bar-group { margin-top: 10px; }
     .sub-bar-label {
@@ -498,7 +507,7 @@
     .sub-seg.mod { background: var(--seo360-status-mod); }
     .sub-seg.good { background: var(--seo360-status-good); }
 
-    /* Stage 4: Light Report Body */
+    /* Stage 4: Report Body */
     .report-body {
       background: var(--seo360-bg-main);
       color: var(--seo360-text-main);
@@ -595,7 +604,7 @@
       font-size: 0.85rem;
       border: 2px solid var(--seo360-bg-hero-dark);
     }
-    .cta-avatar:nth-child(2) { margin-left: -10px; background: #334155; }
+    .cta-avatar:nth-child(2) { margin-left: -10px; background: var(--seo360-bg-raised); }
 
     .cta-box-title {
       font-family: var(--seo360-font-display);
@@ -611,8 +620,8 @@
       justify-content: center;
       gap: 8px;
       width: 100%;
-      background: #FFFFFF;
-      color: var(--seo360-text-main);
+      background: var(--seo360-primary);
+      color: #072027;
       font-weight: 700;
       padding: 13px;
       border-radius: 10px;
@@ -655,7 +664,7 @@
     .radar-tooltip {
       position: absolute;
       background: var(--seo360-bg-hero-dark);
-      color: #fff;
+      color: var(--seo360-text-white);
       padding: 6px 12px;
       border-radius: 6px;
       font-size: 0.8rem;
@@ -702,9 +711,9 @@
       border-radius: 5px;
       margin-left: 6px;
     }
-    .badge-High { background: #FEE2E2; color: #B91C1C; }
-    .badge-Medium { background: #FEF3C7; color: #B45309; }
-    .badge-Low { background: #E0E7FF; color: #3730A3; }
+    .badge-High { background: rgba(248, 113, 113, .16); color: #fecaca; }
+    .badge-Medium { background: rgba(251, 191, 36, .16); color: #fde68a; }
+    .badge-Low { background: rgba(55, 214, 255, .14); color: #a5f3fc; }
 
     @media (max-width: 960px) {
       .seo360-home-grid, .report-hero-grid, .report-body-grid { grid-template-columns: 1fr; }
@@ -867,7 +876,7 @@
     ];
 
     function getPrimaryColor() {
-      return getComputedStyle(document.documentElement).getPropertyValue("--seo360-primary").trim() || "#2563EB";
+      return getComputedStyle(document.documentElement).getPropertyValue("--seo360-primary").trim() || "#33e1d0";
     }
 
     function renderHeroBars(score) {
@@ -914,6 +923,10 @@
       const ctx = canvas.getContext("2d");
       const tooltip = document.getElementById("radarTooltip");
       const primary = getPrimaryColor();
+      const palette = getComputedStyle(document.documentElement);
+      const gridColor = palette.getPropertyValue("--seo360-border-light").trim();
+      const labelColor = palette.getPropertyValue("--seo360-text-muted").trim();
+      const surfaceColor = palette.getPropertyValue("--seo360-bg-card").trim();
       const cx = canvas.width / 2, cy = canvas.height / 2 + 10, R = 165, N = CATEGORIES.length;
       const step = (Math.PI * 2) / N, start = -Math.PI / 2;
       let pts = [];
@@ -928,17 +941,17 @@
             i === 0 ? ctx.moveTo(cx + r * Math.cos(a), cy + r * Math.sin(a)) : ctx.lineTo(cx + r * Math.cos(a), cy + r * Math.sin(a));
           }
           ctx.closePath();
-          ctx.strokeStyle = "#E2E8F0";
+          ctx.strokeStyle = gridColor;
           ctx.stroke();
         }
-        ctx.font = "500 13px sans-serif";
-        ctx.fillStyle = "#334155";
+        ctx.font = "500 13px Inter, Arial, sans-serif";
+        ctx.fillStyle = labelColor;
         for (let i = 0; i < N; i++) {
           const a = start + i * step;
           ctx.beginPath();
           ctx.moveTo(cx, cy);
           ctx.lineTo(cx + R * Math.cos(a), cy + R * Math.sin(a));
-          ctx.strokeStyle = "#E2E8F0";
+          ctx.strokeStyle = gridColor;
           ctx.stroke();
           const lx = cx + (R + 32) * Math.cos(a), ly = cy + (R + 32) * Math.sin(a);
           ctx.textAlign = Math.abs(Math.cos(a)) < 0.15 ? "center" : (Math.cos(a) > 0 ? "left" : "right");
@@ -965,7 +978,7 @@
           ctx.arc(p.x, p.y, idx === hover ? 8 : 5.5, 0, Math.PI * 2);
           ctx.fillStyle = primary;
           ctx.fill();
-          ctx.strokeStyle = "#FFFFFF";
+          ctx.strokeStyle = surfaceColor;
           ctx.lineWidth = 2;
           ctx.stroke();
         });
