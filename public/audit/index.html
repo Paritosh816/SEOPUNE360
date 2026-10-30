@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Free AI Website & SEO Audit | SEOPune360</title>
+  <title>Laser Viewfinder Audit Preview | SEOPune360</title>
   <!-- Automatically inherit main site stylesheet if present -->
   <link rel="stylesheet" href="/style.css" onerror="this.remove()" />
   <link rel="stylesheet" href="/globals.css" onerror="this.remove()" />
@@ -14,8 +14,6 @@
   <style>
     /* ==========================================================================
        CSS VARIABLE BRIDGE — INHERITS FROM MAIN SEOPUNE360.COM STYLESHEET
-       Codex: Replace the fallback hex values below with the exact tokens from
-       the main seopune360.com repository CSS file during Step 1.
        ========================================================================== */
     :root {
       --seo360-primary: var(--primary, var(--brand-color, var(--accent, #2563EB)));
@@ -723,7 +721,7 @@
     </a>
     <div class="seo360-header-meta" id="header-meta">
       <span>Audit by SEOPune360</span>
-      <span class="seo360-domain-pill">🌐 <span id="header-domain">shawtoyotapune.com</span></span>
+      <span class="seo360-domain-pill">🌐 <span id="header-domain">Your website</span></span>
     </div>
   </header>
 
@@ -771,7 +769,7 @@
         <div>
           <h1 class="report-hero-title">
             Sample report preview for <br />
-            <span class="domain-accent" id="report-domain">shawtoyotapune.com</span>
+            <span class="domain-accent" id="report-domain">Your website</span>
           </h1>
           <p class="report-hero-sub" id="report-verdict">Illustrative sample findings only. No live crawl or SEO tests have been run for this website.</p>
           <a href="#full-report-body" class="btn-light">Access full report</a>
@@ -780,7 +778,7 @@
           <div class="browser-window">
             <div class="browser-bar">
               <div class="browser-dots"><span></span><span></span><span></span></div>
-              <div class="browser-url" id="browser-url">shawtoyotapune.com</div>
+              <div class="browser-url" id="browser-url">Your website</div>
             </div>
             <img id="report-screenshot" class="browser-img" alt="Captured Website" />
           </div>
@@ -991,7 +989,7 @@
     }
 
     function startScan(rawDomain) {
-      const domain = rawDomain.trim().toLowerCase().replace(/^https?:\/\//, "").replace(/^www\./, "").split("/")[0] || "shawtoyotapune.com";
+      const domain = rawDomain.trim().toLowerCase().replace(/^https?:\/\//, "").replace(/^www\./, "").split("/")[0] || "example.com";
       document.getElementById("header-domain").textContent = domain;
       document.getElementById("report-domain").textContent = domain;
       document.getElementById("browser-url").textContent = domain;
