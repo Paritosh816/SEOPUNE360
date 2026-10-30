@@ -254,14 +254,6 @@ function ShowreelModal({ onClose }) {
 }
 
 function Hero({ onPlayShowreel }) {
-  const [url, setUrl] = useState('');
-  const [sent, setSent] = useState(false);
-  function requestAudit(event) {
-    event.preventDefault();
-    const normalized = /^https?:\/\//i.test(url) ? url : 'https://' + url;
-    setUrl(normalized);
-    setSent(true);
-  }
   return (
     <section className="hero" id="top">
       <div className="hero-backdrop" aria-hidden="true"><span className="hero-orb" /><span className="hero-light-band" /></div>
@@ -271,12 +263,12 @@ function Hero({ onPlayShowreel }) {
           <p className="eyebrow">Digital growth for ambitious businesses</p>
           <h1>Get found. Earn trust. <span>Grow with purpose.</span></h1>
           <p className="hero-lead">SEO, websites, and lead generation that help your business reach the right people and turn attention into action.</p>
-          <form className="audit-form" onSubmit={requestAudit}>
+          <form className="audit-form" action="/audit/" method="get">
             <label className="sr-only" htmlFor="hero-site-url">Your website address</label>
-            <input id="hero-site-url" type="text" inputMode="url" autoComplete="url" placeholder="www.yourwebsite.com" value={url} onChange={(event) => { setUrl(event.target.value); setSent(false); }} required pattern="(https?://)?[a-zA-Z0-9][a-zA-Z0-9.-]*\.[a-zA-Z]{2,}.*" title="Enter a website address such as example.com" />
-            <button className="button audit-submit" type="submit">Request my free audit <ArrowIcon /></button>
+            <input id="hero-site-url" name="domain" type="text" inputMode="url" autoComplete="url" placeholder="www.yourwebsite.com" required pattern="(https?://)?[a-zA-Z0-9][a-zA-Z0-9.-]*\.[a-zA-Z]{2,}.*" title="Enter a website address such as example.com" />
+            <button className="button audit-submit" type="submit">Scan my website <ArrowIcon /></button>
           </form>
-          {sent ? <p className="form-status" role="status">Your request is ready. <a href={'mailto:' + CONTACT_EMAIL + '?subject=Free%20website%20audit&body=' + encodeURIComponent('Please review my website: ' + url)}>Email {CONTACT_EMAIL} to send your website address.</a></p> : <p className="audit-note"><span>✦</span> Free website review <i /> No automated scan or report is claimed here</p>}
+          <p className="audit-note"><span>✦</span> Laser Viewfinder audit preview <i /> Enter a website to open the scanner</p>
           <p className="hero-support">From better search visibility to a clearer website journey, one team helps you make the next step count.</p>
           <div className="hero-actions"><a className="text-link" href="#services">Explore our services <ArrowIcon /></a><span className="hero-proof"><b>SEO · Web · Growth</b><small>Built around your business</small></span></div>
         </div>
@@ -423,14 +415,11 @@ function WhyUs() {
 }
 
 function AuditSection() {
-  const [url, setUrl] = useState('');
-  const [sent, setSent] = useState(false);
-  function submit(event) { event.preventDefault(); setSent(true); }
   return (
     <section className="audit-section section" id="audit">
       <div className="audit-light" aria-hidden="true" />
       <div className="container audit-layout">
-        <div className="audit-copy"><p className="eyebrow">Free website audit</p><h2>Find the next opportunity to <span>grow online.</span></h2><p>Request a human-led review of your website, search visibility, and enquiry journey. We’ll follow up with a clear set of observations and suggested next steps.</p><form className="audit-form audit-form-bottom" onSubmit={submit}><label className="sr-only" htmlFor="audit-site-url">Website address for audit</label><input id="audit-site-url" type="text" inputMode="url" autoComplete="url" placeholder="www.yourwebsite.com" value={url} onChange={(event) => { setUrl(event.target.value); setSent(false); }} required pattern="(https?://)?[a-zA-Z0-9][a-zA-Z0-9.-]*\.[a-zA-Z]{2,}.*" title="Enter a website address such as example.com" /><button className="button audit-submit" type="submit">Request my audit <ArrowIcon /></button></form>{sent && <p className="form-status" role="status">Ready to send: <a href={'mailto:' + CONTACT_EMAIL + '?subject=Free%20website%20audit&body=' + encodeURIComponent('Please review my website: ' + (/^https?:\/\//i.test(url) ? url : 'https://' + url))}>email us your website address.</a></p>}<small className="audit-disclaimer">This form prepares an email request; it does not run an automated scan or generate a score.</small></div>
+        <div className="audit-copy"><p className="eyebrow">Free website audit</p><h2>Find the next opportunity to <span>grow online.</span></h2><p>Enter a website address to open the Laser Viewfinder audit experience and see its report preview.</p><form className="audit-form audit-form-bottom" action="/audit/" method="get"><label className="sr-only" htmlFor="audit-site-url">Website address for audit</label><input id="audit-site-url" name="domain" type="text" inputMode="url" autoComplete="url" placeholder="www.yourwebsite.com" required pattern="(https?://)?[a-zA-Z0-9][a-zA-Z0-9.-]*\.[a-zA-Z]{2,}.*" title="Enter a website address such as example.com" /><button className="button audit-submit" type="submit">Scan my website <ArrowIcon /></button></form><small className="audit-disclaimer">The current report is a sample preview; it does not crawl the site or run live SEO tests.</small></div>
         <div className="audit-report"><div className="report-header"><div><span className="report-kicker">SEOPUNE360 / REVIEW FRAMEWORK</span><h3>Website opportunity review</h3></div><span className="report-icon">✦</span></div><div className="report-progress"><div><span>Review areas</span><b>5 focus areas</b></div><i><span /></i></div><div className="report-list">{auditItems.map(([title, body], index) => <article className="report-row" key={title}><span className="report-index">0{index + 1}</span><div><b>{title}</b><small>{body}</small></div><span className="report-arrow"><ArrowIcon /></span></article>)}</div><div className="report-footer"><span><i /> HUMAN-LED WEBSITE REVIEW</span><span>SEO · UX · GROWTH</span></div></div>
       </div>
     </section>
@@ -553,6 +542,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
