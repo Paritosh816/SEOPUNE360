@@ -69,38 +69,36 @@
     }
 
     .seo360-logo {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 10px;
-      font-family: var(--seo360-font-display);
-      font-size: 1.3rem;
-      font-weight: 800;
-      color: var(--seo360-text-white);
+      flex: none;
       text-decoration: none;
     }
 
-    .seo360-logo-mark {
-      width: 34px;
-      height: 34px;
-      border-radius: 8px;
-      background: var(--seo360-primary);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.9rem;
-      color: #072027;
-      box-shadow: 0 4px 14px var(--seo360-primary-glow);
+    .seo360-logo-art {
+      display: block;
+      width: 170px;
+      height: auto;
+      overflow: visible;
     }
-
-    .seo360-logo span.accent { color: var(--seo360-primary); }
 
     .seo360-header-meta {
       display: flex;
       align-items: center;
       gap: 12px;
+      min-width: 0;
       font-size: 0.88rem;
       color: var(--seo360-text-muted-dark);
     }
+
+    #header-domain {
+      display: block;
+      max-width: 180px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
 
     .seo360-domain-pill {
       display: inline-flex;
@@ -108,10 +106,32 @@
       gap: 8px;
       background: rgba(255, 255, 255, 0.07);
       border: 1px solid var(--seo360-border-dark);
+      min-width: 0;
+      max-width: 220px;
       padding: 6px 14px;
       border-radius: 999px;
       color: var(--seo360-text-white);
       font-weight: 600;
+    }
+
+    @media (max-width: 560px) {
+      .seo360-header {
+        gap: 10px;
+        padding: 13px 18px;
+      }
+
+      .seo360-logo-art { width: 135px; }
+      .seo360-header-meta { gap: 8px; font-size: 0.72rem; }
+      .seo360-header-meta > span:first-child { display: none; }
+      .seo360-domain-pill { max-width: 150px; padding: 5px 10px; }
+      #header-domain { max-width: 92px; }
+    }
+
+    @media (max-width: 380px) {
+      .seo360-header { padding: 12px; }
+      .seo360-logo-art { width: 108px; }
+      .seo360-domain-pill { max-width: 128px; }
+      #header-domain { max-width: 76px; }
     }
 
     /* Stage 1: Homepage Input Section */
@@ -755,9 +775,18 @@
 <body>
 
   <header class="seo360-header">
-    <a href="/" class="seo360-logo">
-      <span class="seo360-logo-mark">360</span>
-      <span>SEO<span class="accent">Pune</span>360</span>
+    <a href="/" class="seo360-logo" aria-label="SEOPune360 home">
+      <svg class="seo360-logo-art" viewBox="190 110 2970 460" aria-hidden="true">
+        <defs>
+          <filter id="seo360-logo-filter" color-interpolation-filters="sRGB">
+            <feColorMatrix type="matrix" values="0 0 0 0 0.318
+              0 0 0 0 0.761
+              0 0 0 0 0.737
+              -0.634 -2.135 -0.215 0 2.983" />
+          </filter>
+        </defs>
+        <image href="https://seopune360.com/seopune360-logo.jpg" width="4238" height="677" filter="url(#seo360-logo-filter)" />
+      </svg>
     </a>
     <div class="seo360-header-meta" id="header-meta">
       <span>Audit by SEOPune360</span>
