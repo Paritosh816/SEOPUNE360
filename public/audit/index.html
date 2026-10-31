@@ -77,9 +77,18 @@
 
     .seo360-logo-art {
       display: block;
-      width: 170px;
-      height: auto;
+      width: 220px;
+      height: 35px;
+      flex: none;
       overflow: visible;
+    }
+
+    .seo360-logo-addition {
+      fill: #f7fbfa;
+      font-family: Inter, Arial, sans-serif;
+      font-size: 550px;
+      font-weight: 750;
+      letter-spacing: -26px;
     }
 
     .seo360-header-meta {
@@ -120,7 +129,7 @@
         padding: 13px 18px;
       }
 
-      .seo360-logo-art { width: 135px; }
+      .seo360-logo-art { width: 150px; height: 24px; }
       .seo360-header-meta { gap: 8px; font-size: 0.72rem; }
       .seo360-header-meta > span:first-child { display: none; }
       .seo360-domain-pill { max-width: 150px; padding: 5px 10px; }
@@ -129,7 +138,7 @@
 
     @media (max-width: 380px) {
       .seo360-header { padding: 12px; }
-      .seo360-logo-art { width: 108px; }
+      .seo360-logo-art { width: 125px; height: 20px; }
       .seo360-domain-pill { max-width: 128px; }
       #header-domain { max-width: 76px; }
     }
@@ -776,8 +785,11 @@
 
   <header class="seo360-header">
     <a href="/" class="seo360-logo" aria-label="SEOPune360 home">
-      <svg class="seo360-logo-art" viewBox="190 110 2970 460" aria-hidden="true">
+      <svg class="seo360-logo-art" viewBox="0 0 4238 677" aria-hidden="true">
         <defs>
+          <clipPath id="seo360-logo-image-clip">
+            <rect x="190" y="110" width="2970" height="460" />
+          </clipPath>
           <filter id="seo360-logo-filter" color-interpolation-filters="sRGB">
             <feColorMatrix type="matrix" values="0 0 0 0 0.318
               0 0 0 0 0.761
@@ -785,7 +797,9 @@
               -0.634 -2.135 -0.215 0 2.983" />
           </filter>
         </defs>
-        <image href="https://seopune360.com/seopune360-logo.jpg" width="4238" height="677" filter="url(#seo360-logo-filter)" />
+        <image href="https://seopune360.com/seopune360-logo.jpg" width="4238" height="677" clip-path="url(#seo360-logo-image-clip)" filter="url(#seo360-logo-filter)" />
+        <text class="seo360-logo-addition" x="700" y="540">SEO</text>
+        <text class="seo360-logo-addition" x="3190" y="540">360</text>
       </svg>
     </a>
     <div class="seo360-header-meta" id="header-meta">
