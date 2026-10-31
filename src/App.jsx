@@ -481,19 +481,36 @@ function ContentCards({ items, render }) {
 
 
 function ContactPage() {
+  const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState(false);
+  const [formError, setFormError] = useState('');
 
-  function handleContactSubmit(event) {
+  async function handleContactSubmit(event) {
     event.preventDefault();
-    const payload = Object.fromEntries(new FormData(event.currentTarget).entries());
+    const form = event.currentTarget;
+    const payload = Object.fromEntries(new FormData(form).entries());
     if (payload._honey) return;
-    const message = Object.entries(payload)
-      .filter(([key, value]) => !key.startsWith('_') && value)
-      .map(([key, value]) => key.replace(/([A-Z])/g, ' $1').replace(/^./, (letter) => letter.toUpperCase()) + ': ' + value)
-      .join('\n');
-    const subject = 'New SEOPune360 enquiry from ' + payload.name;
-    window.location.href = 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(message);
-    setSent(true);
+    setSubmitting(true);
+    setFormError('');
+    try {
+      const response = await fetch('https://seopune360-audit-module.vercel.app/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const result = await response.json();
+      if (!response.ok || result.success !== true) {
+        throw new Error(result.error || 'We could not send your enquiry right now.');
+      }
+      setSent(true);
+      form.reset();
+    } catch (error) {
+      setFormError(error instanceof Error && error.message !== 'Failed to fetch'
+        ? error.message
+        : 'We could not reach the email service. Please try again or email seopune360@gmail.com directly.');
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   const tickerClients = [...clients, ...clients];
@@ -544,9 +561,10 @@ function ContactPage() {
               </label>
               <label className="contact-form-wide">A little about your goals<textarea name="message" rows="4" placeholder="What would you like to improve or achieve?" required /></label>
             </div>
-            <button className="button contact-submit" type="submit" >Open email to send <ArrowIcon /></button>
-            <p className="contact-form-privacy">Your email app will open with the enquiry details. Press Send there to complete your message.</p>
-            {sent && <p className="contact-form-status" role="status">Your email app should open with the message ready. Press Send there to complete your enquiry.</p>}
+            <button className="button contact-submit" type="submit" disabled={submitting}>{submitting ? 'Sending…' : 'Send my enquiry'} <ArrowIcon /></button>
+            <p className="contact-form-privacy">By submitting, you agree that SEOPune360 may contact you about this enquiry. Your details are sent to our team by email.</p>
+            {sent && <p className="contact-form-status" role="status">Thanks for reaching out. Your message has been sent to the SEOPune360 team.</p>}
+            {formError && <p className="contact-form-error" role="alert">{formError}</p>}
           </form>
         </div>
       </div>
