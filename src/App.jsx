@@ -430,7 +430,7 @@ function Footer({ onCookieSettings, onLegal }) {
   const year = new Date().getFullYear();
   return (
     <footer className="site-footer" id="footer">
-      <div className="footer-cta"><div className="container footer-cta-inner"><div><p className="eyebrow">Your next growth chapter starts here</p><h2>Let’s make your online presence work harder.</h2></div><a className="button footer-button" href={'mailto:' + CONTACT_EMAIL + '?subject=Let%E2%80%99s%20talk%20about%20SEOPune360'}>Book a Call <ArrowIcon /></a></div></div>
+      <div className="footer-cta"><div className="container footer-cta-inner"><div><p className="eyebrow">Your next growth chapter starts here</p><h2>Let’s make your online presence work harder.</h2></div><a className="button footer-button" href="/contact/">Book a Call <ArrowIcon /></a></div></div>
       <div className="container footer-main"><div className="footer-brand-col"><Brand footer /><p>SEO, websites, and growth support for businesses ready to move forward.</p><a className="footer-email" href={'mailto:' + CONTACT_EMAIL}>{CONTACT_EMAIL} <ArrowIcon /></a></div>
         <div className="footer-column"><h3>Services</h3>{services.map((service) => <a href={servicePaths[service.id]} key={service.id}>{service.title}</a>)}</div>
         <div className="footer-column"><h3>Explore</h3><a href="/case-studies/">Case Studies</a><a href="/portfolio/">Client Portfolio</a><a href="/products/">Products &amp; Platforms</a><a href="/industries/">Industries</a><a href="/process/">How We Work</a><a href="/about/">About Us</a></div>
@@ -479,6 +479,119 @@ function ContentCards({ items, render }) {
   return <div className="container content-card-grid">{items.map((item) => render(item))}</div>;
 }
 
+
+function ContactPage() {
+  const [sent, setSent] = useState(false);
+
+  function handleContactSubmit(event) {
+    event.preventDefault();
+    const payload = Object.fromEntries(new FormData(event.currentTarget).entries());
+    if (payload._honey) return;
+    const message = Object.entries(payload)
+      .filter(([key, value]) => !key.startsWith('_') && value)
+      .map(([key, value]) => key.replace(/([A-Z])/g, ' $1').replace(/^./, (letter) => letter.toUpperCase()) + ': ' + value)
+      .join('\n');
+    const subject = 'New SEOPune360 enquiry from ' + payload.name;
+    window.location.href = 'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(message);
+    setSent(true);
+  }
+
+  const tickerClients = [...clients, ...clients];
+  const steps = [
+    ['01', 'Share the context', 'Tell us about your business, website, and what you want to improve.'],
+    ['02', 'Set the direction', 'We’ll clarify your goals and the service areas that may fit.'],
+    ['03', 'Review opportunities', 'We’ll discuss the first priorities and what a useful plan could include.'],
+    ['04', 'Choose the next step', 'You’ll leave with a clear follow-up and a route forward.'],
+  ];
+  const faqs = [
+    ['What should I include in my enquiry?', 'A short note about your business, website, and the result you want is enough to get started.'],
+    ['Which service should I choose?', 'Choose the closest fit, or select “Not sure yet.” We can help identify the right starting point together.'],
+    ['What happens after I submit?', 'Your enquiry is sent to the SEOPune360 team. We’ll review the details and reply by email.'],
+  ];
+
+  return <div className="contact-page">
+    <section className="contact-hero">
+      <div className="container contact-hero-grid">
+        <div className="contact-intro">
+          <p className="eyebrow">Let’s talk growth</p>
+          <h1>Let’s build a <span>stronger path to growth.</span></h1>
+          <p className="contact-lead">Bring us the question, challenge, or next big idea on your mind. We’ll help you find a practical place to start.</p>
+          <div className="contact-promise"><span className="contact-promise-mark">↗</span><div><b>A useful first conversation</b><small>Clear questions, thoughtful recommendations, and next steps shaped around your business.</small></div></div>
+          <div className="contact-direct">
+            <a href={'mailto:' + CONTACT_EMAIL}><span className="contact-direct-icon">@</span><span><small>Email our team</small><b>{CONTACT_EMAIL}</b></span><ArrowIcon /></a>
+            <div><span className="contact-direct-icon">⌖</span><span><small>Based in</small><b>Pune, Maharashtra, India</b></span></div>
+          </div>
+        </div>
+
+        <div className="contact-form-card" id="enquiry">
+          <div className="contact-form-heading"><p className="eyebrow">Start a conversation</p><h2>Tell us about your project.</h2><p>Share a few details and we’ll get back to you by email.</p></div>
+          <form className="contact-form" onSubmit={handleContactSubmit}>
+            <input type="text" name="_honey" className="contact-honey" tabIndex="-1" autoComplete="off" aria-hidden="true" />
+            <input type="hidden" name="_subject" value="New SEOPune360 website enquiry" />
+            <input type="hidden" name="_captcha" value="false" />
+            <div className="contact-form-grid">
+              <label>Full name<input name="name" type="text" placeholder="Your name" autoComplete="name" required /></label>
+              <label>Business name<input name="company" type="text" placeholder="Your business" autoComplete="organization" /></label>
+              <label>Email address<input name="email" type="email" placeholder="you@company.com" autoComplete="email" required /></label>
+              <label>Phone number <span className="contact-optional">Optional</span><input name="phone" type="tel" placeholder="+91" autoComplete="tel" /></label>
+              <label className="contact-form-wide">Website URL <span className="contact-optional">Optional</span><input name="website" type="url" placeholder="https://yourwebsite.com" /></label>
+              <label className="contact-form-wide">What can we help with?
+                <select name="service" defaultValue="" required>
+                  <option value="" disabled>Select a service</option>
+                  {services.map((service) => <option key={service.id} value={service.title}>{service.title}</option>)}
+                  <option value="Not sure yet">Not sure yet</option>
+                </select>
+              </label>
+              <label className="contact-form-wide">A little about your goals<textarea name="message" rows="4" placeholder="What would you like to improve or achieve?" required /></label>
+            </div>
+            <button className="button contact-submit" type="submit" >Open email to send <ArrowIcon /></button>
+            <p className="contact-form-privacy">Your email app will open with the enquiry details. Press Send there to complete your message.</p>
+            {sent && <p className="contact-form-status" role="status">Your email app should open with the message ready. Press Send there to complete your enquiry.</p>}
+          </form>
+        </div>
+      </div>
+      <div className="contact-hero-glow" aria-hidden="true" />
+    </section>
+
+    <section className="contact-clients">
+      <div className="container"><p className="eyebrow">Client work across industries</p><h2>Built around the way <span>businesses grow.</span></h2></div>
+      <div className="contact-marquee" aria-label="SEOPune360 portfolio clients">
+        <div className="contact-marquee-track">
+          {tickerClients.map((client, index) => <span className="contact-client-name" key={client.name + '-' + index}>{client.name}<i aria-hidden="true">✳</i></span>)}
+        </div>
+      </div>
+      <div className="container contact-work-note"><p>Client names shown are from the published SEOPune360 portfolio.</p><a className="text-link" href="/case-studies/">Explore client stories <ArrowIcon /></a></div>
+    </section>
+
+    <section className="section contact-results">
+      <div className="container">
+        <div className="contact-section-heading"><p className="eyebrow">Published client outcomes</p><h2>Real work. <span>Useful proof.</span></h2><p>Selected results from the case studies published on this site. Outcomes vary by business and project.</p></div>
+        <div className="contact-result-grid">
+          <a className="contact-result-card" href="/case-studies/kj-group/"><span>KJ Group · Real estate</span><b>+210%</b><small>Organic traffic</small><i>Read case study <ArrowIcon /></i></a>
+          <a className="contact-result-card" href="/case-studies/rivan-travels/"><span>Rivan Travels · Travel</span><b>+85%</b><small>Bookings</small><i>Read case study <ArrowIcon /></i></a>
+          <a className="contact-result-card" href="/case-studies/shaw-toyota/"><span>Shaw Toyota · Automotive</span><b>+190%</b><small>Local traffic</small><i>Read case study <ArrowIcon /></i></a>
+        </div>
+      </div>
+    </section>
+
+    <section className="section contact-process">
+      <div className="container">
+        <div className="contact-section-heading"><p className="eyebrow">What happens next</p><h2>A clear path from <span>first hello to next steps.</span></h2><p>We’ll use the first conversation to understand your needs and make the next step useful.</p></div>
+        <div className="contact-steps">{steps.map(([number, title, copy]) => <article className="contact-step" key={number}><span>{number}</span><h3>{title}</h3><p>{copy}</p></article>)}</div>
+      </div>
+    </section>
+
+    <section className="section contact-faq">
+      <div className="container contact-faq-layout">
+        <div className="contact-faq-heading"><p className="eyebrow">Before you reach out</p><h2>A few helpful <span>answers.</span></h2><p>Still have a question? Send it through the form and we’ll take it from there.</p><a className="text-link" href="#enquiry">Ask us directly <ArrowIcon /></a></div>
+        <div className="contact-faq-list">{faqs.map(([question, answer], index) => <details className="contact-faq-item" key={question} open={index === 0}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div>
+      </div>
+    </section>
+
+    <section className="contact-bottom-cta"><div className="container contact-bottom-inner"><div><p className="eyebrow">Ready when you are</p><h2>Let’s make your next move <span>count.</span></h2></div><a className="button" href="#enquiry">Tell us about your project <ArrowIcon /></a></div></section>
+  </div>;
+}
+
 function PageContent({ path }) {
   const parts = path.split('/').filter(Boolean);
   const page = parts[0] || '';
@@ -505,12 +618,13 @@ function PageContent({ path }) {
   } else if (page === 'industries') items = industries.filter((item) => item.id !== 'All industries');
   else if (page === 'process') body = <Process />;
   else if (page === 'about') body = <WhyUs />;
-  else if (page === 'contact') body = <section className="section"><div className="container contact-card"><p className="eyebrow">Start a conversation</p><h2>Tell us what you’re working toward.</h2><p>For a website, search, or growth enquiry, email us with a little context and your website address.</p><a className="button" href={'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('Let’s talk about my business')}>{CONTACT_EMAIL} <ArrowIcon /></a><a className="text-link" href="/">Request a human-led website review <ArrowIcon /></a></div></section>;
+  else if (page === 'contact') body = null;
   if (!head) head = ['SEOPune360', 'A practical digital', 'growth partner.', 'Explore services, client stories, and ways to work together.'];
   useEffect(() => {
     document.title = `${head[1]} ${head[2].replace(/[.]/g, '')} | SEOPune360`;
     window.scrollTo(0, 0);
   }, [path]);
+  if (page === 'contact') return <ContactPage />;
   const renderCard = (item) => {
     if (page === 'services') return <a className="content-card" href={servicePaths[item.id]} key={item.id}><span className="card-number">{item.number} / 06</span><h2>{item.title}</h2><p>{item.summary}</p><span className="text-link">Explore service <ArrowIcon /></span></a>;
     if (page === 'industries' && !industry) return <a className="content-card" href={industryPath(item.id)} key={item.id}><span className="card-number">SECTOR</span><h2>{item.label}</h2><p>Explore the client work and digital growth needs represented in this sector.</p><span className="text-link">Explore industry <ArrowIcon /></span></a>;
