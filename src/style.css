@@ -1105,3 +1105,6 @@ a.content-card:hover { transform:translateY(-4px); border-color:rgba(51,225,208,
 @media (prefers-reduced-motion: reduce) {
   .contact-marquee-track { animation: none; transform: none; }
 }
+
+.contact-form-error { margin: 13px 0 0; padding: 12px 14px; border: 1px solid rgba(255,125,125,.3); border-radius: 8px; background: rgba(129,35,45,.16); color: #ffc2c2; font-size: .82rem; }
+.contact-submit:disabled { cursor: wait; opacity: .72; transform: none; box-shadow: none; }
