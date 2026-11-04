@@ -522,7 +522,8 @@ a.content-card:hover { transform:translateY(-4px); border-color:rgba(51,225,208,
 .brand-system-colors i:nth-child(4) { background: #c8d7ca; }
 .brand-system-type { display: flex; align-items: baseline; gap: 8px; color: #42645e; }
 .brand-system-type b { color: #173638; font-size: .78rem; letter-spacing: -.08em; }
-.brand-system-type span { font-size: .45rem; font-weight: 650; }.service-visual-development { background: radial-gradient(circle at 85% 15%,rgba(117,216,245,.24),transparent 35%),#102b37; }
+.brand-system-type span { font-size: .45rem; font-weight: 650; }
+.service-visual-development { background: radial-gradient(circle at 85% 15%,rgba(117,216,245,.24),transparent 35%),#102b37; }
 .code-window pre { margin: 0; padding: 13px 15px 17px; color: #d2e5dd; font-size: .57rem; line-height: 1.85; }
 .code-window pre b { color: #81dcca; }
 .code-window pre em { color: #f1d58b; font-style: normal; }
