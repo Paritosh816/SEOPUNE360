@@ -1115,3 +1115,42 @@ a.content-card:hover { transform:translateY(-4px); border-color:rgba(51,225,208,
 
 .contact-form-error { margin: 13px 0 0; padding: 12px 14px; border: 1px solid rgba(255,125,125,.3); border-radius: 8px; background: rgba(129,35,45,.16); color: #ffc2c2; font-size: .82rem; }
 .contact-submit:disabled { cursor: wait; opacity: .72; transform: none; box-shadow: none; }
+
+/* Business Branding portfolio */
+.branding-portfolio {
+  padding-top: 10px;
+  background: radial-gradient(ellipse at 50% 12%, rgba(51,225,208,.055), transparent 48%);
+}
+.branding-portfolio-heading { max-width: 760px; margin: 0 auto 38px; text-align: center; }
+.branding-portfolio-heading .eyebrow { margin-bottom: 12px; }
+.branding-portfolio-heading h2 { margin-bottom: 13px; }
+.branding-portfolio-heading > p:last-child { max-width: 620px; margin: 0 auto; }
+.branding-work-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; align-items: stretch; }
+.branding-work-card { min-width: 0; overflow: hidden; padding: 13px; border: 1px solid var(--line); border-radius: 14px; background: linear-gradient(150deg,rgba(19,39,56,.88),rgba(8,23,31,.94)); }
+.branding-work-images { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
+.branding-work-image { display: flex; min-width: 0; flex-direction: column; overflow: hidden; border: 1px solid rgba(8,23,31,.1); border-radius: 9px; background: #f5f6f5; color: #52616a; text-decoration: none; transition: transform .2s ease, box-shadow .2s ease; }
+.branding-work-image:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,.16); }
+.branding-work-image.branding-work-primary { grid-column: 1 / -1; }
+.branding-work-image img { display: block; width: 100%; height: 110px; padding: 8px; object-fit: contain; background: #f5f6f5; }
+.branding-work-primary img { height: 224px; padding: 12px; }
+.branding-work-image span { display: block; padding: 6px 9px 7px; border-top: 1px solid rgba(8,23,31,.08); background: #fff; font-size: .65rem; font-weight: 650; line-height: 1.2; }
+.branding-work-copy { padding: 17px 5px 6px; }
+.branding-work-copy .eyebrow { margin-bottom: 8px; font-size: .62rem; letter-spacing: .12em; }
+.branding-work-copy h3 { margin: 0 0 8px; color: var(--text); font-size: 1.28rem; letter-spacing: -.035em; }
+.branding-work-copy > p:last-child { margin: 0; color: var(--muted); font-size: .8rem; line-height: 1.6; }
+.branding-work-cta { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 32px; padding: 21px 24px; border: 1px solid var(--line); border-radius: 12px; background: rgba(10,29,36,.7); }
+.branding-work-cta p { margin: 0; color: var(--text); font-weight: 650; }
+.branding-work-cta .button { flex: none; }
+.branding-work-cta .button svg { width: 17px; height: 17px; }
+@media (max-width: 1050px) {
+  .branding-work-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media (max-width: 620px) {
+  .branding-portfolio { padding-top: 0; }
+  .branding-portfolio-heading { margin-bottom: 27px; text-align: left; }
+  .branding-work-grid { grid-template-columns: 1fr; gap: 12px; }
+  .branding-work-primary img { height: 215px; }
+  .branding-work-image img { height: 100px; }
+  .branding-work-cta { align-items: stretch; flex-direction: column; gap: 14px; margin-top: 22px; padding: 19px; }
+  .branding-work-cta .button { width: 100%; }
+}

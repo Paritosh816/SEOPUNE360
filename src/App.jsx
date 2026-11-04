@@ -87,6 +87,47 @@ const auditItems = [
   ['Conversion journey', 'Calls to action and enquiry paths'],
 ];
 
+const brandingProjects = [
+  {
+    id: 'era-infratech', name: 'ERA Infratech', category: 'Logo exploration & identity',
+    description: 'Logo variations and a visual identity presentation for ERA Infratech.',
+    artworks: [
+      { src: '/images/business-branding/era-infratech-logo-variations.jpg', alt: 'ERA Infratech logo shown in two color treatments', label: 'Logo variations' },
+      { src: '/images/business-branding/era-infratech-artboard.jpg', alt: 'ERA Infratech visual identity presentation', label: 'Identity presentation' },
+    ],
+  },
+  {
+    id: 'fpt', name: 'FPT Powertrain Technologies', category: 'Logo artwork',
+    description: 'FPT Powertrain Technologies logo artwork supplied for the portfolio.',
+    artworks: [
+      { src: '/images/business-branding/fpt-powertrain-technologies.jpg', alt: 'FPT Powertrain Technologies logo on a red background', label: 'Logo artwork' },
+    ],
+  },
+  {
+    id: 'kj-group', name: 'KJ Group', category: 'Brand identity & applications',
+    description: 'A brand identity presentation with logo variations and application mockups.',
+    artworks: [
+      { src: '/images/business-branding/kj-group-brand-applications.jpg', alt: 'KJ Group brand identity and stationery applications', label: 'Brand applications' },
+      { src: '/images/business-branding/kj-group-logo-variations.jpg', alt: 'KJ Group logo and color variations', label: 'Logo variations' },
+      { src: '/images/business-branding/kj-group-brand-mockups.jpg', alt: 'KJ Group brand mockup presentation', label: 'Brand mockups' },
+    ],
+  },
+  {
+    id: 'ks', name: 'KS Identity', category: 'Logo & identity artwork',
+    description: 'Logo and visual identity artwork shared for the KS project.',
+    artworks: [
+      { src: '/images/business-branding/ks-brand-identity.jpg', alt: 'KS logo and visual identity presentation', label: 'Identity presentation' },
+    ],
+  },
+  {
+    id: 'the-jolly-box', name: 'The Jolly Box', category: 'Logo artwork',
+    description: 'The Jolly Box logo artwork, featuring its gift-inspired mark.',
+    artworks: [
+      { src: '/images/business-branding/the-jolly-box-logo.jpg', alt: 'The Jolly Box gift-inspired logo', label: 'Logo artwork' },
+    ],
+  },
+];
+
 const servicePaths = {
   seo: '/services/seo/',
   geo: '/services/geo/',
@@ -331,6 +372,43 @@ function ServiceIllustration({ type }) {
     {type === 'growth' && <div className="growth-wheel"><span>SEARCH</span><span>CONTENT</span><span>WEBSITE</span><span>LEADS</span><b>GROW<br />WITH<br />INTENT</b></div>}
     <span className="visual-label">SEOPUNE360 <i /> GROWTH STUDIO</span>
   </div>;
+}
+
+function BrandingPortfolio() {
+  return (
+    <section className="section branding-portfolio" aria-labelledby="branding-work-title">
+      <div className="container">
+        <div className="branding-portfolio-heading">
+          <p className="eyebrow">Selected brand work</p>
+          <h2 id="branding-work-title">Identity work, made <span>for real businesses.</span></h2>
+          <p>A selection of logo and brand identity artwork supplied for SEOPune360 client projects.</p>
+        </div>
+        <div className="branding-work-grid">
+          {brandingProjects.map((project) => (
+            <article className={'branding-work-card branding-work-' + project.id} key={project.id}>
+              <div className="branding-work-images">
+                {project.artworks.map((artwork, index) => (
+                  <a className={'branding-work-image' + (index === 0 ? ' branding-work-primary' : '')} href={artwork.src} target="_blank" rel="noreferrer" aria-label={'Open full-size artwork: ' + artwork.label + ' for ' + project.name} key={artwork.src}>
+                    <img src={artwork.src} alt={artwork.alt} loading="lazy" decoding="async" />
+                    <span>{artwork.label}</span>
+                  </a>
+                ))}
+              </div>
+              <div className="branding-work-copy">
+                <p className="eyebrow">{project.category}</p>
+                <h3>{project.name}</h3>
+                <p>{project.description}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+        <div className="branding-work-cta">
+          <p>Building a brand or refreshing the one you have?</p>
+          <a className="button" href="/contact/">Talk about your brand <ArrowIcon /></a>
+        </div>
+      </div>
+    </section>
+  );
 }
 
 function Services({ activeService, setActiveService }) {
@@ -622,7 +700,7 @@ function PageContent({ path }) {
   let body = null;
   if (service) {
     head = ['Our services', service.title, 'for business growth.', service.summary];
-    body = <section className="section"><div className="container detail-layout"><div><p className="eyebrow">What’s included</p><h2>Focused work, <span>built around your goals.</span></h2><p>{service.summary}</p><a className="button" href="/contact/">Discuss this service <ArrowIcon /></a></div><ul className="detail-points">{service.items.map((item) => <li key={item}><span>↗</span>{item}</li>)}</ul></div></section>;
+    body = <><section className="section"><div className="container detail-layout"><div><p className="eyebrow">What’s included</p><h2>Focused work, <span>built around your goals.</span></h2><p>{service.summary}</p><a className="button" href="/contact/">Discuss this service <ArrowIcon /></a></div><ul className="detail-points">{service.items.map((item) => <li key={item}><span>↗</span>{item}</li>)}</ul></div></section>{service.id === 'branding' && <BrandingPortfolio />}</>;
   } else if (page === 'services') items = services;
   else if (caseStudy) {
     head = [caseStudy.category, caseStudy.label, 'client story.', caseStudy.copy];
