@@ -65,7 +65,7 @@ const services = [
   { id: 'seo', number: '01', title: 'Search Engine Optimization', summary: 'Build lasting visibility for the searches that matter to your business.', items: ['Technical and on-page SEO', 'Local SEO and Google Business Profile', 'Content and keyword strategy'], type: 'search' },
   { id: 'geo', number: '02', title: 'AI Search & GEO', summary: 'Make your expertise easier to discover across search engines and AI answer experiences.', items: ['Entity and topic clarity', 'Structured content foundations', 'AI search visibility reviews'], type: 'ai' },
   { id: 'leads', number: '03', title: 'Lead Generation', summary: 'Create a clear path from discovery to a useful sales conversation.', items: ['Landing page planning', 'Conversion journey improvements', 'Campaign and enquiry support'], type: 'leads' },
-  { id: 'design', number: '04', title: 'Website Design', summary: 'Give customers a confident, easy-to-use experience that reflects your brand.', items: ['UX and information architecture', 'Responsive visual design', 'Conversion-focused page layouts'], type: 'design' },
+  { id: 'branding', number: '04', title: 'Business Branding', summary: 'Create a distinctive, consistent brand that helps customers recognize and trust your business.', items: ['Brand positioning and messaging', 'Visual identity and logo systems', 'Brand guidelines and collateral'], type: 'branding' },
   { id: 'development', number: '05', title: 'Website Development', summary: 'Build a fast, accessible website that is ready to support your next stage of growth.', items: ['Responsive front-end development', 'CMS and integrations', 'Performance and accessibility'], type: 'development' },
   { id: 'growth', number: '06', title: 'Total Business Growth', summary: 'Connect search, content, and website improvements into a focused growth plan.', items: ['SEO and content planning', 'Website conversion improvements', 'Measurement and iteration'], type: 'growth' },
 ];
@@ -91,7 +91,7 @@ const servicePaths = {
   seo: '/services/seo/',
   geo: '/services/geo/',
   leads: '/services/lead-generation/',
-  design: '/services/website-design/',
+  branding: '/services/business-branding/',
   development: '/services/website-development/',
   growth: '/services/business-growth/',
 };
@@ -137,7 +137,7 @@ const navigationGroups = [
       ] },
       { title: 'Digital experience & growth', items: [
         ['Lead Generation', 'Create a clearer path from discovery to enquiry.', servicePaths.leads],
-        ['Website Design', 'Make your offer clear and easy to act on.', servicePaths.design],
+        ['Business Branding', 'Build recognition and trust with a consistent brand identity.', servicePaths.branding],
         ['Website Development', 'Build a fast, accessible website for growth.', servicePaths.development],
         ['Business Growth', 'Connect search, content, and conversion work.', servicePaths.growth],
       ] },
@@ -326,7 +326,7 @@ function ServiceIllustration({ type }) {
     {type === 'search' && <div className="search-window"><div className="window-chrome"><i /><i /><i /><span>seopune360.com / search</span></div><div className="search-content"><span className="search-chip">GOOGLE SEARCH</span><b>Find the<br /><em>right business.</em></b><div className="search-line"><i /> Pune SEO services <span>↗</span></div><div className="search-result"><b>SEOPune360</b><span>SEO that helps your business get found.</span></div></div></div>}
     {type === 'ai' && <div className="orbit-graphic"><span className="orbit orbit-a" /><span className="orbit orbit-b" /><span className="orbit-core">AI</span><b>SEARCH<br />SIGNALS</b></div>}
     {type === 'leads' && <div className="lead-funnel"><span className="funnel-step">DISCOVER</span><span className="funnel-step">ENGAGE</span><span className="funnel-step">ENQUIRE</span><i>↘</i></div>}
-    {type === 'design' && <div className="design-canvas"><div className="design-sidebar"><i /><i /><i /><i /></div><div className="design-page"><small>YOUR BRAND, CLEARER</small><b>Make a strong<br /><em>first impression.</em></b><span /><span /><span /></div></div>}
+    {type === 'branding' && <div className="brand-system"><div className="brand-system-label"><span>IDENTITY SYSTEM</span><b>01 / BRAND</b></div><div className="brand-system-lockup"><span className="brand-system-mark">B</span><div><strong>YOUR BRAND</strong><small>POSITIONING · VOICE · IDENTITY</small></div></div><div className="brand-system-colors"><i /><i /><i /><i /></div><div className="brand-system-type"><b>Aa</b><span>Distinctive by design</span></div></div>}
     {type === 'development' && <div className="code-window"><div className="window-chrome"><i /><i /><i /><span>responsive-build.jsx</span></div><pre><b>&lt;section</b> className=<em>"fast"</em><b>&gt;</b>{'\\n'}  <i>accessible</i> <u>responsive</u>{'\\n'}  <strong>made for growth</strong>{'\\n'}<b>&lt;/section&gt;</b></pre></div>}
     {type === 'growth' && <div className="growth-wheel"><span>SEARCH</span><span>CONTENT</span><span>WEBSITE</span><span>LEADS</span><b>GROW<br />WITH<br />INTENT</b></div>}
     <span className="visual-label">SEOPUNE360 <i /> GROWTH STUDIO</span>
