@@ -113,10 +113,10 @@ const brandingProjects = [
     ],
   },
   {
-    id: 'ks', name: 'KS Identity', category: 'Logo & identity artwork',
-    description: 'Logo and visual identity artwork shared for the KS project.',
+    id: 'koriv-studio', name: 'Koriv Studio', category: 'Brand identity & applications',
+    description: 'A logo system and branded mockup artwork for Koriv Studio.',
     artworks: [
-      { src: '/images/business-branding/ks-brand-identity.jpg', alt: 'KS logo and visual identity presentation', label: 'Identity presentation' },
+      { src: '/images/business-branding/ks-brand-identity.jpg', alt: 'Koriv Studio logo and visual identity presentation', label: 'Identity presentation' },
     ],
   },
   {
