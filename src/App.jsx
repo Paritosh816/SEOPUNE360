@@ -17,6 +17,7 @@ const clients = [
   { name: 'KJ Group', type: 'Real Estate', description: 'Real estate group serving buyers and investors across Pune.', tone: 'logo-kj' },
   { name: 'Crevolution LLP', type: 'B2B', description: 'Architecture and interior design studio with a project-led service journey.', tone: 'logo-crevolution' },
   { name: 'Rivan Travels', type: 'B2C', description: 'Travel company focused on discoverability and booking enquiries.', tone: 'logo-rivan' },
+  { name: 'Lusso Marco', type: 'B2C', description: 'Fragrance brand offering Eau de Parfum including Blue Marina, Noxious, and Red Bites.', tone: 'logo-lusso-marco' },
   { name: 'Shaw Tata', type: 'Automobile', description: 'Tata Motors dealership with local search and test-drive enquiries.', tone: 'logo-tata' },
   { name: 'Shaw Toyota', type: 'Automobile', description: 'Toyota dealership serving customers across the Pune region.', tone: 'logo-toyota' },
   { name: 'Krishna Classical Homoeopathy Clinic', type: 'Healthcare', description: 'Healthcare clinic connecting local patients with its services.', tone: 'logo-krishna' },
@@ -24,6 +25,12 @@ const clients = [
 ];
 
 const caseStudies = [
+  {
+    id: 'lusso-marco', label: 'Lusso Marco', category: 'Fragrance', mark: 'LUSSO MARCO', tone: 'case-fragrance',
+    copy: 'Lusso Marco’s Eau de Parfum range includes Blue Marina, Noxious, and Red Bites. Current growth marketing work connects website SEO with Google Ads and Meta Ads to support product discovery and online sales activity.',
+    metrics: [],
+    scope: ['Website SEO', 'Google Ads', 'Meta Ads'],
+  },
   {
     id: 'kj-group', label: 'KJ Group', category: 'Real Estate', mark: 'KJ GROUP', tone: 'case-realestate',
     copy: 'A clearer local search presence and more useful property journeys helped KJ Group connect with people looking for real estate in Pune.',
@@ -62,9 +69,9 @@ const caseStudies = [
 ];
 
 const services = [
-  { id: 'seo', number: '01', title: 'Search Engine Optimization', summary: 'Build lasting visibility for the searches that matter to your business.', items: ['Technical and on-page SEO', 'Local SEO and Google Business Profile', 'Content and keyword strategy'], type: 'search' },
+  { id: 'seo', number: '01', title: 'Search Engine Optimization', summary: 'Build lasting search visibility as part of a connected growth marketing plan.', items: ['Technical and on-page SEO', 'Local SEO and Google Business Profile', 'Content and keyword strategy'], type: 'search' },
   { id: 'geo', number: '02', title: 'AI Search & GEO', summary: 'Make your expertise easier to discover across search engines and AI answer experiences.', items: ['Entity and topic clarity', 'Structured content foundations', 'AI search visibility reviews'], type: 'ai' },
-  { id: 'leads', number: '03', title: 'Lead Generation', summary: 'Create a clear path from discovery to a useful sales conversation.', items: ['Landing page planning', 'Conversion journey improvements', 'Campaign and enquiry support'], type: 'leads' },
+  { id: 'leads', number: '03', title: 'Lead Generation', summary: 'Connect Google Ads and Meta Ads with focused landing pages and conversion paths that help turn attention into enquiries.', items: ['Google Ads and Meta Ads campaign management', 'Landing page planning', 'Conversion journeys and enquiry tracking'], type: 'leads' },
   { id: 'branding', number: '04', title: 'Business Branding', summary: 'Create a distinctive, consistent brand that helps customers recognize and trust your business.', items: ['Brand positioning and messaging', 'Visual identity and logo systems', 'Brand guidelines and collateral'], type: 'branding' },
   { id: 'development', number: '05', title: 'Website Development', summary: 'Build a fast, accessible website that is ready to support your next stage of growth.', items: ['Responsive front-end development', 'CMS and integrations', 'Performance and accessibility'], type: 'development' },
   { id: 'growth', number: '06', title: 'Total Business Growth', summary: 'Connect search, content, and website improvements into a focused growth plan.', items: ['SEO and content planning', 'Website conversion improvements', 'Measurement and iteration'], type: 'growth' },
@@ -411,6 +418,33 @@ function BrandingPortfolio() {
   );
 }
 
+function LussoMarcoGrowthFeature({ serviceId }) {
+  const isLeadGeneration = serviceId === 'leads';
+  return (
+    <section className="section lusso-growth-section" aria-labelledby="lusso-growth-title">
+      <div className="container">
+        <div className="lusso-growth-panel">
+          <div className="lusso-growth-copy">
+            <p className="eyebrow">{isLeadGeneration ? 'Lead generation in practice' : 'SEO in a wider growth mix'}</p>
+            <h2 id="lusso-growth-title">{isLeadGeneration ? 'Connect campaign reach to the product journey.' : 'Build search visibility as part of growth marketing.'}</h2>
+            <p>{isLeadGeneration
+              ? 'For Lusso Marco, Google Ads and Meta Ads work alongside website SEO, with product pages giving fragrance shoppers a clear next step.'
+              : 'For Lusso Marco, website SEO is part of a wider growth mix that also includes Google Ads and Meta Ads for its Eau de Parfum range.'}</p>
+            <a className="text-link" href="/case-studies/lusso-marco/">View the Lusso Marco project <ArrowIcon /></a>
+          </div>
+          <aside className="lusso-growth-card" aria-label="Lusso Marco products and marketing channels">
+            <span className="lusso-growth-monogram" aria-hidden="true">LM</span>
+            <p className="eyebrow">Luxury fragrance</p>
+            <h3>LUSSO MARCO</h3>
+            <p className="lusso-growth-products">Blue Marina · Noxious · Red Bites</p>
+            <div className="lusso-growth-channels"><span>Website SEO</span><span>Google Ads</span><span>Meta Ads</span></div>
+          </aside>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Services({ activeService, setActiveService }) {
   const current = services.find((service) => service.id === activeService) || services[0];
   return (
@@ -445,14 +479,14 @@ function CaseStudies({ activeCase, setActiveCase }) {
   return (
     <section className="case-section section" id="case-studies">
       <div className="container">
-        <div className="section-title-row"><div><p className="eyebrow">Recent work with businesses</p><h2>Real businesses.<br /><span>Clearer digital growth.</span></h2></div><p className="section-intro">Select a client to view its published project summary and reported results.</p></div>
+        <div className="section-title-row"><div><p className="eyebrow">Recent work with businesses</p><h2>Real businesses.<br /><span>Clearer digital growth.</span></h2></div><p className="section-intro">Select a client to view its project scope and reported results where available.</p></div>
         <div className="case-layout">
           <div className="case-tabs" role="tablist" aria-label="Client case studies">
             {caseStudies.map((item) => <button className={'case-tab' + (activeCase === item.id ? ' active' : '')} key={item.id} role="tab" id={'case-tab-' + item.id} aria-selected={activeCase === item.id} aria-controls="selected-case" onClick={() => setActiveCase(item.id)}><span>{item.label}</span><small>{item.category}</small><ArrowIcon /></button>)}
           </div>
           <article className={'case-detail ' + current.tone} id="selected-case" role="tabpanel" aria-labelledby={'case-tab-' + current.id} key={current.id}>
             <div className="case-art" aria-hidden="true"><span className="case-art-kicker">SEOPUNE360 · CLIENT STORY</span><div className="case-art-logo">{current.mark}</div><div className="case-art-shapes"><i /><i /><i /></div><div className="case-art-bottom"><span>{current.category}</span><b>STRATEGY / SEARCH / GROWTH</b></div></div>
-            <div className="case-copy"><p className="eyebrow">{current.category}</p><h3>{current.label}</h3><p>{current.copy}</p><ul className="case-metrics">{current.metrics.map((metric) => <li key={metric}><span>✦</span>{metric}</li>)}</ul><a className="text-link" href={'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('Ask about the ' + current.label + ' project')}>Ask about this project <ArrowIcon /></a></div>
+            <div className="case-copy"><p className="eyebrow">{current.category}</p><h3>{current.label}</h3><p>{current.copy}</p><p className="eyebrow case-insight-label">{current.metrics.length ? 'Reported outcomes' : 'Growth marketing scope'}</p><ul className="case-metrics">{(current.metrics.length ? current.metrics : current.scope).map((item) => <li key={item}><span>{current.metrics.length ? '✦' : '↗'}</span>{item}</li>)}</ul><a className="text-link" href={'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('Ask about the ' + current.label + ' project')}>Ask about this project <ArrowIcon /></a></div>
           </article>
         </div>
       </div>
@@ -694,17 +728,19 @@ function PageContent({ path }) {
   const service = page === 'services' && parts[1] ? services.find((item) => servicePaths[item.id] === path) : null;
   const caseStudy = page === 'case-studies' && parts[1] ? caseStudies.find((item) => item.id === parts[1]) : null;
   const industry = page === 'industries' && parts[1] ? industries.find((item) => industryPath(item.id) === path) : null;
-  const intro = { services: ['Services', 'Find the right support', 'for your next stage.', 'Explore connected services across search, website experience, lead generation, and growth.'], 'case-studies': ['Client stories', 'Work grounded in', 'real businesses.', 'Browse the client stories and reported outcomes currently published by SEOPune360.'], portfolio: ['Client portfolio', 'Businesses we’ve', 'worked with.', 'Explore businesses represented in the current SEOPune360 client portfolio.'], products: ['Products & platforms', 'Digital journeys,', 'built around people.', 'Explore the client products and platform journeys represented in SEOPune360’s published portfolio.'], industries: ['Industries', 'Different sectors,', 'clear digital paths.', 'Explore the industries represented in the current client portfolio.'], about: ['About SEOPune360', 'Search, websites,', 'and business growth.', 'We bring digital foundations together to help people find your business, understand what you offer, and take the next step.'], process: ['Our process', 'A clear path from', 'kick-off to launch.', 'See how discovery, strategy, design, development, review, and support fit together.'], contact: ['Get in touch', 'Let’s talk about', 'your next step.', 'Tell us what you are working toward and we’ll help identify a useful place to start.'] };
+  const intro = { services: ['Services', 'Find the right support', 'for your next stage.', 'Explore connected services across search, website experience, lead generation, and growth.'], 'case-studies': ['Client stories', 'Work grounded in', 'real businesses.', 'Browse SEOPune360 client stories, marketing channel mixes, and reported outcomes where available.'], portfolio: ['Client portfolio', 'Businesses we’ve', 'worked with.', 'Explore businesses represented in the current SEOPune360 client portfolio.'], products: ['Products & platforms', 'Digital journeys,', 'built around people.', 'Explore the client products and platform journeys represented in SEOPune360’s published portfolio.'], industries: ['Industries', 'Different sectors,', 'clear digital paths.', 'Explore the industries represented in the current client portfolio.'], about: ['About SEOPune360', 'Search, websites,', 'and business growth.', 'We bring digital foundations together to help people find your business, understand what you offer, and take the next step.'], process: ['Our process', 'A clear path from', 'kick-off to launch.', 'See how discovery, strategy, design, development, review, and support fit together.'], contact: ['Get in touch', 'Let’s talk about', 'your next step.', 'Tell us what you are working toward and we’ll help identify a useful place to start.'] };
   let head = intro[page];
   let items = [];
   let body = null;
   if (service) {
     head = ['Our services', service.title, 'for business growth.', service.summary];
-    body = <><section className="section"><div className="container detail-layout"><div><p className="eyebrow">What’s included</p><h2>Focused work, <span>built around your goals.</span></h2><p>{service.summary}</p><a className="button" href="/contact/">Discuss this service <ArrowIcon /></a></div><ul className="detail-points">{service.items.map((item) => <li key={item}><span>↗</span>{item}</li>)}</ul></div></section>{service.id === 'branding' && <BrandingPortfolio />}</>;
+    body = <><section className="section"><div className="container detail-layout"><div><p className="eyebrow">What’s included</p><h2>Focused work, <span>built around your goals.</span></h2><p>{service.summary}</p><a className="button" href="/contact/">Discuss this service <ArrowIcon /></a></div><ul className="detail-points">{service.items.map((item) => <li key={item}><span>↗</span>{item}</li>)}</ul></div></section>{(service.id === 'seo' || service.id === 'leads') && <LussoMarcoGrowthFeature serviceId={service.id} />}{service.id === 'branding' && <BrandingPortfolio />}</>;
   } else if (page === 'services') items = services;
   else if (caseStudy) {
     head = [caseStudy.category, caseStudy.label, 'client story.', caseStudy.copy];
-    body = <section className="section"><div className="container"><div className={'case-detail page-case ' + caseStudy.tone}><div className="case-art"><span className="case-art-kicker">SEOPUNE360 · CLIENT STORY</span><div className="case-art-logo">{caseStudy.mark}</div><div className="case-art-bottom"><span>{caseStudy.category}</span><b>STRATEGY / SEARCH / GROWTH</b></div></div><div className="case-copy"><p className="eyebrow">Reported outcomes</p><ul className="case-metrics">{caseStudy.metrics.map((metric) => <li key={metric}><span>✦</span>{metric}</li>)}</ul><a className="text-link" href="/case-studies/">View all case studies <ArrowIcon /></a></div></div><p className="content-note">Outcomes shown are the reported results in the current site content.</p></div></section>;
+    const caseInsights = caseStudy.metrics.length ? caseStudy.metrics : caseStudy.scope;
+    const caseInsightsTitle = caseStudy.metrics.length ? 'Reported outcomes' : 'Growth marketing scope';
+    body = <section className="section"><div className="container"><div className={'case-detail page-case ' + caseStudy.tone}><div className="case-art"><span className="case-art-kicker">SEOPUNE360 · CLIENT STORY</span><div className="case-art-logo">{caseStudy.mark}</div><div className="case-art-bottom"><span>{caseStudy.category}</span><b>STRATEGY / SEARCH / GROWTH</b></div></div><div className="case-copy"><p className="eyebrow">{caseInsightsTitle}</p><ul className="case-metrics">{caseInsights.map((item) => <li key={item}><span>{caseStudy.metrics.length ? '✦' : '↗'}</span>{item}</li>)}</ul><a className="text-link" href="/case-studies/">View all case studies <ArrowIcon /></a></div></div>{caseStudy.metrics.length > 0 && <p className="content-note">Outcomes shown are the reported results in the current site content.</p>}</div></section>;
   } else if (page === 'case-studies') items = caseStudies;
   else if (page === 'portfolio' || page === 'products') items = clients;
   else if (industry) {
@@ -736,7 +772,7 @@ function App() {
   const path = cleanPath ? cleanPath + '/' : '/';
   const [activeIndustry, setActiveIndustry] = useState('All industries');
   const [activeService, setActiveService] = useState('seo');
-  const [activeCase, setActiveCase] = useState('kj-group');
+  const [activeCase, setActiveCase] = useState('lusso-marco');
   const [showreelOpen, setShowreelOpen] = useState(false);
   const [cookieOpen, setCookieOpen] = useState(false);
   const [legalTitle, setLegalTitle] = useState('');
