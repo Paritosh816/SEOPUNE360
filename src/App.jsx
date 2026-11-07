@@ -545,7 +545,7 @@ function Footer({ onCookieSettings, onLegal }) {
       <div className="footer-cta"><div className="container footer-cta-inner"><div><p className="eyebrow">Your next growth chapter starts here</p><h2>Let’s make your online presence work harder.</h2></div><a className="button footer-button" href="/contact/">Book a Call <ArrowIcon /></a></div></div>
       <div className="container footer-main"><div className="footer-brand-col"><Brand footer /><p>SEO, websites, and growth support for businesses ready to move forward.</p><a className="footer-email" href={'mailto:' + CONTACT_EMAIL}>{CONTACT_EMAIL} <ArrowIcon /></a></div>
         <div className="footer-column"><h3>Services</h3>{services.map((service) => <a href={servicePaths[service.id]} key={service.id}>{service.title}</a>)}</div>
-        <div className="footer-column"><h3>Explore</h3><a href="/case-studies/">Case Studies</a><a href="/portfolio/">Client Portfolio</a><a href="/products/">Products &amp; Platforms</a><a href="/industries/">Industries</a><a href="/process/">How We Work</a><a href="/about/">About Us</a></div>
+        <div className="footer-column"><h3>Explore</h3><a href="/case-studies/">Case Studies</a><a href="/portfolio/">Client Portfolio</a><a href="/products/">Products &amp; Platforms</a><a href="/industries/">Industries</a><a href="/process/">How We Work</a><a href="/about/">About Us</a><a href="/sitemap/">Sitemap</a></div>
         <div className="footer-column footer-contact"><h3>Get in touch</h3><p>Tell us what you’re working toward. We’ll help you find the next step.</p><a className="footer-email" href={'mailto:' + CONTACT_EMAIL}>{CONTACT_EMAIL} <ArrowIcon /></a><a className="footer-audit-link" href="/contact/">Request a website audit <ArrowIcon /></a></div>
       </div>
       <div className="container footer-bottom"><span>© {year} SEOPune360. All rights reserved.</span><div className="legal-links"><button onClick={() => onLegal('Terms & Conditions')}>Terms &amp; Conditions</button><button onClick={() => onLegal('Privacy Policy')}>Privacy Policy</button><button onClick={onCookieSettings}>Cookie Settings</button></div><a className="back-to-top" href="#top">Back to top ↑</a></div>
@@ -728,7 +728,7 @@ function PageContent({ path }) {
   const service = page === 'services' && parts[1] ? services.find((item) => servicePaths[item.id] === path) : null;
   const caseStudy = page === 'case-studies' && parts[1] ? caseStudies.find((item) => item.id === parts[1]) : null;
   const industry = page === 'industries' && parts[1] ? industries.find((item) => industryPath(item.id) === path) : null;
-  const intro = { services: ['Services', 'Find the right support', 'for your next stage.', 'Explore connected services across search, website experience, lead generation, and growth.'], 'case-studies': ['Client stories', 'Work grounded in', 'real businesses.', 'Browse SEOPune360 client stories, marketing channel mixes, and reported outcomes where available.'], portfolio: ['Client portfolio', 'Businesses we’ve', 'worked with.', 'Explore businesses represented in the current SEOPune360 client portfolio.'], products: ['Products & platforms', 'Digital journeys,', 'built around people.', 'Explore the client products and platform journeys represented in SEOPune360’s published portfolio.'], industries: ['Industries', 'Different sectors,', 'clear digital paths.', 'Explore the industries represented in the current client portfolio.'], about: ['About SEOPune360', 'Search, websites,', 'and business growth.', 'We bring digital foundations together to help people find your business, understand what you offer, and take the next step.'], process: ['Our process', 'A clear path from', 'kick-off to launch.', 'See how discovery, strategy, design, development, review, and support fit together.'], contact: ['Get in touch', 'Let’s talk about', 'your next step.', 'Tell us what you are working toward and we’ll help identify a useful place to start.'] };
+  const intro = { services: ['Services', 'Find the right support', 'for your next stage.', 'Explore connected services across search, website experience, lead generation, and growth.'], 'case-studies': ['Client stories', 'Work grounded in', 'real businesses.', 'Browse SEOPune360 client stories, marketing channel mixes, and reported outcomes where available.'], portfolio: ['Client portfolio', 'Businesses we’ve', 'worked with.', 'Explore businesses represented in the current SEOPune360 client portfolio.'], products: ['Products & platforms', 'Digital journeys,', 'built around people.', 'Explore the client products and platform journeys represented in SEOPune360’s published portfolio.'], industries: ['Industries', 'Different sectors,', 'clear digital paths.', 'Explore the industries represented in the current client portfolio.'], about: ['About SEOPune360', 'Search, websites,', 'and business growth.', 'We bring digital foundations together to help people find your business, understand what you offer, and take the next step.'], process: ['Our process', 'A clear path from', 'kick-off to launch.', 'See how discovery, strategy, design, development, review, and support fit together.'], contact: ['Get in touch', 'Let’s talk about', 'your next step.', 'Tell us what you are working toward and we’ll help identify a useful place to start.'], sitemap: ['Website sitemap', 'Explore the site', 'page by page.', 'Browse SEOPune360 pages, services, client stories, and industries from one place.'] };
   let head = intro[page];
   let items = [];
   let body = null;
@@ -751,6 +751,25 @@ function PageContent({ path }) {
   else if (page === 'process') body = <Process />;
   else if (page === 'about') body = <WhyUs />;
   else if (page === 'contact') body = null;
+  else if (page === 'sitemap') {
+    const sitemapGroups = [
+      ['Main pages', [
+        ['Home', '/'],
+        ['All Services', '/services/'],
+        ['All Case Studies', '/case-studies/'],
+        ['Client Portfolio', '/portfolio/'],
+        ['Products & Platforms', '/products/'],
+        ['Industries', '/industries/'],
+        ['About Us', '/about/'],
+        ['How We Work', '/process/'],
+        ['Contact', '/contact/'],
+      ]],
+      ['Services', services.map((item) => [item.title, servicePaths[item.id]])],
+      ['Client Stories', caseStudies.map((item) => [item.label, `/case-studies/${item.id}/`])],
+      ['Industries', industries.filter((item) => item.id !== 'All industries').map((item) => [item.label, industryPath(item.id)])],
+    ];
+    body = <section className="section sitemap-content"><div className="container"><div className="sitemap-grid">{sitemapGroups.map(([title, links]) => <section className="sitemap-group" key={title}><h2>{title}</h2><ul>{links.map(([label, href]) => <li key={href}><a href={href}>{label}<ArrowIcon /></a></li>)}</ul></section>)}</div></div></section>;
+  }
   if (!head) head = ['SEOPune360', 'A practical digital', 'growth partner.', 'Explore services, client stories, and ways to work together.'];
   useEffect(() => {
     document.title = `${head[1]} ${head[2].replace(/[.]/g, '')} | SEOPune360`;
