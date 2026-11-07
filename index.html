@@ -2,12 +2,33 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-M3TLNNDD"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+      function gtag(){window.dataLayer.push(arguments);}
+      (function() {
+        var consent = {
+          analytics_storage: 'denied',
+          ad_storage: 'denied',
+          ad_user_data: 'denied',
+          ad_personalization: 'denied',
+          functionality_storage: 'denied',
+          security_storage: 'granted'
+        };
+        try {
+          var savedPreferences = JSON.parse(window.localStorage.getItem('seopune360-cookie-preferences') || 'null');
+          if (savedPreferences) {
+            consent.analytics_storage = savedPreferences.analytics ? 'granted' : 'denied';
+            consent.ad_storage = savedPreferences.marketing ? 'granted' : 'denied';
+            consent.ad_user_data = savedPreferences.marketing ? 'granted' : 'denied';
+            consent.ad_personalization = savedPreferences.marketing ? 'granted' : 'denied';
+            consent.functionality_storage = savedPreferences.functional ? 'granted' : 'denied';
+          }
+        } catch (error) { /* Keep optional storage denied if preferences cannot be read. */ }
+        gtag('consent', 'default', consent);
+        gtag('js', new Date());
+      })();
     </script>
+    <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-M3TLNNDD"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"

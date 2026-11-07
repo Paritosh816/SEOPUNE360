@@ -219,6 +219,7 @@ const navigationGroups = [
       { title: 'Get to know us', items: [
         ['About Us', 'Our approach to search, websites, and business growth.', '/about/'],
         ['Our Process', 'A clear path from kickoff through launch and support.', '/process/'],
+        ['Build my growth plan', 'Get a suggested starting point for your goal.', '/growth-plan/'],
       ] },
     ],
   },
@@ -531,7 +532,7 @@ function AuditSection() {
     <section className="audit-section section" id="audit">
       <div className="audit-light" aria-hidden="true" />
       <div className="container audit-layout">
-        <div className="audit-copy"><p className="eyebrow">Free website audit</p><h2>Find the next opportunity to <span>grow online.</span></h2><p>Enter a website address to open the Laser Viewfinder audit experience and see its report preview.</p><form className="audit-form audit-form-bottom" action="/audit/" method="get"><label className="sr-only" htmlFor="audit-site-url">Website address for audit</label><input id="audit-site-url" name="domain" type="text" inputMode="url" autoComplete="url" placeholder="www.yourwebsite.com" required pattern="(https?://)?[a-zA-Z0-9][a-zA-Z0-9.-]*\.[a-zA-Z]{2,}.*" title="Enter a website address such as example.com" /><button className="button audit-submit" type="submit">Scan my website <ArrowIcon /></button></form><small className="audit-disclaimer">The current report is a sample preview; it does not crawl the site or run live SEO tests.</small></div>
+        <div className="audit-copy"><p className="eyebrow">Free website audit</p><h2>Find the next opportunity to <span>grow online.</span></h2><p>Enter a website address to open the Laser Viewfinder and get a live crawl with PageSpeed checks.</p><form className="audit-form audit-form-bottom" action="/audit/" method="get"><label className="sr-only" htmlFor="audit-site-url">Website address for audit</label><input id="audit-site-url" name="domain" type="text" inputMode="url" autoComplete="url" placeholder="www.yourwebsite.com" required pattern="(https?://)?[a-zA-Z0-9][a-zA-Z0-9.-]*\.[a-zA-Z]{2,}.*" title="Enter a website address such as example.com" /><button className="button audit-submit" type="submit">Scan my website <ArrowIcon /></button></form><small className="audit-disclaimer">The live audit checks up to 25 pages and PageSpeed on mobile and desktop.</small></div>
         <div className="audit-report"><div className="report-header"><div><span className="report-kicker">SEOPUNE360 / REVIEW FRAMEWORK</span><h3>Website opportunity review</h3></div><span className="report-icon">✦</span></div><div className="report-progress"><div><span>Review areas</span><b>5 focus areas</b></div><i><span /></i></div><div className="report-list">{auditItems.map(([title, body], index) => <article className="report-row" key={title}><span className="report-index">0{index + 1}</span><div><b>{title}</b><small>{body}</small></div><span className="report-arrow"><ArrowIcon /></span></article>)}</div><div className="report-footer"><span><i /> HUMAN-LED WEBSITE REVIEW</span><span>SEO · UX · GROWTH</span></div></div>
       </div>
     </section>
@@ -545,7 +546,7 @@ function Footer({ onCookieSettings, onLegal }) {
       <div className="footer-cta"><div className="container footer-cta-inner"><div><p className="eyebrow">Your next growth chapter starts here</p><h2>Let’s make your online presence work harder.</h2></div><a className="button footer-button" href="/contact/">Book a Call <ArrowIcon /></a></div></div>
       <div className="container footer-main"><div className="footer-brand-col"><Brand footer /><p>SEO, websites, and growth support for businesses ready to move forward.</p><a className="footer-email" href={'mailto:' + CONTACT_EMAIL}>{CONTACT_EMAIL} <ArrowIcon /></a></div>
         <div className="footer-column"><h3>Services</h3>{services.map((service) => <a href={servicePaths[service.id]} key={service.id}>{service.title}</a>)}</div>
-        <div className="footer-column"><h3>Explore</h3><a href="/case-studies/">Case Studies</a><a href="/portfolio/">Client Portfolio</a><a href="/products/">Products &amp; Platforms</a><a href="/industries/">Industries</a><a href="/process/">How We Work</a><a href="/about/">About Us</a><a href="/sitemap/">Sitemap</a></div>
+        <div className="footer-column"><h3>Explore</h3><a href="/case-studies/">Case Studies</a><a href="/growth-plan/">Build my growth plan</a><a href="/portfolio/">Client Portfolio</a><a href="/products/">Products &amp; Platforms</a><a href="/industries/">Industries</a><a href="/process/">How We Work</a><a href="/about/">About Us</a><a href="/sitemap/">Sitemap</a></div>
         <div className="footer-column footer-contact"><h3>Get in touch</h3><p>Tell us what you’re working toward. We’ll help you find the next step.</p><a className="footer-email" href={'mailto:' + CONTACT_EMAIL}>{CONTACT_EMAIL} <ArrowIcon /></a><a className="footer-audit-link" href="/contact/">Request a website audit <ArrowIcon /></a></div>
       </div>
       <div className="container footer-bottom"><span>© {year} SEOPune360. All rights reserved.</span><div className="legal-links"><button onClick={() => onLegal('Terms & Conditions')}>Terms &amp; Conditions</button><button onClick={() => onLegal('Privacy Policy')}>Privacy Policy</button><button onClick={onCookieSettings}>Cookie Settings</button></div><a className="back-to-top" href="#top">Back to top ↑</a></div>
@@ -553,7 +554,20 @@ function Footer({ onCookieSettings, onLegal }) {
   );
 }
 
-function CookieDialog({ onClose }) {
+function applyCookiePreferences(preferences) {
+  try { window.localStorage.setItem('seopune360-cookie-preferences', JSON.stringify(preferences)); } catch { /* Settings still apply for this visit. */ }
+  const consent = {
+    analytics_storage: preferences.analytics ? 'granted' : 'denied',
+    ad_storage: preferences.marketing ? 'granted' : 'denied',
+    ad_user_data: preferences.marketing ? 'granted' : 'denied',
+    ad_personalization: preferences.marketing ? 'granted' : 'denied',
+    functionality_storage: preferences.functional ? 'granted' : 'denied',
+    security_storage: 'granted',
+  };
+  if (typeof window.gtag === 'function') window.gtag('consent', 'update', consent);
+}
+
+function CookieDialog({ onClose, onSaved }) {
   const [preferences, setPreferences] = useState({ analytics: false, marketing: false, functional: false });
   const [saved, setSaved] = useState(false);
   useEffect(() => {
@@ -567,8 +581,9 @@ function CookieDialog({ onClose }) {
   }, [onClose]);
   function save(next) {
     setPreferences(next);
-    try { window.localStorage.setItem('seopune360-cookie-preferences', JSON.stringify(next)); } catch { /* Settings still apply for this visit. */ }
+    applyCookiePreferences(next);
     setSaved(true);
+    if (onSaved) onSaved();
   }
   const groups = [
     ['necessary', 'Necessary', 'Always on', 'Required for basic site functions and security.'],
@@ -576,7 +591,14 @@ function CookieDialog({ onClose }) {
     ['functional', 'Functional', 'Optional', 'Remember choices that improve how the site works.'],
     ['marketing', 'Marketing', 'Optional', 'Support campaign measurement when marketing tools are connected.'],
   ];
-  return <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}><section className="cookie-dialog" role="dialog" aria-modal="true" aria-labelledby="cookie-title"><div className="dialog-heading"><div><p className="eyebrow">Your privacy choices</p><h2 id="cookie-title">Cookie Settings</h2></div><button className="icon-button" aria-label="Close cookie settings" onClick={onClose}>×</button></div><p className="cookie-intro">Choose which optional cookies you allow. Necessary cookies are always on. No analytics or marketing tags are included in this starter.</p><div className="cookie-options">{groups.map(([id, label, status, detail]) => <label className="cookie-option" key={id}><span><b>{label}</b><small>{detail}</small></span><span className="cookie-toggle"><input type="checkbox" checked={id === 'necessary' ? true : preferences[id]} disabled={id === 'necessary'} onChange={(event) => setPreferences((current) => ({ ...current, [id]: event.target.checked }))} /><i /></span><em>{status}</em></label>)}</div>{saved && <p className="form-status" role="status">Your preferences have been saved in this browser.</p>}<div className="dialog-actions"><button className="button button-outline" onClick={() => save({ analytics: false, marketing: false, functional: false })}>Reject optional</button><button className="button audit-submit" onClick={() => save(preferences)}>Save preferences</button><button className="button button-outline" onClick={() => save({ analytics: true, marketing: true, functional: true })}>Accept all</button></div></section></div>;
+  return <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}><section className="cookie-dialog" role="dialog" aria-modal="true" aria-labelledby="cookie-title"><div className="dialog-heading"><div><p className="eyebrow">Your privacy choices</p><h2 id="cookie-title">Cookie Settings</h2></div><button className="icon-button" aria-label="Close cookie settings" onClick={onClose}>×</button></div><p className="cookie-intro">Choose which optional cookies you allow. Necessary cookies are always on. Analytics and advertising measurement stay off until enabled here. You can update this choice anytime in Cookie Settings.</p><div className="cookie-options">{groups.map(([id, label, status, detail]) => <label className="cookie-option" key={id}><span><b>{label}</b><small>{detail}</small></span><span className="cookie-toggle"><input type="checkbox" checked={id === 'necessary' ? true : preferences[id]} disabled={id === 'necessary'} onChange={(event) => setPreferences((current) => ({ ...current, [id]: event.target.checked }))} /><i /></span><em>{status}</em></label>)}</div>{saved && <p className="form-status" role="status">Your preferences have been saved in this browser.</p>}<div className="dialog-actions"><button className="button button-outline" onClick={() => save({ analytics: false, marketing: false, functional: false })}>Reject optional</button><button className="button audit-submit" onClick={() => save(preferences)}>Save preferences</button><button className="button button-outline" onClick={() => save({ analytics: true, marketing: true, functional: true })}>Accept all</button></div></section></div>;
+}
+
+function CookieNotice({ onAccept, onReject, onSettings }) {
+  return <aside className="cookie-notice" aria-label="Cookie preferences">
+    <div><b>Your privacy choices</b><p>Optional analytics and advertising measurement are off until you choose. You can change this anytime in Cookie Settings.</p></div>
+    <div className="cookie-notice-actions"><button type="button" onClick={onReject}>Reject optional</button><button type="button" onClick={onSettings}>Settings</button><button type="button" onClick={onAccept}>Accept all</button></div>
+  </aside>;
 }
 
 function LegalDialog({ title, onClose }) {
@@ -591,11 +613,85 @@ function ContentCards({ items, render }) {
   return <div className="container content-card-grid">{items.map((item) => render(item))}</div>;
 }
 
+function CaseStudyExplorer() {
+  const categories = ['All sectors', ...new Set(caseStudies.map((item) => item.category))];
+  const [activeCategory, setActiveCategory] = useState('All sectors');
+  const visibleStudies = activeCategory === 'All sectors' ? caseStudies : caseStudies.filter((item) => item.category === activeCategory);
+  return <section className="section case-explorer-section"><div className="container case-explorer">
+    <div className="case-explorer-heading"><div><p className="eyebrow">Browse by sector</p><h2>Stories with the <span>proof we have today.</span></h2></div><p>Filter the published work by sector. Each story keeps its current results or scope together in one place.</p></div>
+    <div className="case-filter-list" role="group" aria-label="Filter case studies by sector">{categories.map((category) => <button className={'case-filter' + (activeCategory === category ? ' active' : '')} key={category} type="button" aria-pressed={activeCategory === category} onClick={() => setActiveCategory(category)}>{category}</button>)}</div>
+    <p className="case-result-count" aria-live="polite">{visibleStudies.length} {visibleStudies.length === 1 ? 'story' : 'stories'} shown</p>
+    <div className="case-explorer-grid">{visibleStudies.map((item) => <article className="case-explorer-card" key={item.id}>
+      <div className="case-explorer-meta"><span>{item.category}</span><span>{item.metrics.length ? 'Published outcomes' : 'Published scope'}</span></div>
+      <h3>{item.label}</h3><p>{item.copy}</p>
+      <ul className="case-explorer-proof">{(item.metrics.length ? item.metrics : item.scope).map((point) => <li key={point}><span aria-hidden="true">{item.metrics.length ? '✦' : '↗'}</span>{point}</li>)}</ul>
+      <a className="text-link" href={'/case-studies/' + item.id + '/'}>Read client story <ArrowIcon /></a>
+    </article>)}</div>
+    <p className="content-note">Figures and project scope are shown as currently published on this website.</p>
+  </div></section>;
+}
+
+
+function GrowthPlanPage() {
+  const goals = {
+    enquiries: { label: 'Get more enquiries', serviceId: 'leads', summary: 'Connect paid campaigns, a focused landing page, and enquiry tracking.', steps: ['Clarify the audience, offer, and enquiry journey.', 'Prepare a landing page and tracking, then launch a measured campaign test.', 'Review enquiry quality and campaign data, then refine the next round.'] },
+    sales: { label: 'Grow online sales', serviceId: 'leads', summary: 'Plan a clear path from product discovery to purchase across campaigns and product pages.', steps: ['Choose priority products, audiences, and an offer.', 'Build campaign and product-page journeys with conversion tracking.', 'Review performance, then adjust creative and targeting.'] },
+    visibility: { label: 'Improve search visibility', serviceId: 'seo', summary: 'Strengthen the search and website foundations behind your priority pages.', steps: ['Review technical health, search intent, and priority pages.', 'Improve content, on-page SEO, and local or sector relevance.', 'Review Search Console and analytics signals, then expand the content plan.'] },
+    brand: { label: 'Build brand awareness and trust', serviceId: 'branding', summary: 'Clarify what makes the business distinct and carry that message across customer touchpoints.', steps: ['Define the audience, positioning, and key messages.', 'Develop a consistent visual and verbal direction.', 'Apply it to priority website and campaign assets, then gather feedback.'] },
+    website: { label: 'Improve my website experience', serviceId: 'development', summary: 'Make key website journeys clearer, faster, and easier to complete.', steps: ['Review navigation, mobile experience, speed, and conversion paths.', 'Prioritize and improve the pages with the clearest customer impact.', 'Review usage and feedback, then refine remaining pages and integrations.'] },
+  };
+  const [goal, setGoal] = useState('');
+  const [industry, setIndustry] = useState('Not sure yet');
+  const [website, setWebsite] = useState('');
+  const [timing, setTiming] = useState('Exploring options');
+  const [built, setBuilt] = useState(false);
+  const plan = built && goals[goal];
+  const service = plan && services.find((item) => item.id === plan.serviceId);
+  function sendPlan() {
+    if (!plan || !service) return;
+    const message = [
+      'I used the SEOPune360 growth planner and would like to discuss this suggested plan.',
+      'Primary goal: ' + plan.label,
+      'Industry: ' + industry,
+      'Website: ' + (website || 'Not provided'),
+      'Preferred timing: ' + timing,
+      'Suggested service: ' + service.title,
+      'Suggested 30 / 60 / 90 day sequence:',
+      ...plan.steps.map((step, index) => (['Days 1–30: ', 'Days 31–60: ', 'Days 61–90: '][index] + step)),
+    ].join('\n');
+    try { window.sessionStorage.setItem('seopune360-growth-plan', JSON.stringify({ service: service.title, website, message })); } catch { /* The contact form can still be completed manually. */ }
+    window.location.assign('/contact/?growth-plan=1');
+  }
+  return <section className="section growth-plan-section"><div className="container growth-plan-layout">
+    <div className="growth-plan-intro"><p className="eyebrow">A useful starting point</p><h2>What are you <span>working toward?</span></h2><p>Answer a few short questions to get a practical service recommendation and suggested first 90 days. Review it before deciding whether to contact us.</p>
+      <form className="growth-plan-form" onSubmit={(event) => { event.preventDefault(); setBuilt(true); }}>
+        <label>What is your main goal?<select required value={goal} onChange={(event) => { setGoal(event.target.value); setBuilt(false); }}><option value="" disabled>Select a goal</option>{Object.entries(goals).map(([id, item]) => <option key={id} value={id}>{item.label}</option>)}</select></label>
+        <label>Which sector is closest?<select value={industry} onChange={(event) => setIndustry(event.target.value)}><option>Not sure yet</option>{industries.filter((item) => item.id !== 'All industries').map((item) => <option key={item.id}>{item.label}</option>)}<option>Other</option></select></label>
+        <label>Website <span className="contact-optional">Optional</span><input type="url" inputMode="url" placeholder="https://yourwebsite.com" value={website} onChange={(event) => setWebsite(event.target.value)} /></label>
+        <label>When are you looking to start?<select value={timing} onChange={(event) => setTiming(event.target.value)}><option>As soon as practical</option><option>Within 1–3 months</option><option>Exploring options</option></select></label>
+        <button className="button" type="submit">Build my plan <ArrowIcon /></button>
+      </form>
+    </div>
+    <div className="growth-plan-result" aria-live="polite">{plan && service ? <>
+      <p className="eyebrow">Your suggested starting point</p><h3>{service.title}</h3><p>{plan.summary}</p>
+      <div className="growth-plan-context"><span>{industry}</span><span>{timing}</span></div>
+      <ol>{plan.steps.map((step, index) => <li key={step}><span>{['Days 1–30', 'Days 31–60', 'Days 61–90'][index]}</span>{step}</li>)}</ol>
+      <button className="button" type="button" onClick={sendPlan}>Discuss this plan by email <ArrowIcon /></button><p className="growth-plan-note">The plan is a starting point. Scope and timing can be tailored after we understand your business.</p>
+    </> : <><p className="eyebrow">Your plan will appear here</p><h3>Start with the outcome you want.</h3><p>We’ll suggest a service area and a phased sequence based on the goal and context you share.</p><a className="text-link" href="/case-studies/">Explore published client work <ArrowIcon /></a></>}</div>
+  </div></section>;
+}
 
 function ContactPage() {
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState(false);
   const [formError, setFormError] = useState('');
+  const [planContext] = useState(() => {
+    if (new URLSearchParams(window.location.search).get('growth-plan') !== '1') return null;
+    try {
+      const context = JSON.parse(window.sessionStorage.getItem('seopune360-growth-plan') || 'null');
+      return context;
+    } catch { return null; }
+  });
 
   async function handleContactSubmit(event) {
     event.preventDefault();
@@ -663,15 +759,16 @@ function ContactPage() {
               <label>Business name<input name="company" type="text" placeholder="Your business" autoComplete="organization" /></label>
               <label>Email address<input name="email" type="email" placeholder="you@company.com" autoComplete="email" required /></label>
               <label>Phone number <span className="contact-optional">Optional</span><input name="phone" type="tel" placeholder="+91" autoComplete="tel" /></label>
-              <label className="contact-form-wide">Website URL <span className="contact-optional">Optional</span><input name="website" type="url" placeholder="https://yourwebsite.com" /></label>
+              <label className="contact-form-wide">Website URL <span className="contact-optional">Optional</span><input name="website" type="url" placeholder="https://yourwebsite.com" defaultValue={planContext?.website || ''} /></label>
               <label className="contact-form-wide">What can we help with?
-                <select name="service" defaultValue="" required>
+                <select name="service" defaultValue={planContext?.service || ''} required>
                   <option value="" disabled>Select a service</option>
                   {services.map((service) => <option key={service.id} value={service.title}>{service.title}</option>)}
                   <option value="Not sure yet">Not sure yet</option>
                 </select>
               </label>
-              <label className="contact-form-wide">A little about your goals<textarea name="message" rows="4" placeholder="What would you like to improve or achieve?" required /></label>
+              <label className="contact-form-wide">A little about your goals<textarea name="message" rows="4" placeholder="What would you like to improve or achieve?" defaultValue={planContext?.message || ''} required /></label>
+              <label className="contact-call-option contact-form-wide"><input type="checkbox" name="optional_call" value="Yes" /><span>I’m open to an optional follow-up call. Email reply is fine either way.</span></label>
             </div>
             <button className="button contact-submit" type="submit" disabled={submitting}>{submitting ? 'Sending…' : 'Send my enquiry'} <ArrowIcon /></button>
             <p className="contact-form-privacy">By submitting, you agree that SEOPune360 may contact you about this enquiry. Your details are sent to our team by email.</p>
@@ -728,7 +825,7 @@ function PageContent({ path }) {
   const service = page === 'services' && parts[1] ? services.find((item) => servicePaths[item.id] === path) : null;
   const caseStudy = page === 'case-studies' && parts[1] ? caseStudies.find((item) => item.id === parts[1]) : null;
   const industry = page === 'industries' && parts[1] ? industries.find((item) => industryPath(item.id) === path) : null;
-  const intro = { services: ['Services', 'Find the right support', 'for your next stage.', 'Explore connected services across search, website experience, lead generation, and growth.'], 'case-studies': ['Client stories', 'Work grounded in', 'real businesses.', 'Browse SEOPune360 client stories, marketing channel mixes, and reported outcomes where available.'], portfolio: ['Client portfolio', 'Businesses we’ve', 'worked with.', 'Explore businesses represented in the current SEOPune360 client portfolio.'], products: ['Products & platforms', 'Digital journeys,', 'built around people.', 'Explore the client products and platform journeys represented in SEOPune360’s published portfolio.'], industries: ['Industries', 'Different sectors,', 'clear digital paths.', 'Explore the industries represented in the current client portfolio.'], about: ['About SEOPune360', 'Search, websites,', 'and business growth.', 'We bring digital foundations together to help people find your business, understand what you offer, and take the next step.'], process: ['Our process', 'A clear path from', 'kick-off to launch.', 'See how discovery, strategy, design, development, review, and support fit together.'], contact: ['Get in touch', 'Let’s talk about', 'your next step.', 'Tell us what you are working toward and we’ll help identify a useful place to start.'], sitemap: ['Website sitemap', 'Explore the site', 'page by page.', 'Browse SEOPune360 pages, services, client stories, and industries from one place.'] };
+  const intro = { 'growth-plan': ['Growth plan', 'Build a plan', 'around your goals.', 'Answer a few short questions to get a practical service recommendation and a suggested first 90 days.'], services: ['Services', 'Find the right support', 'for your next stage.', 'Explore connected services across search, website experience, lead generation, and growth.'], 'case-studies': ['Client stories', 'Work grounded in', 'real businesses.', 'Browse SEOPune360 client stories, marketing channel mixes, and reported outcomes where available.'], portfolio: ['Client portfolio', 'Businesses we’ve', 'worked with.', 'Explore businesses represented in the current SEOPune360 client portfolio.'], products: ['Products & platforms', 'Digital journeys,', 'built around people.', 'Explore the client products and platform journeys represented in SEOPune360’s published portfolio.'], industries: ['Industries', 'Different sectors,', 'clear digital paths.', 'Explore the industries represented in the current client portfolio.'], about: ['About SEOPune360', 'Search, websites,', 'and business growth.', 'We bring digital foundations together to help people find your business, understand what you offer, and take the next step.'], process: ['Our process', 'A clear path from', 'kick-off to launch.', 'See how discovery, strategy, design, development, review, and support fit together.'], contact: ['Get in touch', 'Let’s talk about', 'your next step.', 'Tell us what you are working toward and we’ll help identify a useful place to start.'], sitemap: ['Website sitemap', 'Explore the site', 'page by page.', 'Browse SEOPune360 pages, services, client stories, and industries from one place.'] };
   let head = intro[page];
   let items = [];
   let body = null;
@@ -751,6 +848,7 @@ function PageContent({ path }) {
   else if (page === 'process') body = <Process />;
   else if (page === 'about') body = <WhyUs />;
   else if (page === 'contact') body = null;
+  else if (page === 'growth-plan') body = <GrowthPlanPage />;
   else if (page === 'sitemap') {
     const sitemapGroups = [
       ['Main pages', [
@@ -763,6 +861,7 @@ function PageContent({ path }) {
         ['About Us', '/about/'],
         ['How We Work', '/process/'],
         ['Contact', '/contact/'],
+        ['Build my growth plan', '/growth-plan/'],
       ]],
       ['Services', services.map((item) => [item.title, servicePaths[item.id]])],
       ['Client Stories', caseStudies.map((item) => [item.label, `/case-studies/${item.id}/`])],
@@ -783,7 +882,7 @@ function PageContent({ path }) {
     return <article className="content-card" key={item.name}><span className="card-number">{page === 'products' ? 'CLIENT PLATFORM JOURNEY' : item.type.toUpperCase()}</span><h2>{item.name}</h2><p>{item.description}</p>{page === 'products' && <p className="content-note">Portfolio showcase based on published client work; this is not a separate SEOPune360 product catalogue.</p>}{page !== 'products' && <a className="text-link" href="/case-studies/">Browse client stories <ArrowIcon /></a>}</article>;
   };
   const titleParts = head[1].split(' ');
-  return <><InsideHero kicker={head[0]} title={titleParts.slice(0, Math.max(1, titleParts.length - 1)).join(' ')} accent={titleParts.length > 1 ? titleParts.slice(-1).join(' ') + (head[2] ? ' ' + head[2] : '') : head[2]} copy={head[3]} />{items.length > 0 && <section className="section"><ContentCards items={items} render={renderCard} />{page === 'industries' && !industry && <p className="container content-note">A published client case study is not currently listed for every sector.</p>}{industry && items.length === 0 && <div className="container empty-state"><h2>No published client case study for this category yet.</h2><p>We can still discuss the search and website needs of your business.</p><a className="button" href="/contact/">Talk with us <ArrowIcon /></a></div>}</section>}{body}</>;
+  return <><InsideHero kicker={head[0]} title={titleParts.slice(0, Math.max(1, titleParts.length - 1)).join(' ')} accent={titleParts.length > 1 ? titleParts.slice(-1).join(' ') + (head[2] ? ' ' + head[2] : '') : head[2]} copy={head[3]} />{page === 'case-studies' ? <CaseStudyExplorer /> : items.length > 0 && <section className="section"><ContentCards items={items} render={renderCard} />{page === 'industries' && !industry && <p className="container content-note">A published client case study is not currently listed for every sector.</p>}{industry && items.length === 0 && <div className="container empty-state"><h2>No published client case study for this category yet.</h2><p>We can still discuss the search and website needs of your business.</p><a className="button" href="/contact/">Talk with us <ArrowIcon /></a></div>}</section>}{body}</>;
 }
 
 function App() {
@@ -794,14 +893,18 @@ function App() {
   const [activeCase, setActiveCase] = useState('lusso-marco');
   const [showreelOpen, setShowreelOpen] = useState(false);
   const [cookieOpen, setCookieOpen] = useState(false);
+  const [cookieNoticeOpen, setCookieNoticeOpen] = useState(() => {
+    try { return !window.localStorage.getItem('seopune360-cookie-preferences'); } catch { return true; }
+  });
   const [legalTitle, setLegalTitle] = useState('');
 
   return <div className="page-shell">
     <Header />
     <main>{path === '/' ? <><Hero onPlayShowreel={() => setShowreelOpen(true)} /><ClientSelector activeIndustry={activeIndustry} setActiveIndustry={setActiveIndustry} /><Services activeService={activeService} setActiveService={setActiveService} /><CaseStudies activeCase={activeCase} setActiveCase={setActiveCase} /><Process /><WhyUs /><AuditSection /></> : <PageContent path={path} />}</main>
     <Footer onCookieSettings={() => setCookieOpen(true)} onLegal={setLegalTitle} />
+    {cookieNoticeOpen && <CookieNotice onAccept={() => { applyCookiePreferences({ analytics: true, marketing: true, functional: true }); setCookieNoticeOpen(false); }} onReject={() => { applyCookiePreferences({ analytics: false, marketing: false, functional: false }); setCookieNoticeOpen(false); }} onSettings={() => setCookieOpen(true)} />}
     {showreelOpen && <ShowreelModal onClose={() => setShowreelOpen(false)} />}
-    {cookieOpen && <CookieDialog onClose={() => setCookieOpen(false)} />}
+    {cookieOpen && <CookieDialog onClose={() => setCookieOpen(false)} onSaved={() => setCookieNoticeOpen(false)} />}
     {legalTitle && <LegalDialog title={legalTitle} onClose={() => setLegalTitle('')} />}
   </div>;
 }

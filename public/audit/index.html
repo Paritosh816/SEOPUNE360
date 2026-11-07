@@ -704,6 +704,26 @@
       cursor: pointer;
     }
 
+    .audit-roadmap {
+      margin: 28px 0;
+      padding: clamp(22px, 4vw, 34px);
+      border: 1px solid var(--seo360-border-light);
+      border-radius: 18px;
+      background: linear-gradient(145deg, rgba(55, 214, 255, .08), transparent 55%), var(--seo360-bg-card);
+    }
+    .audit-roadmap h2 { margin: 0 0 8px; font-family: var(--seo360-font-display); font-size: 1.7rem; }
+    .audit-roadmap-intro { margin: 0 0 22px; color: var(--seo360-text-muted); line-height: 1.6; }
+    .audit-roadmap-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .roadmap-phase { padding: 18px; border: 1px solid var(--seo360-border-light); border-radius: 12px; background: rgba(255,255,255,.025); }
+    .roadmap-phase > span { color: var(--seo360-primary); font-size: .75rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }
+    .roadmap-phase h3 { margin: 8px 0 12px; font-size: 1.05rem; }
+    .roadmap-phase ul { display: grid; gap: 10px; margin: 0; padding-left: 18px; color: var(--seo360-text-muted); font-size: .87rem; line-height: 1.5; }
+    .roadmap-phase a { color: inherit; text-decoration-color: var(--seo360-primary); text-underline-offset: 3px; }
+    .roadmap-empty { color: var(--seo360-text-muted); font-size: .87rem; line-height: 1.55; }
+    .audit-roadmap-cta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; margin-top: 20px; padding-top: 18px; border-top: 1px solid var(--seo360-border-light); }
+    .audit-roadmap-cta p { margin: 0; color: var(--seo360-text-muted); }
+    .audit-roadmap-cta a { color: var(--seo360-primary); font-weight: 700; text-decoration: none; }
+
     .radar-card, .finding-card {
       background: var(--seo360-bg-card);
       border: 1px solid var(--seo360-border-light);
@@ -779,7 +799,8 @@
       .seo360-home-grid, .report-hero-grid, .report-body-grid { grid-template-columns: 1fr; }
       .report-sidebar { position: static; }
     }
-  </style>
+      @media (max-width: 960px) { .audit-roadmap-grid { grid-template-columns: 1fr; } }
+</style>
 </head>
 <body>
 
@@ -922,6 +943,7 @@
             <p id="scan-summary">This preview does not perform a live crawl.</p>
             <ul class="crawl-pages" id="crawl-pages"></ul>
           </section>
+          <section class="audit-roadmap" id="audit-roadmap" aria-live="polite"></section>
           <div class="radar-card">
             <div class="radar-wrap">
               <canvas id="radarCanvas" width="600" height="500"></canvas>
@@ -1154,6 +1176,32 @@
       }).join("");
     }
 
+    function renderRoadmap() {
+      const roadmap = document.getElementById("audit-roadmap");
+      const priorities = [
+        { level: "High", period: "Days 1–30", title: "Address priority fixes", summary: "Start with findings marked high priority." },
+        { level: "Medium", period: "Days 31–60", title: "Strengthen key foundations", summary: "Work through medium priority improvements." },
+        { level: "Low", period: "Days 61–90", title: "Refine and maintain", summary: "Review lower priority improvements and set a follow-up cadence." }
+      ];
+      const fixes = CATEGORIES.flatMap(category => (category.fixes || []).map(fix => ({
+        category: category.name,
+        id: category.id,
+        text: fix.text,
+        prio: ["High", "Medium", "Low"].includes(fix.prio) ? fix.prio : "Medium"
+      })));
+      const phases = priorities.map(phase => {
+        const phaseFixes = fixes.filter(fix => fix.prio === phase.level);
+        const contents = phaseFixes.length
+          ? phaseFixes.map(fix => '<li><a href="#cat-' + escapeHtml(fix.id) + '">' + escapeHtml(fix.text) + '</a> <small>(' + escapeHtml(fix.category) + ')</small></li>').join("")
+          : '<li class="roadmap-empty">' + escapeHtml(phase.summary) + ' No findings at this priority were flagged in this scan.</li>';
+        return '<article class="roadmap-phase"><span>' + escapeHtml(phase.period) + '</span><h3>' + escapeHtml(phase.title) + '</h3><ul>' + contents + '</ul></article>';
+      }).join("");
+      roadmap.innerHTML = '<h2>Suggested 30 / 60 / 90 day roadmap</h2>' +
+        '<p class="audit-roadmap-intro">A practical sequence based on the issues surfaced in this scan. Timing is a planning guide; priorities and effort should be reviewed with your team.</p>' +
+        '<div class="audit-roadmap-grid">' + phases + '</div>' +
+        '<div class="audit-roadmap-cta"><p>Want help turning these findings into a business growth plan?</p><a href="/growth-plan/">Build my growth plan →</a></div>';
+    }
+
     function renderLiveReport(result) {
       CATEGORIES = result.categories;
       const domain = new URL(result.scan.website).hostname.replace(/^www\./, "");
@@ -1165,6 +1213,7 @@
       renderPageSpeed(result.pageSpeed);
       renderCrawl(result.scan);
       renderFindings();
+      renderRoadmap();
       drawRadar();
       showReport();
     }
@@ -1181,6 +1230,7 @@
       document.getElementById("crawl-pages").innerHTML = "";
       renderHeroBars(50);
       renderFindings();
+      renderRoadmap();
       drawRadar();
       showReport();
     }

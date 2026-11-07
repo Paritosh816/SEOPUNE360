@@ -21,6 +21,7 @@ const routes = [
   ['/about/', 'About SEOPune360', 'Learn about SEOPune360’s connected approach to search, websites, and business growth.'],
   ['/process/', 'Our Process', 'See how a SEOPune360 project moves from discovery through launch and support.'],
   ['/contact/', 'Contact SEOPune360', 'Start a conversation about your website, search visibility, or business growth goals.'],
+  ['/growth-plan/', 'Build My Growth Plan', 'Get a suggested growth service and practical first 90-day sequence based on your business goal.'],
   ['/sitemap/', 'SEOPune360 Sitemap', 'Browse all SEOPune360 pages, services, client stories, and industries.'],
 ];
 
