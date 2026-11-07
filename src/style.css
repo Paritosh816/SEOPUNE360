@@ -943,6 +943,9 @@ a.content-card:hover { transform:translateY(-4px); border-color:rgba(51,225,208,
   .page-case .case-art { min-height:250px; }
   .page-case .case-copy { padding:8px; }
   .simple-links { grid-template-columns:1fr; }
+  .sitemap-grid { grid-template-columns:1fr; gap:12px; }
+  .sitemap-group { padding:21px; }
+  .sitemap-group ul { grid-template-columns:1fr; }
   .contact-card,.empty-state { padding:23px; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -952,6 +955,18 @@ a.content-card:hover { transform:translateY(-4px); border-color:rgba(51,225,208,
 
 
 
+
+
+/* Human-readable website sitemap */
+.sitemap-content { padding-top: clamp(60px,7vw,100px); }
+.sitemap-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }
+.sitemap-group { padding:25px; border:1px solid var(--line); border-radius:14px; background:linear-gradient(145deg,rgba(19,39,56,.8),rgba(9,25,34,.7)); }
+.sitemap-group h2 { margin:0 0 13px; font-size:1.35rem; letter-spacing:-.045em; }
+.sitemap-group ul { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 17px; margin:0; padding:0; list-style:none; }
+.sitemap-group li { border-top:1px solid rgba(185,222,216,.1); }
+.sitemap-group a { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:11px 0; color:var(--muted-strong); font-size:.87rem; transition:color .18s ease; }
+.sitemap-group a:hover { color:var(--aqua); }
+.sitemap-group a svg { width:15px; flex:none; color:var(--aqua); }
 
 /* Contact page */
 .contact-page { overflow: hidden; }
