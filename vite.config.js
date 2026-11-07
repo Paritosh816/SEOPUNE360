@@ -21,6 +21,7 @@ const routes = [
   ['/about/', 'About SEOPune360', 'Learn about SEOPune360’s connected approach to search, websites, and business growth.'],
   ['/process/', 'Our Process', 'See how a SEOPune360 project moves from discovery through launch and support.'],
   ['/contact/', 'Contact SEOPune360', 'Start a conversation about your website, search visibility, or business growth goals.'],
+  ['/sitemap/', 'SEOPune360 Sitemap', 'Browse all SEOPune360 pages, services, client stories, and industries.'],
 ];
 
 function staticRoutePages() {
@@ -44,6 +45,22 @@ function staticRoutePages() {
         await mkdir(dirname(outputPath), { recursive: true });
         await writeFile(outputPath, page, 'utf8');
       }
+
+      const sitemapUrls = ['/', '/audit/', ...routes.map(([path]) => path)];
+      const escapeXml = (value) => value
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&apos;');
+      const sitemap = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+        ...sitemapUrls.map((path) => `  <url><loc>${escapeXml(`https://seopune360.com${path}`)}</loc></url>`),
+        '</urlset>',
+        '',
+      ].join('\n');
+      await writeFile(join(outputDirectory, 'sitemap.xml'), sitemap, 'utf8');
 
       const auditApiUrl = (process.env.VITE_AUDIT_API_URL || '').trim();
       if (auditApiUrl) {
