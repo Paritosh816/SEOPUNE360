@@ -698,6 +698,8 @@ function ContactPage() {
     const form = event.currentTarget;
     const payload = Object.fromEntries(new FormData(form).entries());
     if (payload._honey) return;
+    payload.message = (payload.message || '') + '\n\nFollow-up preference: ' + (payload.optional_call === 'Yes' ? 'Email reply with an optional call.' : 'Email reply; no call requested.');
+    delete payload.optional_call;
     setSubmitting(true);
     setFormError('');
     try {
@@ -882,7 +884,7 @@ function PageContent({ path }) {
     return <article className="content-card" key={item.name}><span className="card-number">{page === 'products' ? 'CLIENT PLATFORM JOURNEY' : item.type.toUpperCase()}</span><h2>{item.name}</h2><p>{item.description}</p>{page === 'products' && <p className="content-note">Portfolio showcase based on published client work; this is not a separate SEOPune360 product catalogue.</p>}{page !== 'products' && <a className="text-link" href="/case-studies/">Browse client stories <ArrowIcon /></a>}</article>;
   };
   const titleParts = head[1].split(' ');
-  return <><InsideHero kicker={head[0]} title={titleParts.slice(0, Math.max(1, titleParts.length - 1)).join(' ')} accent={titleParts.length > 1 ? titleParts.slice(-1).join(' ') + (head[2] ? ' ' + head[2] : '') : head[2]} copy={head[3]} />{page === 'case-studies' ? <CaseStudyExplorer /> : items.length > 0 && <section className="section"><ContentCards items={items} render={renderCard} />{page === 'industries' && !industry && <p className="container content-note">A published client case study is not currently listed for every sector.</p>}{industry && items.length === 0 && <div className="container empty-state"><h2>No published client case study for this category yet.</h2><p>We can still discuss the search and website needs of your business.</p><a className="button" href="/contact/">Talk with us <ArrowIcon /></a></div>}</section>}{body}</>;
+  return <><InsideHero kicker={head[0]} title={titleParts.slice(0, Math.max(1, titleParts.length - 1)).join(' ')} accent={titleParts.length > 1 ? titleParts.slice(-1).join(' ') + (head[2] ? ' ' + head[2] : '') : head[2]} copy={head[3]} />{page === 'case-studies' && !caseStudy ? <CaseStudyExplorer /> : items.length > 0 && <section className="section"><ContentCards items={items} render={renderCard} />{page === 'industries' && !industry && <p className="container content-note">A published client case study is not currently listed for every sector.</p>}{industry && items.length === 0 && <div className="container empty-state"><h2>No published client case study for this category yet.</h2><p>We can still discuss the search and website needs of your business.</p><a className="button" href="/contact/">Talk with us <ArrowIcon /></a></div>}</section>}{body}</>;
 }
 
 function App() {
