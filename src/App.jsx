@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 const CONTACT_EMAIL = 'seopune360@gmail.com';
-const SHOWREEL_PATH = '/media/seopune360-client-showreel.mp4';
+const SHOWREEL_PATH = '/media/seopune360-showreel-short.mp4';
 
 const industries = [
   { id: 'All industries', label: 'All industries' },
@@ -336,12 +336,78 @@ function ShowreelModal({ onClose }) {
       <div className="showreel-backdrop-glow" aria-hidden="true" />
       <section className="showreel-dialog" role="dialog" aria-modal="true" aria-labelledby="showreel-title">
         <div className="dialog-heading"><div><p className="eyebrow">SEOPune360 showreel</p><h2 id="showreel-title">Client work, in motion.</h2></div><button className="icon-button" aria-label="Close video" onClick={onClose}>×</button></div>
-        {!failed ? <video className="showreel-video" poster="/images/showreel/fpt-branding.png" controls autoPlay playsInline onError={() => setFailed(true)}><source src={SHOWREEL_PATH} type="video/mp4" />Your browser does not support this video.</video> :
+        {!failed ? <video className="showreel-video" poster="/images/showreel/fpt-branding.png" controls autoPlay muted playsInline onError={() => setFailed(true)}><source src={SHOWREEL_PATH} type="video/mp4" />Your browser does not support this video.</video> :
           <div className="video-missing"><span className="missing-play">▶</span><h3>The showreel could not load</h3><p>Try refreshing the page or opening the video directly.</p><a className="button button-outline" href={SHOWREEL_PATH}>Open the showreel <ArrowIcon /></a></div>}
-        <div className="showreel-modal-footer"><span>38 seconds <i /> Six selected project scenes</span><a href="#showreel-story" onClick={onClose}>Explore the project journeys <ArrowIcon /></a></div>
+        <div className="showreel-modal-footer"><a href="#showreel-story" onClick={onClose}>Explore the project journeys <ArrowIcon /></a></div>
       </section>
     </div>
   );
+}
+
+function ScrollShowreel({ onCinema }) {
+  const sectionRef = useRef(null);
+  const videoRef = useRef(null);
+  const suppressed = useRef(false);
+  const manual = useRef(false);
+  const [expanded, setExpanded] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const [muted, setMuted] = useState(true);
+  const [failed, setFailed] = useState(false);
+  function collapse() {
+    suppressed.current = true;
+    manual.current = false;
+    sectionRef.current?.style.setProperty('--reel-progress', '0');
+    videoRef.current?.pause();
+    setExpanded(false);
+  }
+  function expand() {
+    suppressed.current = false;
+    manual.current = true;
+    sectionRef.current?.style.setProperty('--reel-progress', '1');
+    setExpanded(true);
+    videoRef.current?.play().catch(() => setPlaying(false));
+  }
+  useEffect(() => {
+    let frame = 0;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    function update() {
+      frame = 0;
+      const section = sectionRef.current;
+      const video = videoRef.current;
+      if (!section || !video) return;
+      const rect = section.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const visible = rect.top < vh * .6 && rect.bottom > vh * .35;
+      if (!visible) { suppressed.current = false; manual.current = false; video.pause(); }
+      const progress = suppressed.current || reduced.matches ? 0 : manual.current ? 1 : Math.max(0, Math.min(1, (80 - rect.top) / Math.max(1, rect.height - vh)));
+      section.style.setProperty('--reel-progress', String(progress));
+      setExpanded(progress > .08);
+      if (visible && progress > .04 && !suppressed.current && !reduced.matches) video.play().catch(() => setPlaying(false));
+      else if (!manual.current) video.pause();
+    }
+    function schedule() { if (!frame) frame = requestAnimationFrame(update); }
+    function key(event) { if (event.key === 'Escape') collapse(); }
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    window.addEventListener('keydown', key);
+    update();
+    return () => { cancelAnimationFrame(frame); window.removeEventListener('scroll', schedule); window.removeEventListener('resize', schedule); window.removeEventListener('keydown', key); };
+  }, []);
+  return <section ref={sectionRef} className="motion-reel" aria-label="Client showreel">
+    <div className="motion-stage">
+      <div className={'motion-window' + (expanded ? ' is-expanded' : '')}>
+        <video ref={videoRef} className="motion-video" poster="/images/showreel/fpt-branding.png" src={SHOWREEL_PATH} muted={muted} playsInline loop preload="metadata" onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onError={() => setFailed(true)} />
+        {!playing && !failed && <button className="motion-play" onClick={expand} aria-label="Play and expand showreel">▶</button>}
+        {failed && <a className="motion-error" href={SHOWREEL_PATH}>Open showreel</a>}
+        <div className="motion-controls">
+          <button onClick={() => { if (playing) { videoRef.current.pause(); suppressed.current = true; } else { suppressed.current = false; videoRef.current.play().catch(() => setPlaying(false)); } }} aria-label={playing ? 'Pause showreel' : 'Resume showreel'}>{playing ? 'Pause' : 'Play'}</button>
+          <button onClick={() => setMuted(!muted)} aria-label={muted ? 'Turn sound on' : 'Mute showreel'}>{muted ? 'Sound on' : 'Mute'}</button>
+          <button onClick={() => { videoRef.current.pause(); suppressed.current = true; onCinema(); }}>Cinema view</button>
+          {expanded && <button onClick={collapse} aria-label="Return video to normal size">Close ×</button>}
+        </div>
+      </div>
+    </div>
+  </section>;
 }
 
 function Hero({ onPlayShowreel }) {
@@ -363,20 +429,8 @@ function Hero({ onPlayShowreel }) {
           <p className="hero-support">From better search visibility to a clearer website journey, one team helps you make the next step count.</p>
           <div className="hero-actions"><a className="text-link" href="#services">Explore our services <ArrowIcon /></a><span className="hero-proof"><b>SEO · Web · Growth</b><small>Built around your business</small></span></div>
         </div>
-        <div className="hero-art-wrap">
-          <div className="art-glow" aria-hidden="true" />
-          <div className="hero-art" aria-label="SEOPune360 website and client showcase preview">
-            <div className="art-topline"><span className="art-dots"><i /><i /><i /></span><span>SEOPUNE360 / GROWTH IN MOTION</span><span>01 — 07</span></div>
-            <div className="art-main art-fpt-main">
-              <div className="art-fpt-frame"><img className="art-fpt-image" src="/images/showreel/fpt-branding.png" alt="FPT Powertrain Technologies logo artwork" /><span className="art-fpt-caption">FPT POWERTRAIN TECHNOLOGIES · BRAND WORK</span></div>
-            </div>
-            <div className="art-client-strip"><span>FEATURED BRAND WORK</span><b>FPT POWERTRAIN</b><b>LOGO ARTWORK</b></div>
-            <button className="showreel-play" onClick={onPlayShowreel} aria-label="Play SEOPune360 client showreel"><span>▶</span></button>
-            <div className="art-side-label">SEO · GROWTH <i /> DIGITAL GROWTH</div>
-          </div>
-          <div className="hero-caption"><span className="caption-mark">↗</span><span><b>Built for real business goals</b><small>Search visibility · Better enquiries · Sustainable growth</small></span></div>
-        </div>
       </div>
+      <ScrollShowreel onCinema={onPlayShowreel} />
       <div className="hero-scroll container"><span>Scroll to explore</span><i /></div>
     </section>
   );
@@ -466,7 +520,7 @@ function ShowreelJourney({ onPlayShowreel }) {
                 <span aria-hidden="true">▶</span> Play full showreel
               </button>
             </div>
-            <p className="showreel-preview-note">38 seconds <i /> Six selected project scenes</p>
+
           </aside>
         </div>
       </div>

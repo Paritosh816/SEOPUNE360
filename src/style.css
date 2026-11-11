@@ -1352,3 +1352,17 @@ a.content-card:hover { transform:translateY(-4px); border-color:rgba(51,225,208,
   .showreel-step, .showreel-browser-frame, .showreel-step-arrow, .showreel-preview-play { transition: none; }
   .showreel-browser-screen img { animation: none; }
 }
+
+/* The playing video grows with the page scroll. */
+.hero { overflow: clip; }
+.motion-reel { --reel-progress: 0; position: relative; z-index: 3; height: 170vh; margin-top: -240px; pointer-events: none; }
+.motion-stage { position: sticky; top: 80px; height: calc(100vh - 100px); display: grid; place-items: center; }
+.motion-window { position: relative; width: min(1280px,94vw,calc((100vh - 150px) * 16 / 9)); aspect-ratio: 16 / 9; overflow: hidden; border: 1px solid rgba(130,238,215,.35); border-radius: calc(18px - 10px * var(--reel-progress)); background: #000; box-shadow: 0 30px 100px #0008,0 0 80px #39e1c518; transform: translateX(calc(24vw * (1 - var(--reel-progress)))) scale(calc(.48 + .52 * var(--reel-progress))); transition: transform .15s linear; pointer-events: auto; }
+.motion-video { display: block; width: 100%; height: 100%; object-fit: contain; }
+.motion-play { position: absolute; inset: 0; margin: auto; width: 64px; height: 64px; border-radius: 50%; border: 1px solid #fff9; background: #05171bbf; color: white; font-size: 22px; cursor: pointer; }
+.motion-controls { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: flex-end; gap: 8px; padding: 12px; background: linear-gradient(transparent,#000a); opacity: 0; transition: opacity .2s; }
+.motion-window:hover .motion-controls,.motion-window:focus-within .motion-controls { opacity: 1; }
+.motion-controls button { border: 1px solid #fff5; background: #071820d9; color: #fff; border-radius: 20px; padding: 8px 12px; cursor: pointer; font: inherit; font-size: 12px; }
+.motion-error { position: absolute; inset: 40% 20%; text-align: center; color: white; }
+@media(max-width:900px) { .motion-reel { margin-top: 0; height: 145vh; } .motion-window { transform: scale(calc(.85 + .15 * var(--reel-progress))); } .motion-controls { opacity: 1; gap: 4px; padding: 6px; } .motion-controls button { font-size: 10px; padding: 6px 8px; } }
+@media(prefers-reduced-motion:reduce) { .motion-reel { height: auto; margin-top: 0; padding: 30px 0; } .motion-stage { position: relative; top: auto; height: auto; } .motion-window { transform: none; transition: none; } }
