@@ -336,7 +336,7 @@ function ShowreelModal({ onClose }) {
       <div className="showreel-backdrop-glow" aria-hidden="true" />
       <section className="showreel-dialog" role="dialog" aria-modal="true" aria-labelledby="showreel-title">
         <div className="dialog-heading"><div><p className="eyebrow">SEOPune360 showreel</p><h2 id="showreel-title">Client work, in motion.</h2></div><button className="icon-button" aria-label="Close video" onClick={onClose}>×</button></div>
-        {!failed ? <video className="showreel-video" controls autoPlay playsInline onError={() => setFailed(true)}><source src={SHOWREEL_PATH} type="video/mp4" />Your browser does not support this video.</video> :
+        {!failed ? <video className="showreel-video" poster="/images/showreel/fpt-branding.png" controls autoPlay playsInline onError={() => setFailed(true)}><source src={SHOWREEL_PATH} type="video/mp4" />Your browser does not support this video.</video> :
           <div className="video-missing"><span className="missing-play">▶</span><h3>The showreel could not load</h3><p>Try refreshing the page or opening the video directly.</p><a className="button button-outline" href={SHOWREEL_PATH}>Open the showreel <ArrowIcon /></a></div>}
         <div className="showreel-modal-footer"><span>38 seconds <i /> Six selected project scenes</span><a href="#showreel-story" onClick={onClose}>Explore the project journeys <ArrowIcon /></a></div>
       </section>
@@ -367,16 +367,10 @@ function Hero({ onPlayShowreel }) {
           <div className="art-glow" aria-hidden="true" />
           <div className="hero-art" aria-label="SEOPune360 website and client showcase preview">
             <div className="art-topline"><span className="art-dots"><i /><i /><i /></span><span>SEOPUNE360 / GROWTH IN MOTION</span><span>01 — 07</span></div>
-            <div className="art-main">
-              <div className="art-brand-block"><span className="art-kicker">DISCOVER · ENGAGE · GROW</span><strong>More of the<br /><em>right attention.</em></strong><span className="art-cursor"><i /> search visibility</span></div>
-              <div className="art-dashboard">
-                <div className="dash-head"><span>Organic growth</span><b>↗</b></div>
-                <div className="dash-number"><span>Organic</span><small>Illustrative search visibility preview</small></div>
-                <svg className="chart-line" viewBox="0 0 280 112" aria-hidden="true"><defs><linearGradient id="chartFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stopColor="currentColor" stopOpacity=".3" /><stop offset="1" stopColor="currentColor" stopOpacity="0" /></linearGradient></defs><path d="M0 95 C28 82 38 86 57 70 S91 78 111 58 137 65 155 47 189 55 205 29 236 36 280 8 L280 112 L0 112Z" fill="url(#chartFill)" /><path d="M0 95 C28 82 38 86 57 70 S91 78 111 58 137 65 155 47 189 55 205 29 236 36 280 8" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" /></svg>
-                <div className="dash-labels"><span>SEARCH</span><span>CONTENT</span><span>LEADS</span></div>
-              </div>
+            <div className="art-main art-fpt-main">
+              <div className="art-fpt-frame"><img className="art-fpt-image" src="/images/showreel/fpt-branding.png" alt="FPT Powertrain Technologies logo artwork" /><span className="art-fpt-caption">FPT POWERTRAIN TECHNOLOGIES · BRAND WORK</span></div>
             </div>
-            <div className="art-client-strip"><span>FEATURED CLIENTS</span><b>KJ GROUP</b><b>SHAW TATA</b><b>RIVAN TRAVELS</b></div>
+            <div className="art-client-strip"><span>FEATURED BRAND WORK</span><b>FPT POWERTRAIN</b><b>LOGO ARTWORK</b></div>
             <button className="showreel-play" onClick={onPlayShowreel} aria-label="Play SEOPune360 client showreel"><span>▶</span></button>
             <div className="art-side-label">SEO · GROWTH <i /> DIGITAL GROWTH</div>
           </div>
