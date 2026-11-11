@@ -68,45 +68,6 @@ const caseStudies = [
   },
 ];
 
-const showreelProjects = [
-  {
-    name: 'Lusso Marco', category: 'Fragrance', previewType: 'Website experience',
-    summary: 'Product discovery for a distinctive fragrance range.',
-    image: '/images/showreel/lusso.png', alt: 'Lusso Marco storefront with fragrance campaign imagery',
-    href: '/case-studies/lusso-marco/', action: 'View project story',
-  },
-  {
-    name: 'Hotel Shivtara', category: 'Hospitality', previewType: 'Website experience',
-    summary: 'Stay planning, room discovery, and local information.',
-    image: '/images/showreel/hotel-shivtara.png', alt: 'Hotel Shivtara homepage with property photography and booking calls to action',
-    href: '/case-studies/hotel-shivtara/', action: 'View project story',
-  },
-  {
-    name: 'Shaw Toyota', category: 'Automotive', previewType: 'Website experience',
-    summary: 'Vehicle discovery and a clear path to dealership enquiries.',
-    image: '/images/showreel/shaw-toyota.png', alt: 'Shaw Toyota vehicle homepage with dealership navigation',
-    href: '/case-studies/shaw-toyota/', action: 'View project story',
-  },
-  {
-    name: 'Krishna Classical', category: 'Healthcare', previewType: 'Published client story',
-    summary: 'Service clarity and an easier appointment enquiry path.',
-    image: '/images/showreel/krishna-clinic.png', alt: 'SEOPune360 client story page for Krishna Classical Homoeopathy Clinic',
-    href: '/case-studies/krishna-clinic/', action: 'Read client story',
-  },
-  {
-    name: 'FPT Powertrain Technologies', category: 'Branding', previewType: 'Brand artwork',
-    summary: 'An industrial identity presented with a strong visual system.',
-    image: '/images/showreel/fpt-branding.png', alt: 'FPT Powertrain Technologies brand artwork',
-    href: '/services/business-branding/', action: 'Explore branding',
-  },
-  {
-    name: 'Shaw Tata', category: 'Automotive', previewType: 'Published client story',
-    summary: 'Local search visibility and test-drive enquiry activity.',
-    image: '/images/showreel/shaw-tata-case.png', alt: 'SEOPune360 published Shaw Tata client story page',
-    href: '/case-studies/shaw-tata/', action: 'Read client story',
-  },
-];
-
 const services = [
   { id: 'seo', number: '01', title: 'Search Engine Optimization', summary: 'Build lasting search visibility as part of a connected growth marketing plan.', items: ['Technical and on-page SEO', 'Local SEO and Google Business Profile', 'Content and keyword strategy'], type: 'search' },
   { id: 'geo', number: '02', title: 'AI Search & GEO', summary: 'Make your expertise easier to discover across search engines and AI answer experiences.', items: ['Entity and topic clarity', 'Structured content foundations', 'AI search visibility reviews'], type: 'ai' },
@@ -338,7 +299,7 @@ function ShowreelModal({ onClose }) {
         <div className="dialog-heading"><div><p className="eyebrow">SEOPune360 showreel</p><h2 id="showreel-title">Client work, in motion.</h2></div><button className="icon-button" aria-label="Close video" onClick={onClose}>×</button></div>
         {!failed ? <video className="showreel-video" poster="/images/showreel/fpt-branding.png" controls autoPlay muted playsInline onError={() => setFailed(true)}><source src={SHOWREEL_PATH} type="video/mp4" />Your browser does not support this video.</video> :
           <div className="video-missing"><span className="missing-play">▶</span><h3>The showreel could not load</h3><p>Try refreshing the page or opening the video directly.</p><a className="button button-outline" href={SHOWREEL_PATH}>Open the showreel <ArrowIcon /></a></div>}
-        <div className="showreel-modal-footer"><a href="#showreel-story" onClick={onClose}>Explore the project journeys <ArrowIcon /></a></div>
+        <div className="showreel-modal-footer"><a href="/case-studies/" onClick={onClose}>Explore client stories <ArrowIcon /></a></div>
       </section>
     </div>
   );
@@ -393,7 +354,7 @@ function ScrollShowreel({ onCinema }) {
     update();
     return () => { cancelAnimationFrame(frame); window.removeEventListener('scroll', schedule); window.removeEventListener('resize', schedule); window.removeEventListener('keydown', key); };
   }, []);
-  return <section ref={sectionRef} className="motion-reel" aria-label="Client showreel">
+  return <section ref={sectionRef} className="motion-reel" id="showreel-story" aria-label="Client showreel">
     <div className="motion-stage">
       <div className={'motion-window' + (expanded ? ' is-expanded' : '')}>
         <video ref={videoRef} className="motion-video" poster="/images/showreel/fpt-branding.png" src={SHOWREEL_PATH} muted={muted} playsInline loop preload="metadata" onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onError={() => setFailed(true)} />
@@ -432,98 +393,6 @@ function Hero({ onPlayShowreel }) {
       </div>
       <ScrollShowreel onCinema={onPlayShowreel} />
       <div className="hero-scroll container"><span>Scroll to explore</span><i /></div>
-    </section>
-  );
-}
-
-function ShowreelJourney({ onPlayShowreel }) {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const activeProject = showreelProjects[activeIndex];
-
-  useEffect(() => {
-    if (!('IntersectionObserver' in window)) return undefined;
-    const steps = Array.from(document.querySelectorAll('[data-showreel-step]'));
-    const observer = new IntersectionObserver((entries) => {
-      const current = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-      if (current) setActiveIndex(Number(current.target.dataset.showreelStep));
-    }, { rootMargin: '-42% 0px -42% 0px', threshold: 0 });
-    steps.forEach((step) => observer.observe(step));
-    return () => observer.disconnect();
-  }, []);
-
-  function selectProject(index) {
-    setActiveIndex(index);
-    document.getElementById(`showreel-step-${index}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-
-  return (
-    <section className="showreel-journey section" id="showreel-story" aria-labelledby="showreel-journey-title">
-      <div className="container">
-        <div className="showreel-journey-heading">
-          <div>
-            <p className="eyebrow">Selected work · in motion</p>
-            <h2 id="showreel-journey-title">Every project has <span>a next step.</span></h2>
-          </div>
-          <p>Scroll through client journeys. The project window follows along, then open the full showreel for the moving story.</p>
-        </div>
-
-        <div className="showreel-journey-layout">
-          <div className="showreel-journey-steps" aria-label="Select a client project">
-            {showreelProjects.map((project, index) => (
-              <article
-                className={'showreel-step' + (activeIndex === index ? ' is-active' : '')}
-                id={`showreel-step-${index}`}
-                data-showreel-step={index}
-                key={project.name}
-              >
-                <button
-                  type="button"
-                  className="showreel-step-trigger"
-                  aria-pressed={activeIndex === index}
-                  onClick={() => selectProject(index)}
-                >
-                  <span className="showreel-step-number">{String(index + 1).padStart(2, '0')}</span>
-                  <span className="showreel-step-copy">
-                    <small>{project.category} <i /> {project.previewType}</small>
-                    <strong>{project.name}</strong>
-                    <span>{project.summary}</span>
-                  </span>
-                  <span className="showreel-step-arrow" aria-hidden="true">↗</span>
-                </button>
-                <a className="showreel-step-link" href={project.href}>{project.action} <ArrowIcon /></a>
-              </article>
-            ))}
-          </div>
-
-          <aside className="showreel-preview-sticky" aria-label="Live project preview">
-            <div className="showreel-preview-glow" aria-hidden="true" />
-            <div className="showreel-browser-frame">
-              <div className="showreel-browser-bar">
-                <span className="showreel-browser-dots" aria-hidden="true"><i /><i /><i /></span>
-                <span>SEOPUNE360 / CLIENT STORY</span>
-                <span>{String(activeIndex + 1).padStart(2, '0')} / 06</span>
-              </div>
-              <div className="showreel-browser-screen" key={activeProject.image}>
-                <img src={activeProject.image} alt={activeProject.alt} loading={activeIndex === 0 ? 'eager' : 'lazy'} />
-                <div className="showreel-screen-shade" />
-                <div className="showreel-screen-caption" aria-live="polite">
-                  <span>{activeProject.category} · {activeProject.previewType}</span>
-                  <strong>{activeProject.name}</strong>
-                </div>
-              </div>
-            </div>
-            <div className="showreel-preview-footer">
-              <a className="showreel-preview-story" href={activeProject.href}>{activeProject.action} <ArrowIcon /></a>
-              <button type="button" className="showreel-preview-play" onClick={onPlayShowreel}>
-                <span aria-hidden="true">▶</span> Play full showreel
-              </button>
-            </div>
-
-          </aside>
-        </div>
-      </div>
     </section>
   );
 }
@@ -1084,7 +953,7 @@ function App() {
 
   return <div className="page-shell">
     <Header />
-    <main>{path === '/' ? <><Hero onPlayShowreel={() => setShowreelOpen(true)} /><ShowreelJourney onPlayShowreel={() => setShowreelOpen(true)} /><ClientSelector activeIndustry={activeIndustry} setActiveIndustry={setActiveIndustry} /><Services activeService={activeService} setActiveService={setActiveService} /><CaseStudies activeCase={activeCase} setActiveCase={setActiveCase} /><Process /><WhyUs /><AuditSection /></> : <PageContent path={path} />}</main>
+    <main>{path === '/' ? <><Hero onPlayShowreel={() => setShowreelOpen(true)} /><ClientSelector activeIndustry={activeIndustry} setActiveIndustry={setActiveIndustry} /><Services activeService={activeService} setActiveService={setActiveService} /><CaseStudies activeCase={activeCase} setActiveCase={setActiveCase} /><Process /><WhyUs /><AuditSection /></> : <PageContent path={path} />}</main>
     <Footer onCookieSettings={() => setCookieOpen(true)} onLegal={setLegalTitle} />
     {cookieNoticeOpen && <CookieNotice onAccept={() => { applyCookiePreferences({ analytics: true, marketing: true, functional: true }); setCookieNoticeOpen(false); }} onReject={() => { applyCookiePreferences({ analytics: false, marketing: false, functional: false }); setCookieNoticeOpen(false); }} onSettings={() => setCookieOpen(true)} />}
     {showreelOpen && <ShowreelModal onClose={() => setShowreelOpen(false)} />}
