@@ -1366,12 +1366,3 @@ a.content-card:hover { transform:translateY(-4px); border-color:rgba(51,225,208,
 .motion-error { position: absolute; inset: 40% 20%; text-align: center; color: white; }
 @media(max-width:900px) { .motion-reel { margin-top: 0; height: 145vh; } .motion-window { transform: scale(calc(.85 + .15 * var(--reel-progress))); } .motion-controls { opacity: 1; gap: 4px; padding: 6px; } .motion-controls button { font-size: 10px; padding: 6px 8px; } }
 @media(prefers-reduced-motion:reduce) { .motion-reel { height: auto; margin-top: 0; padding: 30px 0; } .motion-stage { position: relative; top: auto; height: auto; } .motion-window { transform: none; transition: none; } }
-
-/* Website development portfolio */
-.project-service { display: block; margin: .5rem 0 .75rem; color: #168f7d; font-size: .75rem; font-weight: 750; letter-spacing: .04em; }
-.project-website-link { display: flex; width: fit-content; margin-top: 1rem; }
-.logo-website-project { font-size: clamp(.95rem, 1.4vw, 1.35rem); letter-spacing: -.03em; }
-.case-matrimony .case-art { background: linear-gradient(145deg, #75404c, #442d40 60%, #192c32); }
-.case-matrimony .case-art-logo { color: #ffe4d4; font-family: Georgia, serif; }
-.case-software .case-art { background: linear-gradient(145deg, #235b97, #163d60 60%, #102b35); }
-.case-construction .case-art { background: linear-gradient(145deg, #374d70, #263952 60%, #122b32); }
