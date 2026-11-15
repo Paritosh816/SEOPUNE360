@@ -15,12 +15,12 @@ const routes = [
   ['/case-studies/ananya-rishtey/', 'Ananya Rishtey Website Development', 'Explore a matrimony website with visual storytelling, animated product previews, and vendor registration pages.'],
   ['/case-studies/intellidant/', 'IntelliDant Website Development', 'Explore a dental software website with product presentation, plan comparisons, and clinic registration pages.'],
   ['/case-studies/adi-dev/', 'A.D.I DEV Website Development', 'Explore an Australian B2B construction support website with service, enquiry, and careers journeys.'],
-  ...['kj-group', 'crevolution', 'rivan-travels', 'shaw-tata', 'shaw-toyota', 'krishna-clinic', 'hotel-shivtara'].map((id) => [`/case-studies/${id}/`, `${id.replaceAll('-', ' ')} client story`, 'Explore the published SEOPune360 client project summary and reported outcomes.']),
-  ['/case-studies/lusso-marco/', 'Lusso Marco Growth Marketing Case Study', 'See how website SEO, Google Ads, and Meta Ads support growth marketing for a fragrance brand.'],
+  ...['kj-group', 'crevolution', 'rivan-travels', 'shaw-tata', 'shaw-toyota', 'krishna-clinic', 'hotel-shivtara', 'era-infratech', 'fpt', 'koriv-studio', 'the-jolly-box'].map((id) => [`/case-studies/${id}/`, `${id.replaceAll('-', ' ')} client story`, 'Explore the SEOPune360 client project and its service scope.']),
+  ['/case-studies/lusso-marco/', 'Lusso Marco Growth Marketing Case Study', 'Explore growth marketing and digital campaign work for Lusso Marco.'],
   ['/portfolio/', 'Client Portfolio', 'Browse businesses represented in the current SEOPune360 client portfolio.'],
   ['/products/', 'Products & Platforms', 'Explore client products and platform journeys represented in SEOPune360 published work.'],
   ['/industries/', 'Industries', 'Explore the industries represented in the current SEOPune360 client portfolio.'],
-  ...['matrimony', 'healthcare-technology', 'construction-support', 'b2b', 'hospitality', 'fintech', 'automobile', 'b2c', 'real-estate', 'healthcare'].map((slug) => [`/industries/${slug}/`, `${slug.replaceAll('-', ' ')} digital growth`, `Explore SEOPune360 services and published client work for ${slug.replaceAll('-', ' ')} businesses.`]),
+  ...['matrimonial', 'healthcare', 'real-estate', 'hospitality', 'automobile', 'manufacturing-industry', 'infratech'].map((slug) => [`/industries/${slug}/`, `${slug.replaceAll('-', ' ')} digital growth`, `Explore SEOPune360 services and published client work for ${slug.replaceAll('-', ' ')} businesses.`]),
   ['/about/', 'About SEOPune360', 'Learn about SEOPune360’s connected approach to search, websites, and business growth.'],
   ['/process/', 'Our Process', 'See how a SEOPune360 project moves from discovery through launch and support.'],
   ['/contact/', 'Contact SEOPune360', 'Start a conversation about your website, search visibility, or business growth goals.'],
@@ -48,6 +48,17 @@ function staticRoutePages() {
         const outputPath = join(outputDirectory, path.slice(1), 'index.html');
         await mkdir(dirname(outputPath), { recursive: true });
         await writeFile(outputPath, page, 'utf8');
+      }
+
+      const industryRedirects = {
+        matrimony: 'matrimonial', 'healthcare-technology': 'healthcare', 'construction-support': 'real-estate',
+        b2b: '', b2c: '', fintech: '',
+      };
+      for (const [oldSlug, newSlug] of Object.entries(industryRedirects)) {
+        const target = '/industries/' + (newSlug ? newSlug + '/' : '');
+        const outputPath = join(outputDirectory, 'industries', oldSlug, 'index.html');
+        await mkdir(dirname(outputPath), { recursive: true });
+        await writeFile(outputPath, '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0;url=' + target + '"><link rel="canonical" href="https://seopune360.com' + target + '"><title>Industry page moved | SEOPune360</title></head><body><a href="' + target + '">Explore this industry</a></body></html>', 'utf8');
       }
 
       const sitemapUrls = ['/', '/audit/', ...routes.map(([path]) => path)];

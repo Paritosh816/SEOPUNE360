@@ -4,93 +4,56 @@ const SHOWREEL_PATH = '/media/seopune360-showreel-short.mp4';
 
 const websiteProjects = [
   {
-    id: 'ananya-rishtey', name: 'Ananya Rishtey', industry: 'Matrimony',
+    id: 'ananya-rishtey', name: 'Ananya Rishtey', industry: 'Matrimonial',
     website: 'https://www.ananyarishtey.com/', tone: 'case-matrimony',
     description: 'A matrimony app launch website brought to life through warm visual storytelling, animated product previews, pricing, and a clear vendor registration journey.',
     scope: ['Visual storytelling', 'Animated product presentation', 'Plan comparison', 'Vendor registration pages'],
   },
   {
-    id: 'intellidant', name: 'IntelliDant', industry: 'Healthcare Technology',
+    id: 'intellidant', name: 'IntelliDant', industry: 'Healthcare',
     website: 'https://intellidant.com/', tone: 'case-software',
     description: 'A dental software website that makes practice management easier to understand through product modules, dashboard visuals, plan comparisons, and a clear clinic registration journey.',
     scope: ['Software product presentation', 'Dashboard-led visuals', 'Pricing comparison', 'Clinic registration pages'],
   },
   {
-    id: 'adi-dev', name: 'A.D.I DEV', industry: 'Construction Support',
+    id: 'adi-dev', name: 'A.D.I DEV', industry: 'Real Estate',
     website: 'https://www.adidev.com.au/', tone: 'case-construction',
     description: 'An international B2B website for an Australian construction support business, organising tender, estimation, project management, and administration services into clear enquiry and careers journeys.',
     scope: ['International B2B website', 'Service-led navigation', 'Business enquiry journey', 'Careers presentation'],
   },
 ];
 
+// Approved client services and industries. All portfolio views share this mapping.
+const clientProjects = [
+  ...websiteProjects.map((project) => ({ ...project, industries: [project.industry], serviceTypes: ['Website Development'], serviceIds: ['development'] })),
+  { id: 'kj-group', name: 'KJ Group', industries: ['Real Estate'], serviceTypes: ['Branding'], serviceIds: ['branding'], tone: 'case-realestate', description: 'Branding for KJ Group, with a visual identity presented across logo variations and branded applications.', scope: ['Branding', 'Visual identity', 'Brand applications'] },
+  { id: 'crevolution', name: 'Crevolution LLP', industries: ['Real Estate'], serviceTypes: ['Branding'], serviceIds: ['branding'], tone: 'case-architecture', description: 'Branding for Crevolution LLP, supporting a consistent identity for its architecture and interiors business.', scope: ['Branding'] },
+  { id: 'rivan-travels', name: 'Rivan Travels', industries: ['Hospitality'], serviceTypes: ['Branding', 'Logo'], serviceIds: ['branding'], tone: 'case-travel', description: 'Branding and logo work for Rivan Travels, giving its travel services a recognisable visual identity.', scope: ['Branding', 'Logo'] },
+  { id: 'lusso-marco', name: 'Lusso Marco', industries: ['Healthcare'], serviceTypes: ['Growth Marketing', 'Digital Campaigns'], serviceIds: ['growth', 'leads'], tone: 'case-fragrance', description: 'Growth marketing and digital campaigns for Lusso Marco, connecting brand discovery with product consideration and online sales activity.', scope: ['Growth Marketing', 'Digital Campaigns', 'Google Ads', 'Meta Ads'] },
+  { id: 'shaw-toyota', name: 'Shaw Toyota', industries: ['Automobile'], serviceTypes: ['PPC Lead Generation'], serviceIds: ['leads'], tone: 'case-toyota', description: 'PPC lead generation for Shaw Toyota, focused on reaching prospective vehicle buyers and encouraging dealership enquiries.', scope: ['PPC Lead Generation'] },
+  { id: 'shaw-tata', name: 'Shaw Tata', industries: ['Automobile'], serviceTypes: ['PPC Lead Generation'], serviceIds: ['leads'], tone: 'case-automobile', description: 'PPC lead generation for Shaw Tata, supporting vehicle discovery and enquiries from prospective customers.', scope: ['PPC Lead Generation'] },
+  { id: 'krishna-clinic', name: 'Krishna Classical Homoeopathy Clinic', industries: ['Healthcare'], serviceTypes: ['Website Development', 'Social Media Management'], serviceIds: ['development'], tone: 'case-healthcare', description: 'Website development and social media management for Krishna Classical Homoeopathy Clinic, presenting its services clearly across its website and social channels.', scope: ['Website Development', 'Social Media Management'] },
+  { id: 'hotel-shivtara', name: 'Hotel Shivtara', industries: ['Hospitality'], serviceTypes: ['Website Development'], serviceIds: ['development'], tone: 'case-hospitality', description: 'Website development for Hotel Shivtara, presenting the hotel and key information for guests planning their stay.', scope: ['Website Development'] },
+  { id: 'era-infratech', name: 'ERA Infratech', industries: ['Real Estate'], serviceTypes: ['Branding'], serviceIds: ['branding'], tone: 'case-realestate', description: 'Branding for ERA Infratech, with logo variations and a visual identity presentation.', scope: ['Branding', 'Visual identity'] },
+  { id: 'fpt', name: 'FPT Powertrain Technologies', industries: ['Manufacturing Industry'], serviceTypes: ['Branding'], serviceIds: ['branding'], serviceNote: 'India Office', tone: 'case-construction', description: 'Branding work for the India office of FPT Powertrain Technologies, presented through the supplied logo artwork.', scope: ['Branding — India Office'] },
+  { id: 'koriv-studio', name: 'Koriv Studio', industries: ['Real Estate', 'Infratech'], serviceTypes: ['Logo'], serviceIds: ['branding'], tone: 'case-architecture', description: 'Logo work for Koriv Studio, presented through its identity artwork and branded mockups.', scope: ['Logo'] },
+  { id: 'the-jolly-box', name: 'The Jolly Box', industries: ['Hospitality'], serviceTypes: ['Branding'], serviceIds: ['branding'], tone: 'case-hospitality', description: 'Branding for The Jolly Box, featuring its gift-inspired logo and visual identity.', scope: ['Branding'] },
+];
+
 const industries = [
   { id: 'All industries', label: 'All industries' },
-  ...websiteProjects.map((project) => ({ id: project.industry, label: project.industry })),
-  { id: 'B2B', label: 'B2B' },
-  { id: 'Hospitality', label: 'Hospitality' },
-  { id: 'Fintech', label: 'Fintech' },
-  { id: 'Automobile', label: 'Automobile' },
-  { id: 'B2C', label: 'B2C' },
-  { id: 'Real Estate', label: 'Real Estate' },
-  { id: 'Healthcare', label: 'Healthcare' },
+  ...[...new Set(clientProjects.flatMap((project) => project.industries))].map((name) => ({ id: name, label: name })),
 ];
-
-const clients = [
-  ...websiteProjects.map((project) => ({ name: project.name, type: project.industry, service: 'Website Development', description: project.description, tone: 'logo-website-project', caseId: project.id })),
-  { name: 'KJ Group', type: 'Real Estate', description: 'Real estate group serving buyers and investors across Pune.', tone: 'logo-kj' },
-  { name: 'Crevolution LLP', type: 'B2B', description: 'Architecture and interior design studio with a project-led service journey.', tone: 'logo-crevolution' },
-  { name: 'Rivan Travels', type: 'B2C', description: 'Travel company focused on discoverability and booking enquiries.', tone: 'logo-rivan' },
-  { name: 'Lusso Marco', type: 'B2C', description: 'Fragrance brand offering Eau de Parfum including Blue Marina, Noxious, and Red Bites.', tone: 'logo-lusso-marco' },
-  { name: 'Shaw Tata', type: 'Automobile', description: 'Tata Motors dealership with local search and test-drive enquiries.', tone: 'logo-tata' },
-  { name: 'Shaw Toyota', type: 'Automobile', description: 'Toyota dealership serving customers across the Pune region.', tone: 'logo-toyota' },
-  { name: 'Krishna Classical Homoeopathy Clinic', type: 'Healthcare', description: 'Healthcare clinic connecting local patients with its services.', tone: 'logo-krishna' },
-  { name: 'Hotel Shivtara', type: 'Hospitality', description: 'Hotel website and local visibility for guests planning a stay.', tone: 'logo-shivtara' },
-];
-
-const caseStudies = [
-  ...websiteProjects.map((project) => ({ id: project.id, label: project.name, category: project.industry, service: 'Website Development', mark: project.name, tone: project.tone, copy: project.description, metrics: [], scope: project.scope, website: project.website })),
-  {
-    id: 'lusso-marco', label: 'Lusso Marco', category: 'Fragrance', mark: 'LUSSO MARCO', tone: 'case-fragrance',
-    copy: 'Lusso Marco’s Eau de Parfum range includes Blue Marina, Noxious, and Red Bites. Current growth marketing work connects website SEO with Google Ads and Meta Ads to support product discovery and online sales activity.',
-    metrics: [],
-    scope: ['Website SEO', 'Google Ads', 'Meta Ads'],
-  },
-  {
-    id: 'kj-group', label: 'KJ Group', category: 'Real Estate', mark: 'KJ GROUP', tone: 'case-realestate',
-    copy: 'A clearer local search presence and more useful property journeys helped KJ Group connect with people looking for real estate in Pune.',
-    metrics: ['+210% organic traffic', '48 monthly site-visit leads', '12 local keywords in the top 3'],
-  },
-  {
-    id: 'crevolution', label: 'Crevolution LLP', category: 'Architecture & Interiors', mark: 'CREVOLUTION', tone: 'case-architecture',
-    copy: 'A stronger search foundation helped Crevolution reach people looking for architecture and interior design services in Pune.',
-    metrics: ['+165% organic traffic', '22 monthly project enquiries', 'Top 5 for “architects in Pune”'],
-  },
-  {
-    id: 'rivan-travels', label: 'Rivan Travels', category: 'Travel', mark: 'RIVAN TRAVELS', tone: 'case-travel',
-    copy: 'Search-focused pages and a more direct booking journey made it easier for travellers to discover and enquire with Rivan Travels.',
-    metrics: ['+230% organic traffic', '+85% bookings', '18,000 monthly visits'],
-  },
-  {
-    id: 'shaw-tata', label: 'Shaw Tata', category: 'Automobile', mark: 'TATA MOTORS', tone: 'case-automobile',
-    copy: 'Local search improvements helped nearby customers find the dealership, explore vehicles, and take the next step toward a test drive.',
-    metrics: ['+155% local traffic', '60+ monthly test-drive leads', '12 local terms in the top 3'],
-  },
-  {
-    id: 'shaw-toyota', label: 'Shaw Toyota', category: 'Automobile', mark: 'TOYOTA', tone: 'case-toyota',
-    copy: 'A focused local visibility programme strengthened discovery for the dealership and its vehicle range across Pune.',
-    metrics: ['+190% local traffic', '600 monthly leads', 'Top local visibility for Toyota showroom searches'],
-  },
-  {
-    id: 'krishna-clinic', label: 'Krishna Classical Homoeopathy Clinic', category: 'Healthcare', mark: 'KRISHNA CLINIC', tone: 'case-healthcare',
-    copy: 'The clinic improved local discoverability and made it simpler for patients to understand its services and request an appointment.',
-    metrics: ['+205% organic traffic', '95 monthly appointment enquiries', 'Top 3 for local homeopathy searches'],
-  },
-  {
-    id: 'hotel-shivtara', label: 'Hotel Shivtara', category: 'Hospitality', mark: 'HOTEL SHIVTARA', tone: 'case-hospitality',
-    copy: 'A fast, locally focused hotel experience made key information easier to find for people planning a stay in Pune.',
-    metrics: ['95+ PageSpeed score', 'Top 3 for hotel keywords', 'Top local map visibility'],
-  },
-];
+const clients = clientProjects.map((project) => ({
+  ...project, type: project.industries.join(' / '),
+  service: project.serviceTypes.join(' + ') + (project.serviceNote ? ' (' + project.serviceNote + ')' : ''),
+  tone: 'logo-website-project', caseId: project.id,
+}));
+const caseStudies = clients.map((client) => ({
+  ...client, label: client.name, category: client.type, mark: client.name,
+  tone: clientProjects.find((project) => project.id === client.id).tone,
+  copy: client.description, metrics: [],
+}));
 
 const services = [
   { id: 'seo', number: '01', title: 'Search Engine Optimization', summary: 'Build lasting search visibility as part of a connected growth marketing plan.', items: ['Technical and on-page SEO', 'Local SEO and Google Business Profile', 'Content and keyword strategy'], type: 'search' },
@@ -157,7 +120,10 @@ const brandingProjects = [
       { src: '/images/business-branding/the-jolly-box-logo.jpg', alt: 'The Jolly Box gift-inspired logo', label: 'Logo artwork' },
     ],
   },
-];
+].map((project) => {
+  const client = clients.find((item) => item.id === project.id);
+  return { ...project, name: client.name, category: client.service, industry: client.type, description: client.description };
+});
 
 const servicePaths = {
   seo: '/services/seo/',
@@ -422,7 +388,7 @@ function Hero({ onPlayShowreel }) {
 }
 
 function ClientSelector({ activeIndustry, setActiveIndustry }) {
-    const matching = activeIndustry === 'All industries' ? clients : clients.filter((client) => client.type === activeIndustry);
+    const matching = activeIndustry === 'All industries' ? clients : clients.filter((client) => client.industries.includes(activeIndustry));
   return (
     <section className="client-section section" id="clients">
       <div className="container">
@@ -478,7 +444,7 @@ function BrandingPortfolio() {
                 ))}
               </div>
               <div className="branding-work-copy">
-                <p className="eyebrow">{project.category}</p>
+                <p className="eyebrow">{project.industry} · {project.category}</p>
                 <h3>{project.name}</h3>
                 <p>{project.description}</p>
               </div>
@@ -488,33 +454,6 @@ function BrandingPortfolio() {
         <div className="branding-work-cta">
           <p>Building a brand or refreshing the one you have?</p>
           <a className="button" href="/contact/">Talk about your brand <ArrowIcon /></a>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-function LussoMarcoGrowthFeature({ serviceId }) {
-  const isLeadGeneration = serviceId === 'leads';
-  return (
-    <section className="section lusso-growth-section" aria-labelledby="lusso-growth-title">
-      <div className="container">
-        <div className="lusso-growth-panel">
-          <div className="lusso-growth-copy">
-            <p className="eyebrow">{isLeadGeneration ? 'Lead generation in practice' : 'SEO in a wider growth mix'}</p>
-            <h2 id="lusso-growth-title">{isLeadGeneration ? 'Connect campaign reach to the product journey.' : 'Build search visibility as part of growth marketing.'}</h2>
-            <p>{isLeadGeneration
-              ? 'For Lusso Marco, Google Ads and Meta Ads work alongside website SEO, with product pages giving fragrance shoppers a clear next step.'
-              : 'For Lusso Marco, website SEO is part of a wider growth mix that also includes Google Ads and Meta Ads for its Eau de Parfum range.'}</p>
-            <a className="text-link" href="/case-studies/lusso-marco/">View the Lusso Marco project <ArrowIcon /></a>
-          </div>
-          <aside className="lusso-growth-card" aria-label="Lusso Marco products and marketing channels">
-            <span className="lusso-growth-monogram" aria-hidden="true">LM</span>
-            <p className="eyebrow">Luxury fragrance</p>
-            <h3>LUSSO MARCO</h3>
-            <p className="lusso-growth-products">Blue Marina · Noxious · Red Bites</p>
-            <div className="lusso-growth-channels"><span>Website SEO</span><span>Google Ads</span><span>Meta Ads</span></div>
-          </aside>
         </div>
       </div>
     </section>
@@ -688,34 +627,39 @@ function ContentCards({ items, render }) {
   return <div className="container content-card-grid">{items.map((item) => render(item))}</div>;
 }
 
-function WebsiteDevelopmentPortfolio() {
+function ServiceClientPortfolio({ service }) {
+  const projects = clients.filter((client) => client.serviceIds.includes(service.id));
+  if (!projects.length) return null;
   return <section className="section website-projects"><div className="container">
-    <div className="section-title-row"><div><p className="eyebrow">Website Development</p><h2>Different industries.<br /><span>Distinctive website experiences.</span></h2></div><p className="section-intro">Visual storytelling, software presentation, and international B2B work.</p></div>
-    <div className="case-explorer-grid">{websiteProjects.map((project) => <article className="case-explorer-card" key={project.id}>
-      <div className="case-explorer-meta"><span>{project.industry}</span></div>
-      <h3>{project.name}</h3><span className="project-service">Website Development</span><p>{project.description}</p>
+    <div className="section-title-row"><div><p className="eyebrow">{service.title}</p><h2>Client work.<br /><span>Across different industries.</span></h2></div><p className="section-intro">Explore the clients and project scopes for this service.</p></div>
+    <div className="case-explorer-grid">{projects.map((project) => <article className="case-explorer-card" key={project.id}>
+      <div className="case-explorer-meta"><span>{project.type}</span></div>
+      <h3>{project.name}</h3><span className="project-service">{project.service}</span><p>{project.description}</p>
       <ul className="case-explorer-proof">{project.scope.map((point) => <li key={point}><span aria-hidden="true">↗</span>{point}</li>)}</ul>
-      <a className="text-link" href={'/case-studies/' + project.id + '/'}>View website project <ArrowIcon /></a>
-      <a className="text-link project-website-link" href={project.website} target="_blank" rel="noopener noreferrer">Visit client website <ArrowIcon /></a>
+      <a className="text-link" href={'/case-studies/' + project.id + '/'}>View client project <ArrowIcon /></a>
+      {project.website && <a className="text-link project-website-link" href={project.website} target="_blank" rel="noopener noreferrer">Visit client website <ArrowIcon /></a>}
     </article>)}</div>
   </div></section>;
 }
 
 function CaseStudyExplorer() {
-  const categories = ['All sectors', ...new Set(caseStudies.map((item) => item.category))];
+  const categories = ['All sectors', ...new Set(caseStudies.flatMap((item) => item.industries))];
+  const serviceFilters = ['All services', ...new Set(caseStudies.flatMap((item) => item.serviceTypes))];
+  const [activeServiceFilter, setActiveServiceFilter] = useState('All services');
   const [activeCategory, setActiveCategory] = useState('All sectors');
-  const visibleStudies = activeCategory === 'All sectors' ? caseStudies : caseStudies.filter((item) => item.category === activeCategory);
+  const visibleStudies = caseStudies.filter((item) => (activeCategory === 'All sectors' || item.industries.includes(activeCategory)) && (activeServiceFilter === 'All services' || item.serviceTypes.includes(activeServiceFilter)));
   return <section className="section case-explorer-section"><div className="container case-explorer">
-    <div className="case-explorer-heading"><div><p className="eyebrow">Browse by sector</p><h2>Stories with the <span>proof we have today.</span></h2></div><p>Filter the published work by sector. Each story keeps its current results or scope together in one place.</p></div>
+    <div className="case-explorer-heading"><div><p className="eyebrow">Client portfolio</p><h2>Find work by <span>service and industry.</span></h2></div><p>Explore our clients and the services delivered for each business.</p></div>
+    <div className="case-filter-list" role="group" aria-label="Filter clients by service">{serviceFilters.map((label) => <button className={'case-filter' + (activeServiceFilter === label ? ' active' : '')} key={label} type="button" aria-pressed={activeServiceFilter === label} onClick={() => setActiveServiceFilter(label)}>{label}</button>)}</div>
     <div className="case-filter-list" role="group" aria-label="Filter case studies by sector">{categories.map((category) => <button className={'case-filter' + (activeCategory === category ? ' active' : '')} key={category} type="button" aria-pressed={activeCategory === category} onClick={() => setActiveCategory(category)}>{category}</button>)}</div>
-    <p className="case-result-count" aria-live="polite">{visibleStudies.length} {visibleStudies.length === 1 ? 'story' : 'stories'} shown</p>
-    <div className="case-explorer-grid">{visibleStudies.map((item) => <article className="case-explorer-card" key={item.id}>
+    <p className="case-result-count" aria-live="polite">{visibleStudies.length} {visibleStudies.length === 1 ? 'client' : 'clients'} shown</p>
+    <div className="case-explorer-grid">{visibleStudies.length === 0 && <p className="content-note">No clients match this service and industry combination. Try another filter.</p>}{visibleStudies.map((item) => <article className="case-explorer-card" key={item.id}>
       <div className="case-explorer-meta"><span>{item.category}</span><span>{item.metrics.length ? 'Published outcomes' : 'Published scope'}</span></div>
       <h3>{item.label}</h3>{item.service && <span className="project-service">{item.service}</span>}<p>{item.copy}</p>
       <ul className="case-explorer-proof">{(item.metrics.length ? item.metrics : item.scope).map((point) => <li key={point}><span aria-hidden="true">{item.metrics.length ? '✦' : '↗'}</span>{point}</li>)}</ul>
       <a className="text-link" href={'/case-studies/' + item.id + '/'}>Read client story <ArrowIcon /></a>
     </article>)}</div>
-    <p className="content-note">Figures and project scope are shown as currently published on this website.</p>
+    <p className="content-note">Select a client to explore its project scope.</p>
   </div></section>;
 }
 
@@ -921,7 +865,7 @@ function PageContent({ path }) {
   let body = null;
   if (service) {
     head = ['Our services', service.title, 'for business growth.', service.summary];
-    body = <><section className="section"><div className="container detail-layout"><div><p className="eyebrow">What’s included</p><h2>Focused work, <span>built around your goals.</span></h2><p>{service.summary}</p><a className="button" href="/contact/">Discuss this service <ArrowIcon /></a></div><ul className="detail-points">{service.items.map((item) => <li key={item}><span>↗</span>{item}</li>)}</ul></div></section>{(service.id === 'seo' || service.id === 'leads') && <LussoMarcoGrowthFeature serviceId={service.id} />}{service.id === 'branding' && <BrandingPortfolio />}{service.id === 'development' && <WebsiteDevelopmentPortfolio />}</>;
+    body = <><section className="section"><div className="container detail-layout"><div><p className="eyebrow">What’s included</p><h2>Focused work, <span>built around your goals.</span></h2><p>{service.summary}</p><a className="button" href="/contact/">Discuss this service <ArrowIcon /></a></div><ul className="detail-points">{service.items.map((item) => <li key={item}><span>↗</span>{item}</li>)}</ul></div></section>{service.id === 'branding' && <BrandingPortfolio />}<ServiceClientPortfolio service={service} /></>;
   } else if (page === 'services') items = services;
   else if (caseStudy) {
     head = [caseStudy.category, caseStudy.label, 'client story.', caseStudy.copy];
@@ -932,8 +876,8 @@ function PageContent({ path }) {
   else if (page === 'portfolio' || page === 'products') items = clients;
   else if (industry) {
     head = [industry.label + ' digital growth', 'Digital experiences', 'for ' + industry.label + '.', 'Explore the client work currently published for this sector, and the services that can support its next stage.'];
-    items = clients.filter((client) => client.type === industry.label);
-    body = <section className="section"><div className="container">{items.length === 0 ? <div className="empty-state"><h2>No published client case study for this category yet.</h2><p>We can still discuss the search and website needs of your business.</p><a className="button" href="/contact/">Talk with us <ArrowIcon /></a></div> : <><p className="eyebrow">Relevant services</p><div className="simple-links">{services.filter((item) => items.some((client) => client.service === 'Website Development') ? item.id === 'development' : ['seo', 'geo', 'leads'].includes(item.id)).map((item) => <a href={servicePaths[item.id]} key={item.id}>{item.title}<ArrowIcon /></a>)}</div></>}</div></section>;
+    items = clients.filter((client) => client.industries.includes(industry.label));
+    body = <section className="section"><div className="container">{items.length === 0 ? <div className="empty-state"><h2>No published client case study for this category yet.</h2><p>We can still discuss the search and website needs of your business.</p><a className="button" href="/contact/">Talk with us <ArrowIcon /></a></div> : <><p className="eyebrow">Relevant services</p><div className="simple-links">{services.filter((item) => items.some((client) => client.serviceIds.includes(item.id))).map((item) => <a href={servicePaths[item.id]} key={item.id}>{item.title}<ArrowIcon /></a>)}</div></>}</div></section>;
   } else if (page === 'industries') items = industries.filter((item) => item.id !== 'All industries');
   else if (page === 'process') body = <Process />;
   else if (page === 'about') body = <WhyUs />;
@@ -969,10 +913,10 @@ function PageContent({ path }) {
     if (page === 'services') return <a className="content-card" href={servicePaths[item.id]} key={item.id}><span className="card-number">{item.number} / 06</span><h2>{item.title}</h2><p>{item.summary}</p><span className="text-link">Explore service <ArrowIcon /></span></a>;
     if (page === 'industries' && !industry) return <a className="content-card" href={industryPath(item.id)} key={item.id}><span className="card-number">SECTOR</span><h2>{item.label}</h2><p>Explore the client work and digital growth needs represented in this sector.</p><span className="text-link">Explore industry <ArrowIcon /></span></a>;
     if (page === 'case-studies') return <a className="content-card" href={'/case-studies/' + item.id + '/'} key={item.id}><span className="card-number">{item.category}</span><h2>{item.label}</h2><p>{item.copy}</p><span className="text-link">Read client story <ArrowIcon /></span></a>;
-    return <article className="content-card" key={item.name}><span className="card-number">{page === 'products' ? 'CLIENT PLATFORM JOURNEY' : item.type.toUpperCase()}</span><h2>{item.name}</h2>{item.service && <span className="project-service">{item.service}</span>}<p>{item.description}</p>{page === 'products' && <p className="content-note">Portfolio showcase based on published client work; this is not a separate SEOPune360 product catalogue.</p>}{(item.caseId || page !== 'products') && <a className="text-link" href={item.caseId ? '/case-studies/' + item.caseId + '/' : '/case-studies/'}>{item.caseId ? 'View website project' : 'Browse client stories'} <ArrowIcon /></a>}</article>;
+    return <article className="content-card" key={item.name}><span className="card-number">{page === 'products' ? 'CLIENT PLATFORM JOURNEY' : item.type.toUpperCase()}</span><h2>{item.name}</h2>{item.service && <span className="project-service">{item.service}</span>}<p>{item.description}</p>{page === 'products' && <p className="content-note">Portfolio showcase based on published client work; this is not a separate SEOPune360 product catalogue.</p>}{(item.caseId || page !== 'products') && <a className="text-link" href={item.caseId ? '/case-studies/' + item.caseId + '/' : '/case-studies/'}>{item.caseId ? 'View client project' : 'Browse client stories'} <ArrowIcon /></a>}</article>;
   };
   const titleParts = head[1].split(' ');
-  return <><InsideHero kicker={head[0]} title={titleParts.slice(0, Math.max(1, titleParts.length - 1)).join(' ')} accent={titleParts.length > 1 ? titleParts.slice(-1).join(' ') + (head[2] ? ' ' + head[2] : '') : head[2]} copy={head[3]} />{page === 'case-studies' && !caseStudy ? <CaseStudyExplorer /> : items.length > 0 && <section className="section"><ContentCards items={items} render={renderCard} />{page === 'industries' && !industry && <p className="container content-note">A published client case study is not currently listed for every sector.</p>}{industry && items.length === 0 && <div className="container empty-state"><h2>No published client case study for this category yet.</h2><p>We can still discuss the search and website needs of your business.</p><a className="button" href="/contact/">Talk with us <ArrowIcon /></a></div>}</section>}{body}</>;
+  return <><InsideHero kicker={head[0]} title={titleParts.slice(0, Math.max(1, titleParts.length - 1)).join(' ')} accent={titleParts.length > 1 ? titleParts.slice(-1).join(' ') + (head[2] ? ' ' + head[2] : '') : head[2]} copy={head[3]} />{((page === 'case-studies' && !caseStudy) || page === 'portfolio') ? <CaseStudyExplorer /> : items.length > 0 && <section className="section"><ContentCards items={items} render={renderCard} />{page === 'industries' && !industry && <p className="container content-note">A published client case study is not currently listed for every sector.</p>}{industry && items.length === 0 && <div className="container empty-state"><h2>No published client case study for this category yet.</h2><p>We can still discuss the search and website needs of your business.</p><a className="button" href="/contact/">Talk with us <ArrowIcon /></a></div>}</section>}{body}</>;
 }
 
 function App() {
