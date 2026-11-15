@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import { projectDetails } from './projectDetails';
 const CONTACT_EMAIL = 'seopune360@gmail.com';
 const SHOWREEL_PATH = '/media/seopune360-showreel-short.mp4';
 
@@ -45,7 +46,7 @@ const industries = [
   ...[...new Set(clientProjects.flatMap((project) => project.industries))].map((name) => ({ id: name, label: name })),
 ];
 const clients = clientProjects.map((project) => ({
-  ...project, type: project.industries.join(' / '),
+  ...project, ...projectDetails[project.id], type: project.industries.join(' / '),
   service: project.serviceTypes.join(' + ') + (project.serviceNote ? ' (' + project.serviceNote + ')' : ''),
   tone: 'logo-website-project', caseId: project.id,
 }));
@@ -387,27 +388,58 @@ function Hero({ onPlayShowreel }) {
   );
 }
 
+function ClientLogo({ client }) {
+  return <span className={'client-logo-frame logo-layout-' + (client.logoLayout || 'standard')}>
+    {client.logo ? <img src={client.logo} alt={client.name + ' logo'} loading="lazy" decoding="async" /> : <span className="client-name-mark">{client.name}</span>}
+  </span>;
+}
+
+function projectGallery(client) {
+  const artworks = brandingProjects.find((project) => project.id === client.id)?.artworks || [];
+  return client.gallery || artworks.map((artwork) => ({ src: artwork.src, title: artwork.label, caption: artwork.alt }));
+}
+
+function ProjectCover({ client }) {
+  const cover = projectGallery(client)[0];
+  return <div className={'project-cover' + (cover ? '' : ' project-cover-logo')}>
+    {cover ? <img src={cover.src} alt={cover.title + ' — ' + client.name} loading="lazy" decoding="async" /> : <ClientLogo client={client} />}
+  </div>;
+}
+
 function ClientSelector({ activeIndustry, setActiveIndustry }) {
-    const matching = activeIndustry === 'All industries' ? clients : clients.filter((client) => client.industries.includes(activeIndustry));
-  return (
-    <section className="client-section section" id="clients">
-      <div className="container">
-        <div className="client-heading"><p className="eyebrow">Trusted by businesses across industries</p><h2>Local expertise.<br /><span>Work that moves businesses forward.</span></h2><p>Explore the companies and sectors represented in SEOPune360’s published work.</p></div>
-        <div className="client-browser">
-          <div className="industry-list" role="tablist" aria-label="Filter clients by industry">
-            {industries.map((industry) => <button className={'industry-tab' + (activeIndustry === industry.id ? ' active' : '')} key={industry.id} role="tab" id={'industry-' + industry.id.replaceAll(' ', '-')} aria-selected={activeIndustry === industry.id} aria-controls="industry-panel" onClick={() => setActiveIndustry(industry.id)}>{industry.label}<span><ArrowIcon /></span></button>)}
-          </div>
-          <div className="industry-results" id="industry-panel" role="tabpanel" aria-labelledby={'industry-' + activeIndustry.replaceAll(' ', '-')} key={activeIndustry}>
-            {activeIndustry === 'Fintech' ? <div className="industry-empty"><span className="empty-spark">✦</span><h3>Fintech work is coming soon</h3><p>We’ll add a client story here when a relevant project is ready to share.</p></div> : <>
-              <div className="client-logo-row">{matching.map((client) => <div className={'client-wordmark ' + client.tone} key={client.name} aria-label={client.name}>{client.name}</div>)}</div>
-              <div className="client-description-grid">{matching.map((client) => <article className="client-description" key={client.name}><span className="client-type">{client.type}</span>{client.service && <span className="project-service">{client.service}</span>}<p>{client.description}</p><a href="#case-studies" onClick={() => window.dispatchEvent(new CustomEvent('select-case', { detail: client.name }))}>View project <ArrowIcon /></a></article>)}</div>
-            </>}
-            <div className="industry-footer"><span>{matching.length || '0'} {matching.length === 1 ? 'published client story' : 'published client stories'}</span><span className="result-progress"><i /></span></div>
-          </div>
-        </div>
+  const matching = activeIndustry === 'All industries' ? clients : clients.filter((client) => client.industries.includes(activeIndustry));
+  return <section className="client-section section" id="clients"><div className="container">
+    <div className="client-heading"><p className="eyebrow">The businesses behind our work</p><h2>Distinctive brands.<br /><span>Different paths to growth.</span></h2><p>Explore each client, the services behind the project, and the work in context.</p></div>
+    <div className="client-browser">
+      <div className="industry-list" role="tablist" aria-label="Filter clients by industry">{industries.map((industry) => <button className={'industry-tab' + (activeIndustry === industry.id ? ' active' : '')} key={industry.id} role="tab" id={'industry-' + industry.id.replaceAll(' ', '-')} aria-selected={activeIndustry === industry.id} aria-controls="industry-panel" onClick={() => setActiveIndustry(industry.id)}>{industry.label}<span><ArrowIcon /></span></button>)}</div>
+      <div className="industry-results" id="industry-panel" role="tabpanel" aria-labelledby={'industry-' + activeIndustry.replaceAll(' ', '-')} key={activeIndustry}>
+        <div className="client-box-grid">{matching.map((client, index) => <a className="client-box" href={'/case-studies/' + client.id + '/'} key={client.id} style={{ '--card-delay': Math.min(index, 5) * 24 + 'ms' }}>
+          <ClientLogo client={client} /><div className="client-box-body"><span className="client-type">{client.type}</span><h3>{client.name}</h3><p>{client.service}</p><span className="client-box-link">Explore project <ArrowIcon /></span></div>
+        </a>)}</div>
+        <div className="industry-footer"><span aria-live="polite">{matching.length} {matching.length === 1 ? 'client' : 'clients'}</span><a href="/portfolio/">Browse by service ↗</a></div>
       </div>
-    </section>
-  );
+    </div>
+  </div></section>;
+}
+
+function CampaignJourney({ client }) {
+  const commerce = client.campaign === 'commerce';
+  const steps = commerce ? [['01', 'Discover', 'Campaign creative introduces the product.'], ['02', 'Explore', 'The product page explains the fragrance.'], ['03', 'Consider', 'Details and imagery support the next decision.']] : [['01', 'Search', 'A prospective buyer explores a vehicle.'], ['02', 'Compare', 'A model page provides relevant details.'], ['03', 'Enquire', 'An offer form creates a direct next step.']];
+  return <section className="campaign-journey"><div><p className="eyebrow">The customer journey</p><h2>Give every click <span>a clear destination.</span></h2><p>A visual explanation of the campaign journey.</p></div><div className="journey-graphic">{steps.map(([number, title, copy]) => <div className="journey-step" key={number}><span className="journey-node">{number}</span><h3>{title}</h3><p>{copy}</p></div>)}</div></section>;
+}
+
+function ClientProjectPage({ client }) {
+  const gallery = projectGallery(client);
+  const related = clients.filter((item) => item.id !== client.id && item.serviceTypes.some((type) => client.serviceTypes.includes(type))).slice(0,3);
+  return <section className="section project-story"><div className="container">
+    <div className="project-summary"><ClientLogo client={client} /><div><p className="eyebrow">Project scope</p><h2>{client.headline || client.name}</h2><div className="project-tags">{client.serviceTypes.map((type) => <span key={type}>{type}</span>)}{client.serviceNote && <span>{client.serviceNote}</span>}</div></div></div>
+    <div className="project-overview"><div><p className="eyebrow">The project</p><p className="project-lead">{client.overview || client.description}</p></div><aside><h3>At a glance</h3><dl><dt>Client</dt><dd>{client.name}</dd><dt>Industry</dt><dd>{client.type}</dd><dt>Services</dt><dd>{client.service}</dd></dl>{(client.landing || client.website) && <a className="text-link" href={client.landing || client.website} target="_blank" rel="noopener noreferrer">{client.landing ? 'Visit landing page' : 'Visit client website'} <ArrowIcon /></a>}</aside></div>
+    {gallery.length > 0 && <section className="project-gallery" aria-label={'Project visuals for ' + client.name}><div className="section-title-row"><div><p className="eyebrow">Work in context</p><h2>{client.campaign ? 'The landing experience.' : client.serviceIds.includes('branding') ? 'The identity, in detail.' : 'A closer look at the website.'}</h2></div></div>{gallery.map((item,index) => <figure className={'project-figure' + (client.serviceIds.includes('branding') ? ' project-figure-artwork' : '')} key={item.src}><div className="project-frame"><div className="project-frame-bar"><span><i /><i /><i /></span><b>{item.title}</b><span>{String(index + 1).padStart(2,'0')}</span></div><a href={item.src} target="_blank" rel="noopener noreferrer" aria-label={'View full-size ' + item.title}><img src={item.src} alt={item.caption} loading="lazy" decoding="async" /></a></div><figcaption><span>{item.caption}</span>{item.url && <a href={item.url} target="_blank" rel="noopener noreferrer">View source page ↗</a>}</figcaption></figure>)}</section>}
+    {client.focus && <section className="project-focus"><p className="eyebrow">What matters in this project</p><h2>Clarity in <span>every detail.</span></h2><div className="project-focus-grid">{client.focus.map(([title,copy],index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{copy}</p></article>)}</div></section>}
+    {client.campaign && <CampaignJourney client={client} />}
+    {related.length > 0 && <section className="project-related"><p className="eyebrow">Explore more work</p><h2>Related client projects.</h2><div className="project-related-grid">{related.map((item) => <a href={'/case-studies/' + item.id + '/'} key={item.id}><ClientLogo client={item} /><h3>{item.name}</h3><p>{item.service}</p><span className="text-link">View project <ArrowIcon /></span></a>)}</div></section>}
+    <div className="project-end"><div><p className="eyebrow">Your next project</p><h2>Let’s create something <span>for your business.</span></h2></div><a className="button" href="/contact/">Discuss a project <ArrowIcon /></a><a className="text-link" href="/portfolio/">All client work <ArrowIcon /></a></div>
+  </div></section>;
 }
 
 function ServiceIllustration({ type }) {
@@ -500,7 +532,7 @@ function CaseStudies({ activeCase, setActiveCase }) {
             {caseStudies.map((item) => <button className={'case-tab' + (activeCase === item.id ? ' active' : '')} key={item.id} role="tab" id={'case-tab-' + item.id} aria-selected={activeCase === item.id} aria-controls="selected-case" onClick={() => setActiveCase(item.id)}><span>{item.label}</span><small>{item.category}</small><ArrowIcon /></button>)}
           </div>
           <article className={'case-detail ' + current.tone} id="selected-case" role="tabpanel" aria-labelledby={'case-tab-' + current.id} key={current.id}>
-            <div className="case-art" aria-hidden="true"><span className="case-art-kicker">SEOPUNE360 · CLIENT STORY</span><div className="case-art-logo">{current.mark}</div><div className="case-art-shapes"><i /><i /><i /></div><div className="case-art-bottom"><span>{current.category}</span><b>{current.service || 'STRATEGY / SEARCH / GROWTH'}</b></div></div>
+            <ProjectCover client={current} />
             <div className="case-copy"><p className="eyebrow">{current.category}</p><h3>{current.label}</h3><p>{current.copy}</p><p className="eyebrow case-insight-label">{current.metrics.length ? 'Reported outcomes' : current.service || 'Growth marketing scope'}</p><ul className="case-metrics">{(current.metrics.length ? current.metrics : current.scope).map((item) => <li key={item}><span>{current.metrics.length ? '✦' : '↗'}</span>{item}</li>)}</ul><a className="text-link" href={'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('Ask about the ' + current.label + ' project')}>Ask about this project <ArrowIcon /></a></div>
           </article>
         </div>
@@ -634,7 +666,7 @@ function ServiceClientPortfolio({ service }) {
     <div className="section-title-row"><div><p className="eyebrow">{service.title}</p><h2>Client work.<br /><span>Across different industries.</span></h2></div><p className="section-intro">Explore the clients and project scopes for this service.</p></div>
     <div className="case-explorer-grid">{projects.map((project) => <article className="case-explorer-card" key={project.id}>
       <div className="case-explorer-meta"><span>{project.type}</span></div>
-      <h3>{project.name}</h3><span className="project-service">{project.service}</span><p>{project.description}</p>
+      <ProjectCover client={project} /><h3>{project.name}</h3><span className="project-service">{project.service}</span><p>{project.description}</p>
       <ul className="case-explorer-proof">{project.scope.map((point) => <li key={point}><span aria-hidden="true">↗</span>{point}</li>)}</ul>
       <a className="text-link" href={'/case-studies/' + project.id + '/'}>View client project <ArrowIcon /></a>
       {project.website && <a className="text-link project-website-link" href={project.website} target="_blank" rel="noopener noreferrer">Visit client website <ArrowIcon /></a>}
@@ -655,7 +687,7 @@ function CaseStudyExplorer() {
     <p className="case-result-count" aria-live="polite">{visibleStudies.length} {visibleStudies.length === 1 ? 'client' : 'clients'} shown</p>
     <div className="case-explorer-grid">{visibleStudies.length === 0 && <p className="content-note">No clients match this service and industry combination. Try another filter.</p>}{visibleStudies.map((item) => <article className="case-explorer-card" key={item.id}>
       <div className="case-explorer-meta"><span>{item.category}</span><span>{item.metrics.length ? 'Published outcomes' : 'Published scope'}</span></div>
-      <h3>{item.label}</h3>{item.service && <span className="project-service">{item.service}</span>}<p>{item.copy}</p>
+      <ProjectCover client={item} /><h3>{item.label}</h3>{item.service && <span className="project-service">{item.service}</span>}<p>{item.copy}</p>
       <ul className="case-explorer-proof">{(item.metrics.length ? item.metrics : item.scope).map((point) => <li key={point}><span aria-hidden="true">{item.metrics.length ? '✦' : '↗'}</span>{point}</li>)}</ul>
       <a className="text-link" href={'/case-studies/' + item.id + '/'}>Read client story <ArrowIcon /></a>
     </article>)}</div>
@@ -869,9 +901,7 @@ function PageContent({ path }) {
   } else if (page === 'services') items = services;
   else if (caseStudy) {
     head = [caseStudy.category, caseStudy.label, 'client story.', caseStudy.copy];
-    const caseInsights = caseStudy.metrics.length ? caseStudy.metrics : caseStudy.scope;
-    const caseInsightsTitle = caseStudy.metrics.length ? 'Reported outcomes' : caseStudy.service || 'Growth marketing scope';
-    body = <section className="section"><div className="container"><div className={'case-detail page-case ' + caseStudy.tone}><div className="case-art"><span className="case-art-kicker">SEOPUNE360 · CLIENT STORY</span><div className="case-art-logo">{caseStudy.mark}</div><div className="case-art-bottom"><span>{caseStudy.category}</span><b>{caseStudy.service || 'STRATEGY / SEARCH / GROWTH'}</b></div></div><div className="case-copy"><p className="eyebrow">{caseInsightsTitle}</p><ul className="case-metrics">{caseInsights.map((item) => <li key={item}><span>{caseStudy.metrics.length ? '✦' : '↗'}</span>{item}</li>)}</ul>{caseStudy.website && <a className="text-link project-website-link" href={caseStudy.website} target="_blank" rel="noopener noreferrer">Visit client website <ArrowIcon /></a>}<a className="text-link" href="/case-studies/">View all case studies <ArrowIcon /></a></div></div>{caseStudy.metrics.length > 0 && <p className="content-note">Outcomes shown are the reported results in the current site content.</p>}</div></section>;
+    body = <ClientProjectPage client={caseStudy} />;
   } else if (page === 'case-studies') items = caseStudies;
   else if (page === 'portfolio' || page === 'products') items = clients;
   else if (industry) {
