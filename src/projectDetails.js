@@ -62,9 +62,11 @@ export const projectDetails = {
     gallery: [{ src: shots + 'shaw-tata-landing.jpg', title: 'Tata Punch landing page', caption: 'Actual capture of the supplied vehicle page, including its offer call to action.', url: 'https://www.shawcars.in/new-cars/tata-punch.html' }, { src: shots + 'shaw-tata-enquiry.jpg', title: 'Offer enquiry form', caption: 'The public lead-enquiry interface. No enquiry was submitted.' }],
   },
   'krishna-clinic': {
+    logo: logos + 'krishna-clinic.png', website: 'https://krishnaclassicalhomoeopathy.com/',
     headline: 'A connected presence across website and social channels.',
-    overview: 'Krishna Classical Homoeopathy Clinic’s approved scope combines website development and social media management. Its project page brings those two services together: a website for finding clinic information and an ongoing social presence for maintaining familiarity with the practice.',
-    focus: [ ['Website development', 'The website serves as a central place for the clinic’s information and contact journey.'], ['Social media management', 'Social communication provides a complementary touchpoint for people discovering or following the clinic.'], ['Consistent communication', 'A clear tone and recognisable presentation help the website and social channels feel like parts of the same business.'] ],
+    overview: 'Krishna Classical Homoeopathy Clinic’s project combines social media, growth marketing and website development. The website brings doctor profiles, consultation options, clinic locations and appointment enquiries into one place. Its orange-and-white visual identity connects the clinic’s website with its social presence, giving visitors a recognisable route from discovery to contact.',
+    focus: [ ['Website development', 'Doctor profiles, consultation modes and location details help visitors find practical clinic information and request an appointment.'], ['Social media / Growth Marketing', 'Social communication and growth marketing support awareness of the practice and connect interested audiences with the clinic’s website and contact options.'], ['A connected online presence', 'The website brings together clinic information, videos and social-channel links, with consistent branding throughout the visitor journey.'] ],
+    gallery: [{ src: shots + 'krishna-clinic-home.jpg', title: 'Clinic website', caption: 'The homepage introduces the clinic with its original visual identity, location links and appointment call to action.', url: 'https://krishnaclassicalhomoeopathy.com/' }],
   },
   'hotel-shivtara': {
     logo: logos + 'hotel-shivtara.jpg', logoLayout: 'dark', website: 'https://hotelshivtara.com/',

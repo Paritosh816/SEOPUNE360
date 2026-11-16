@@ -10,6 +10,8 @@ Original logos downloaded from the rendered official websites: Ananya Rishtey, I
 
 Existing client-supplied branding artwork reused: KJ Group (Kishor Jamdar), ERA Infratech, Koriv Studio, The Jolly Box, FPT India-office artwork. Logo panels display the original artwork using CSS framing; no replacement identities were generated.
 
-Unresolved: Crevolution LLP has Pune company-register matches but no confidently matched official website/logo; Krishna Classical Homoeopathy Clinic has several Pune matches and no confidently matched official website/logo. Their names remain text; screenshots of SEOPune360's own old case pages are not presented as client websites. Koriv and Jolly Box have supplied artwork; ambiguous external names were not substituted. Rivan Travels was excluded from new asset research at the user's request; its existing listing remains.
+Krishna Classical Homoeopathy Clinic: the user confirmed https://krishnaclassicalhomoeopathy.com/ on 15 November 2026. Its homepage was captured and its original header logo downloaded from https://krishnaclassicalhomoeopathy.com/assets/kch-logo-new.png. The project scope is Social Media / Growth Marketing + Website Development. Portfolio text describes the web and marketing work without making medical outcome claims.
+
+Unresolved: Crevolution LLP has Pune company-register matches but no confidently matched official website/logo. Its name remains text; screenshots of SEOPune360's own old case pages are not presented as client websites. Koriv and Jolly Box have supplied artwork; ambiguous external names were not substituted. Rivan Travels was excluded from new asset research at the user's request; its existing listing remains.
 
 Supplementary campaign journey graphics are original HTML/CSS explanatory diagrams. They include no invented performance metrics.
