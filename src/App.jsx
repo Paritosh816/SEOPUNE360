@@ -65,15 +65,6 @@ const services = [
   { id: 'growth', number: '06', title: 'Total Business Growth', summary: 'Connect search, content, and website improvements into a focused growth plan.', items: ['SEO and content planning', 'Website conversion improvements', 'Measurement and iteration'], type: 'growth' },
 ];
 
-const processSteps = [
-  { title: 'Discovery & goals', phase: 'Kick-off', weeks: 'Week 1–2', start: 1, span: 2, color: 'gold', icon: '◎' },
-  { title: 'Strategy & direction', phase: 'Strategy', weeks: 'Week 2–3', start: 2, span: 2, color: 'mint', icon: '↗' },
-  { title: 'Design & content', phase: 'Design', weeks: 'Week 3–5', start: 3, span: 3, color: 'lime', icon: '▧' },
-  { title: 'Development', phase: 'Build', weeks: 'Week 4–6', start: 4, span: 3, color: 'blue', icon: '⌘' },
-  { title: 'Review & QA', phase: 'Quality', weeks: 'Week 6–7', start: 6, span: 2, color: 'green', icon: '✓' },
-  { title: 'Launch & support', phase: 'Launch', weeks: 'Week 7–8', start: 7, span: 2, color: 'violet', icon: '↗' },
-];
-
 const auditItems = [
   ['Search visibility', 'On-page and local search foundations'],
   ['Website experience', 'Navigation, mobile usability, and clarity'],
@@ -297,95 +288,31 @@ function ShowreelModal({ onClose }) {
 }
 
 function ScrollShowreel({ onCinema }) {
-  const sectionRef = useRef(null);
   const videoRef = useRef(null);
-  const suppressed = useRef(false);
-  const manual = useRef(false);
-  const [expanded, setExpanded] = useState(false);
-  const [playing, setPlaying] = useState(false);
-  const [muted, setMuted] = useState(true);
   const [failed, setFailed] = useState(false);
-  function collapse() {
-    suppressed.current = true;
-    manual.current = false;
-    sectionRef.current?.style.setProperty('--reel-progress', '0');
-    videoRef.current?.pause();
-    setExpanded(false);
-  }
-  function expand() {
-    suppressed.current = false;
-    manual.current = true;
-    sectionRef.current?.style.setProperty('--reel-progress', '1');
-    setExpanded(true);
-    videoRef.current?.play().catch(() => setPlaying(false));
-  }
-  useEffect(() => {
-    let frame = 0;
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-    function update() {
-      frame = 0;
-      const section = sectionRef.current;
-      const video = videoRef.current;
-      if (!section || !video) return;
-      const rect = section.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const visible = rect.top < vh * .6 && rect.bottom > vh * .35;
-      if (!visible) { suppressed.current = false; manual.current = false; video.pause(); }
-      const progress = suppressed.current || reduced.matches ? 0 : manual.current ? 1 : Math.max(0, Math.min(1, (80 - rect.top) / Math.max(1, rect.height - vh)));
-      section.style.setProperty('--reel-progress', String(progress));
-      setExpanded(progress > .08);
-      if (visible && progress > .04 && !suppressed.current && !reduced.matches) video.play().catch(() => setPlaying(false));
-      else if (!manual.current) video.pause();
-    }
-    function schedule() { if (!frame) frame = requestAnimationFrame(update); }
-    function key(event) { if (event.key === 'Escape') collapse(); }
-    window.addEventListener('scroll', schedule, { passive: true });
-    window.addEventListener('resize', schedule);
-    window.addEventListener('keydown', key);
-    update();
-    return () => { cancelAnimationFrame(frame); window.removeEventListener('scroll', schedule); window.removeEventListener('resize', schedule); window.removeEventListener('keydown', key); };
-  }, []);
-  return <section ref={sectionRef} className="motion-reel" id="showreel-story" aria-label="Client showreel">
-    <div className="motion-stage">
-      <div className={'motion-window' + (expanded ? ' is-expanded' : '')}>
-        <video ref={videoRef} className="motion-video" poster="/images/showreel/fpt-branding.png" src={SHOWREEL_PATH} muted={muted} playsInline loop preload="metadata" onPlay={() => setPlaying(true)} onPause={() => setPlaying(false)} onError={() => setFailed(true)} />
-        {!playing && !failed && <button className="motion-play" onClick={expand} aria-label="Play and expand showreel">▶</button>}
-        {failed && <a className="motion-error" href={SHOWREEL_PATH}>Open showreel</a>}
-        <div className="motion-controls">
-          <button onClick={() => { if (playing) { videoRef.current.pause(); suppressed.current = true; } else { suppressed.current = false; videoRef.current.play().catch(() => setPlaying(false)); } }} aria-label={playing ? 'Pause showreel' : 'Resume showreel'}>{playing ? 'Pause' : 'Play'}</button>
-          <button onClick={() => setMuted(!muted)} aria-label={muted ? 'Turn sound on' : 'Mute showreel'}>{muted ? 'Sound on' : 'Mute'}</button>
-          <button onClick={() => { videoRef.current.pause(); suppressed.current = true; onCinema(); }}>Cinema view</button>
-          {expanded && <button onClick={collapse} aria-label="Return video to normal size">Close ×</button>}
-        </div>
-      </div>
+  return <section className="hero-showreel" id="showreel-story" aria-label="Client showreel">
+    <div className="reel-heading"><span>SEOPUNE360 / SELECTED WORK</span><span>Play the film ↓</span></div>
+    <div className="reel-frame">
+      <video ref={videoRef} controls playsInline preload="metadata" poster="/images/showreel/fpt-branding.png" src={SHOWREEL_PATH} onError={() => setFailed(true)} />
+      {failed && <a className="button" href={SHOWREEL_PATH}>Open the showreel <ArrowIcon /></a>}
     </div>
+    <div className="reel-footer"><span>Brands. Websites. Customer journeys.</span><button className="text-link" onClick={() => { videoRef.current?.pause(); onCinema(); }}>Cinema view <ArrowIcon /></button></div>
   </section>;
 }
 
 function Hero({ onPlayShowreel }) {
-  return (
-    <section className="hero" id="top">
-      <div className="hero-backdrop" aria-hidden="true"><span className="hero-orb" /><span className="hero-light-band" /></div>
-      <div className="container hero-grid">
-        <div className="hero-copy">
-          <div className="rating-link"><span className="rating-symbol">S</span><span>SEOPune360</span><b>SEO + digital growth</b></div>
-          <p className="eyebrow">Digital growth for ambitious businesses</p>
-          <h1>Get found. Earn trust. <span>Grow with purpose.</span></h1>
-          <p className="hero-lead">SEO, websites, and lead generation that help your business reach the right people and turn attention into action.</p>
-          <form className="audit-form" action="/audit/" method="get">
-            <label className="sr-only" htmlFor="hero-site-url">Your website address</label>
-            <input id="hero-site-url" name="domain" type="text" inputMode="url" autoComplete="url" placeholder="www.yourwebsite.com" required pattern="(https?://)?[a-zA-Z0-9][a-zA-Z0-9.-]*\.[a-zA-Z]{2,}.*" title="Enter a website address such as example.com" />
-            <button className="button audit-submit" type="submit">Scan my website <ArrowIcon /></button>
-          </form>
-          <p className="audit-note"><span>✦</span> Laser Viewfinder audit preview <i /> Enter a website to open the scanner</p>
-          <p className="hero-support">From better search visibility to a clearer website journey, one team helps you make the next step count.</p>
-          <div className="hero-actions"><a className="text-link" href="#services">Explore our services <ArrowIcon /></a><span className="hero-proof"><b>SEO · Web · Growth</b><small>Built around your business</small></span></div>
-        </div>
+  return <section className="hero" id="top">
+    <div className="container hero-grid">
+      <div className="hero-copy">
+        <p className="eyebrow">SEO · Websites · Lead generation</p>
+        <h1>From first search<br />to <span>real enquiries.</span></h1>
+        <p className="hero-lead">Help customers discover your business, understand your offer, and take the next step. Bring search, website development, and lead generation together with SEOPune360.</p>
+        <div className="hero-actions"><a className="button" href="/contact/">Discuss your project <ArrowIcon /></a><a className="text-link" href="#clients">Explore client work ↓</a></div>
+        <div className="hero-service-links"><a href="/services/seo/">Search visibility</a><a href="/services/website-development/">Website experience</a><a href="/services/lead-generation/">Qualified enquiries</a></div>
       </div>
       <ScrollShowreel onCinema={onPlayShowreel} />
-      <div className="hero-scroll container"><span>Scroll to explore</span><i /></div>
-    </section>
-  );
+    </div>
+  </section>;
 }
 
 function ClientLogo({ client }) {
@@ -445,7 +372,7 @@ function ClientProjectPage({ client }) {
 function ServiceIllustration({ type }) {
   return <div className={'service-visual service-visual-' + type} aria-hidden="true">
     <div className="service-visual-grain" />
-    {type === 'search' && <div className="search-window"><div className="window-chrome"><i /><i /><i /><span>seopune360.com / search</span></div><div className="search-content"><span className="search-chip">GOOGLE SEARCH</span><b>Find the<br /><em>right business.</em></b><div className="search-line"><i /> Pune SEO services <span>↗</span></div><div className="search-result"><b>SEOPune360</b><span>SEO that helps your business get found.</span></div></div></div>}
+    {type === 'search' && <div className="search-window"><div className="window-chrome"><i /><i /><i /><span>seopune360.com / search</span></div><div className="search-content"><span className="search-chip">GOOGLE SEARCH</span><b>Find the<br /><em>right business.</em></b><div className="search-line"><i /> Find the right service <span>↗</span></div><div className="search-result"><b>SEOPune360</b><span>SEO that helps your business get found.</span></div></div></div>}
     {type === 'ai' && <div className="orbit-graphic"><span className="orbit orbit-a" /><span className="orbit orbit-b" /><span className="orbit-core">AI</span><b>SEARCH<br />SIGNALS</b></div>}
     {type === 'leads' && <div className="lead-funnel"><span className="funnel-step">DISCOVER</span><span className="funnel-step">ENGAGE</span><span className="funnel-step">ENQUIRE</span><i>↘</i></div>}
     {type === 'branding' && <div className="brand-system"><div className="brand-system-label"><span>IDENTITY SYSTEM</span><b>01 / BRAND</b></div><div className="brand-system-lockup"><span className="brand-system-mark">B</span><div><strong>YOUR BRAND</strong><small>POSITIONING · VOICE · IDENTITY</small></div></div><div className="brand-system-colors"><i /><i /><i /><i /></div><div className="brand-system-type"><b>Aa</b><span>Distinctive by design</span></div></div>}
@@ -501,7 +428,7 @@ function Services({ activeService, setActiveService }) {
         <div className="service-showcase">
           <div className="service-band" key={current.id} id="service-showcase">
             <ServiceIllustration type={current.type} />
-            <div className="service-band-copy"><span className="service-number">{current.number} / 06</span><h3>{current.title}</h3><p>{current.summary}</p><a href={'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('Tell me about ' + current.title)}>Explore this service <ArrowIcon /></a></div>
+            <div className="service-band-copy"><span className="service-number">{current.number} / 06</span><h3>{current.title}</h3><p>{current.summary}</p><a href={servicePaths[current.id]}>Explore this service <ArrowIcon /></a></div>
             <ul className="service-points">{current.items.map((item) => <li key={item}><span>↗</span>{item}</li>)}</ul>
           </div>
           <div className="service-list" role="tablist" aria-label="Choose a service">
@@ -542,26 +469,21 @@ function CaseStudies({ activeCase, setActiveCase }) {
 }
 
 function Process() {
-  return (
-    <section className="process-section section" id="process">
-      <div className="container">
-        <div className="section-title-row"><div><p className="eyebrow">How the work gets done</p><h2>One clear path from <span>kick-off to launch.</span></h2></div><p className="section-intro">A sample eight-week website project. Timing adjusts to scope, content, and approvals.</p></div>
-        <div className="timeline-wrap" role="img" aria-label="Example website project timeline spanning eight weeks">
-          <div className="timeline-week-head"><span>Start</span>{Array.from({ length: 8 }, (_, index) => <span key={index}>Week {index + 1}</span>)}</div>
-          <div className="timeline-board">{processSteps.map((step, index) => <div className="timeline-track" key={step.title}>
-            <span className="timeline-track-name">{step.phase}</span>
-            <div className={'timeline-bar ' + step.color} style={{ '--start': step.start, '--span': step.span, '--row': index }}><div className="bar-meta"><span className="phase-tag">{step.phase}</span><span className="week-tag">{step.weeks}</span></div><div className="bar-content"><span className="bar-icon">{step.icon}</span><b>{step.title}</b><span className="bar-dots"><i /><i /></span></div></div>
-          </div>)}</div>
-          <p className="timeline-note">Example timeline; final delivery dates are agreed together.</p>
-        </div>
-      </div>
-    </section>
-  );
+  const stages = [
+    ['Understand the starting point', 'Review the business goal, customer journey, current website and available performance data.', 'A clear problem to solve'],
+    ['Choose the right scope', 'Agree priorities, responsibilities and success measures around the work your business needs.', 'An agreed plan and deliverables'],
+    ['Build and validate', 'Develop the agreed work, review it together and check the important journeys across devices.', 'Work ready for release'],
+    ['Review and improve', 'Use the agreed measures and customer feedback to decide what should happen next.', 'A focused next step'],
+  ];
+  return <section className="process-section section" id="process"><div className="container">
+    <div className="section-title-row"><div><p className="eyebrow">Our approach</p><h2>Find the gap.<br /><span>Fix what matters.</span></h2></div><p className="section-intro">A shared process for search, websites and campaigns. Scope and timing are agreed around your project.</p></div>
+    <div className="delivery-stages">{stages.map(([title, copy, outcome]) => <article key={title}><h3>{title}</h3><p>{copy}</p><span>{outcome} <ArrowIcon /></span></article>)}</div>
+  </div></section>;
 }
 
 function WhyUs() {
   const points = [
-    ['Local market understanding', 'Strategy shaped around your audience, service area, and business goals.'],
+    ['Customer understanding', 'Strategy shaped around your audience, buying decisions, and business goals.'],
     ['One connected growth plan', 'Search, website, and lead generation work together instead of in silos.'],
     ['Clear, useful reporting', 'Understand what is changing and what the team recommends next.'],
     ['Built for long-term progress', 'Improve the foundations, measure outcomes, and keep learning over time.'],
@@ -891,7 +813,7 @@ function PageContent({ path }) {
   const service = page === 'services' && parts[1] ? services.find((item) => servicePaths[item.id] === path) : null;
   const caseStudy = page === 'case-studies' && parts[1] ? caseStudies.find((item) => item.id === parts[1]) : null;
   const industry = page === 'industries' && parts[1] ? industries.find((item) => industryPath(item.id) === path) : null;
-  const intro = { 'growth-plan': ['Growth plan', 'Build a plan', 'around your goals.', 'Answer a few short questions to get a practical service recommendation and a suggested first 90 days.'], services: ['Services', 'Find the right support', 'for your next stage.', 'Explore connected services across search, website experience, lead generation, and growth.'], 'case-studies': ['Client stories', 'Work grounded in', 'real businesses.', 'Browse SEOPune360 client stories, marketing channel mixes, and reported outcomes where available.'], portfolio: ['Client portfolio', 'Businesses we’ve', 'worked with.', 'Explore businesses represented in the current SEOPune360 client portfolio.'], products: ['Products & platforms', 'Digital journeys,', 'built around people.', 'Explore the client products and platform journeys represented in SEOPune360’s published portfolio.'], industries: ['Industries', 'Different sectors,', 'clear digital paths.', 'Explore the industries represented in the current client portfolio.'], about: ['About SEOPune360', 'Search, websites,', 'and business growth.', 'We bring digital foundations together to help people find your business, understand what you offer, and take the next step.'], process: ['Our process', 'A clear path from', 'kick-off to launch.', 'See how discovery, strategy, design, development, review, and support fit together.'], contact: ['Get in touch', 'Let’s talk about', 'your next step.', 'Tell us what you are working toward and we’ll help identify a useful place to start.'], sitemap: ['Website sitemap', 'Explore the site', 'page by page.', 'Browse SEOPune360 pages, services, client stories, and industries from one place.'] };
+  const intro = { 'growth-plan': ['Growth plan', 'Build a plan', 'around your goals.', 'Answer a few short questions to get a practical service recommendation and a suggested first 90 days.'], services: ['Services', 'Find the right support', 'for your next stage.', 'Explore connected services across search, website experience, lead generation, and growth.'], 'case-studies': ['Client stories', 'Work grounded in', 'real businesses.', 'Browse SEOPune360 client stories, marketing channel mixes, and reported outcomes where available.'], portfolio: ['Client portfolio', 'Businesses we’ve', 'worked with.', 'Explore businesses represented in the current SEOPune360 client portfolio.'], products: ['Products & platforms', 'Digital journeys,', 'built around people.', 'Explore the client products and platform journeys represented in SEOPune360’s published portfolio.'], industries: ['Industries', 'Different sectors,', 'clear digital paths.', 'Explore the industries represented in the current client portfolio.'], about: ['About SEOPune360', 'Search, websites,', 'and business growth.', 'We bring digital foundations together to help people find your business, understand what you offer, and take the next step.'], process: ['Our process', 'From a clear goal', 'to the next improvement.', 'See how discovery, strategy, design, development, review, and support fit together.'], contact: ['Get in touch', 'Let’s talk about', 'your next step.', 'Tell us what you are working toward and we’ll help identify a useful place to start.'], sitemap: ['Website sitemap', 'Explore the site', 'page by page.', 'Browse SEOPune360 pages, services, client stories, and industries from one place.'] };
   let head = intro[page];
   let items = [];
   let body = null;
