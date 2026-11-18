@@ -561,6 +561,19 @@
     .crawl-pages li { display: flex; gap: 10px; align-items: flex-start; font-size: .85rem; }
     .crawl-pages a { color: var(--seo360-primary); overflow-wrap: anywhere; }
     .crawl-status { min-width: 40px; font-weight: 700; }
+    .diagnostics-panel { background: var(--seo360-bg-card); border: 1px solid var(--seo360-border-light); border-radius: 14px; padding: 22px; margin-bottom: 24px; }
+    .diagnostics-panel h2 { font-family: var(--seo360-font-display); font-size: 1.25rem; margin: 0 0 7px; }
+    .diagnostics-panel > p { color: var(--seo360-text-muted); margin: 0; font-size: .92rem; }
+    .diagnostic-tabs { display:flex; flex-wrap:wrap; gap:8px; margin:18px 0 14px; }
+    .diagnostic-tabs button { font:inherit; font-size:.78rem; padding:9px 12px; border:1px solid var(--seo360-border-light); background:var(--seo360-bg-raised); color:var(--seo360-text-main); border-radius:999px; cursor:pointer; }
+    .diagnostic-tabs button[aria-selected="true"] { background:var(--seo360-primary); color:#07131d; border-color:var(--seo360-primary); }
+    .diagnostic-tabs button:hover { border-color:var(--seo360-primary); }
+    .diagnostic-table { width:100%; border-collapse:collapse; font-size:.8rem; }
+    .diagnostic-table th,.diagnostic-table td { padding:12px 10px; vertical-align:top; text-align:left; border-bottom:1px solid var(--seo360-border-light); }
+    .diagnostic-table th { color:var(--seo360-text-muted); font-weight:600; background:var(--seo360-bg-hero-dark); }
+    .diagnostic-table a { color:var(--seo360-primary); overflow-wrap:anywhere; }
+    .diagnostic-scroll { overflow:auto; border:1px solid var(--seo360-border-light); border-radius:11px; }
+    .diagnostic-empty { padding:18px; border:1px dashed var(--seo360-border-light); border-radius:11px; color:var(--seo360-text-muted); }
     #stage-error { max-width: 760px; margin: 80px auto; padding: 32px; background: var(--seo360-bg-card-dark); border: 1px solid var(--seo360-border-dark); border-radius: 18px; text-align: center; color: var(--seo360-text-white); }
     #stage-error p { color: var(--seo360-text-muted-dark); line-height: 1.6; }
     #stage-error button { border: 0; border-radius: 8px; background: var(--seo360-primary); color: #07131d; padding: 12px 18px; font-weight: 800; cursor: pointer; }
@@ -853,7 +866,7 @@
           <button type="submit" class="seo360-btn-primary">Scan my website</button>
         </form>
     <div class="seo360-subnote" id="audit-mode-note">
-      <strong>Live audit</strong> • Crawl up to 25 pages, check PageSpeed, and explore keyword rankings and niche competitors.
+      <strong>Live audit</strong> • Crawl up to 75 HTML pages, check PageSpeed, and explore keyword rankings and niche competitors.
         </div>
       </div>
     </div>
@@ -950,6 +963,13 @@
             <div class="psi-device-grid" id="psi-device-grid"></div>
           </section>
           <div id="seo-intelligence" class="hidden"></div>
+          <section class="diagnostics-panel hidden" id="crawl-diagnostics" aria-live="polite">
+            <span class="seo-overline">04 / Crawl Diagnostics</span>
+            <h2>Deep technical health</h2>
+            <p>Technical issues observed across the completed HTML crawl.</p>
+            <div class="diagnostic-tabs" id="diagnostic-tabs" role="tablist" aria-label="Technical crawl diagnostics"></div>
+            <div id="diagnostic-detail" role="tabpanel" tabindex="0"></div>
+          </section>
           <section class="crawl-summary" id="crawl-summary">
             <h2>Pages checked</h2>
             <p id="scan-summary">This preview does not perform a live crawl.</p>
@@ -1178,7 +1198,7 @@
       const pages = Array.isArray(scan?.pages) ? scan.pages : [];
       const analyzed = Number(scan?.pagesAnalyzed || 0);
       const attempted = Number(scan?.pagesAttempted || pages.length);
-      const limit = Number(scan?.pageLimit || 25);
+      const limit = Number(scan?.pageLimit || 75);
       const note = scan?.truncated ? ` The crawl reached its ${limit}-page limit; run another audit to continue reviewing priority pages.` : "";
       document.getElementById("scan-summary").textContent = `Analyzed ${analyzed} HTML page(s) and checked ${attempted} page request(s).${note}`;
       document.getElementById("crawl-pages").innerHTML = pages.map((page) => {
@@ -1186,6 +1206,35 @@
         const label = page.error ? `${status} — ${page.error}` : `${status} — ${page.status >= 200 && page.status < 400 ? "OK" : "Review"}`;
         return `<li><span class="crawl-status">${escapeHtml(status)}</span><a href="${escapeHtml(page.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(page.url)}</a><span>${escapeHtml(label)}</span></li>`;
       }).join("");
+    }
+
+    function renderDiagnostics(data) {
+      const section = document.getElementById("crawl-diagnostics");
+      if (!data || !data.counts) { section.classList.add("hidden"); return; }
+      section.classList.remove("hidden");
+      const esc = escapeHtml;
+      const link = (url) => '<a href="' + esc(url) + '" target="_blank" rel="noopener noreferrer">' + esc(url) + '</a>';
+      const table = (heads, rows) => '<div class="diagnostic-scroll"><table class="diagnostic-table"><thead><tr>' + heads.map(h => '<th>' + esc(h) + '</th>').join("") + '</tr></thead><tbody>' + rows + '</tbody></table></div>';
+      const empty = '<p class="diagnostic-empty">No issues of this type were found in the completed crawl.</p>';
+      const duplicateRows = []
+        .concat((data.duplicateMetadata.titles || []).map(group => '<tr><td>Duplicate title</td><td>' + esc(group.value) + '</td><td>' + group.urls.map(link).join("<br>") + '</td></tr>'))
+        .concat((data.duplicateMetadata.descriptions || []).map(group => '<tr><td>Duplicate description</td><td>' + esc(group.value) + '</td><td>' + group.urls.map(link).join("<br>") + '</td></tr>'))
+        .concat((data.duplicateMetadata.missingTitles || []).map(url => '<tr><td>Missing title</td><td>—</td><td>' + link(url) + '</td></tr>'))
+        .concat((data.duplicateMetadata.longTitles || []).map(row => '<tr><td>Title over 60 characters</td><td>' + row.length + ' characters</td><td>' + link(row.url) + '</td></tr>'))
+        .concat((data.duplicateMetadata.missingH1 || []).map(url => '<tr><td>Missing H1</td><td>—</td><td>' + link(url) + '</td></tr>'))
+        .concat((data.duplicateMetadata.multipleH1 || []).map(row => '<tr><td>Multiple H1s</td><td>' + row.count + ' H1 headings</td><td>' + link(row.url) + '</td></tr>'));
+      const views = [
+        { label: "Broken 4xx/5xx", count: data.counts.broken, html: data.broken.length ? table(["Status", "Affected URL", "Referring page"], data.broken.map(row => '<tr><td>' + esc(row.status) + '</td><td>' + link(row.url) + '</td><td>' + (row.referrers.length ? row.referrers.map(link).join("<br>") : "Not observed in the completed crawl") + '</td></tr>').join("")) : empty },
+        { label: "Redirect Chains", count: data.counts.redirects, html: data.redirects.length ? table(["Issue", "Requested URL", "Observed chain"], data.redirects.map(row => '<tr><td>' + (row.loop ? "Redirect loop" : row.limitReached ? "Limit reached" : "2+ redirect hops") + '</td><td>' + link(row.url) + '</td><td>' + row.chain.map(hop => esc(hop.status) + ' → ' + esc(hop.url)).join("<br>") + '</td></tr>').join("")) : empty },
+        { label: "Duplicate Metadata", count: data.counts.duplicateMetadata, html: duplicateRows.length ? table(["Issue", "Observed value", "Affected URL"], duplicateRows.join("")) : empty },
+        { label: "Canonical & Indexability", count: data.counts.canonical, html: data.canonical.length ? table(["Issue", "Affected URL", "Canonical target"], data.canonical.map(row => '<tr><td>' + esc(row.issue) + '</td><td>' + link(row.url) + '</td><td>' + (row.canonical ? link(row.canonical) : "—") + '</td></tr>').join("")) : empty },
+        { label: "Thin Content", count: data.counts.thinContent, html: data.thinContent.length ? table(["Visible words", "Affected URL"], data.thinContent.map(row => '<tr><td>' + esc(row.words) + ' / 250</td><td>' + link(row.url) + '</td></tr>').join("")) : empty }
+      ];
+      const tabs = document.getElementById("diagnostic-tabs"), detail = document.getElementById("diagnostic-detail");
+      tabs.innerHTML = views.map((view, index) => '<button type="button" role="tab" data-diagnostic="' + index + '" aria-selected="' + (index === 0) + '">' + esc(view.label) + ' <span>' + view.count + '</span></button>').join("");
+      const show = (index) => { detail.innerHTML = views[index].html; tabs.querySelectorAll("[data-diagnostic]").forEach((tab, i) => tab.setAttribute("aria-selected", String(i === index))); };
+      tabs.querySelectorAll("[data-diagnostic]").forEach((tab) => tab.addEventListener("click", () => show(Number(tab.dataset.diagnostic))));
+      show(0);
     }
 
     function renderRoadmap() {
@@ -1231,6 +1280,7 @@
       renderHeroBars(result.overallScore);
       renderPageSpeed(result.pageSpeed);
       window.renderSeoReport?.(result, startScan);
+      renderDiagnostics(result.crawlDiagnostics);
       renderCrawl(result.scan);
       renderFindings();
       renderRoadmap();
@@ -1238,7 +1288,7 @@
       if (pdfButton && !pdfButton.dataset.bound) { pdfButton.dataset.bound = '1'; pdfButton.addEventListener('click', () => openLeadGate('pdf')); }
       drawRadar();
       showReport();
-      document.getElementById('jump-links').insertAdjacentHTML('afterbegin', '<li><a href="#equity-heading">PageRank & link equity</a></li><li><a href="#keywords-heading">Keywords & competitors</a></li>');
+      document.getElementById('jump-links').insertAdjacentHTML('afterbegin', '<li><a href="#equity-heading">PageRank & link equity</a></li><li><a href="#keywords-heading">Keywords & competitors</a></li><li><a href="#crawl-diagnostics">Crawl diagnostics</a></li>');
     }
 
     function renderSampleReport(domain) {
@@ -1321,7 +1371,7 @@
             : ["Running Google PageSpeed Insights", "Checking keyword positions and niche competitors", "Calculating internal link equity"];
         const label = stage[Math.floor(seconds / 3) % stage.length];
         document.getElementById("scan-subtitle").textContent = label;
-        document.getElementById("vf-status").textContent = seconds < 10 ? "Scanning up to 25 public pages..." : "Waiting for Google Lighthouse checks...";
+        document.getElementById("vf-status").textContent = seconds < 10 ? "Scanning up to 75 public HTML pages..." : "Waiting for Google Lighthouse checks...";
         if (seconds > 1) vfImg.classList.add("visible");
       }, 900);
 
