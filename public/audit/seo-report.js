@@ -66,7 +66,8 @@
     if (result.aeoGeo) {
       const aeo = result.aeoGeo;
       const schema = aeo.schema || {};
-      panel.insertAdjacentHTML("beforeend", `<section class="seo-section" id="aeo-geo-readiness"><div class="seo-section-heading"><span class="seo-overline">03 / AI Search, AEO & GEO Readiness</span><h2>AI Search, AEO & GEO Readiness</h2><p>Observable signals that can help answer engines discover and understand this site.</p></div><div class="equity-kpis">${metric("Readiness score", `${aeo.score} / 100`, `${aeo.checks.filter(check => check.pass).length} of ${aeo.checks.length} checks passed`)}${metric("Structured data", `${schema.score ?? 0} / 100`, `${(schema.types || []).length} schema types detected`)}</div><ul class="aeo-checks">${aeo.checks.map(check => `<li><b>${check.pass ? "✓" : "○"} ${esc(check.label)}</b><small>${esc(typeof check.detail === "string" ? check.detail : JSON.stringify(check.detail))}</small></li>`).join("")}</ul><h3>AI crawler access</h3><p>${(aeo.bots || []).map(bot => `${esc(bot.bot)}: ${esc(bot.status)}`).join(" · ")}</p><h3>Structured data scorecard</h3><p><b>Detected:</b> ${esc((schema.detected || []).join(", ") || "None")} · <b>Missing:</b> ${esc((schema.missing || []).join(", ") || "None")}</p><p>Types: ${esc((schema.types || []).join(", ") || "None")}. Key fields: ${(schema.fields || []).map(field => `${esc(field.field)} ${field.present ? "✓" : "−"}`).join(" · ")}${schema.malformedBlocks?.length ? ` · Malformed JSON-LD blocks: ${schema.malformedBlocks.length}` : ""}</p><h3>Quick wins</h3><ul>${aeo.recommendations.map(recommendation => `<li>${esc(recommendation)}</li>`).join("")}</ul></section>`);
+      // Section 03 is rendered by the dedicated AEO dashboard module. Keeping this
+      // renderer data-only prevents raw diagnostic objects from ever reaching the UI.
     }
 
     const showKeyword = index => {
