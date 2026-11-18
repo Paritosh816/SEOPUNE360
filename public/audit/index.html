@@ -1354,6 +1354,7 @@
 
     let leadGateAction = 'roadmap';
     window.openLeadGate = action => { leadGateAction = action; window.leadGateStartedAt=Date.now(); const dialog=document.getElementById('lead-gate'); dialog.classList.add('open'); dialog.querySelector('input[name=email]').focus(); };
+    window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('lead-gate-close').addEventListener('click',()=>document.getElementById('lead-gate').classList.remove('open'));
     document.getElementById('lead-gate-form').addEventListener('submit', async event => {
       event.preventDefault(); const form=event.currentTarget, submit=form.querySelector('button[type=submit]'), status=document.getElementById('lead-gate-status');
@@ -1367,6 +1368,7 @@
         if(leadGateAction==='pdf') window.print(); else document.getElementById('audit-roadmap').scrollIntoView({behavior:'smooth',block:'center'});
       } catch(error) { status.textContent=error.message==='Failed to fetch'?'Could not reach the enquiry service. Please try again.':error.message; }
       finally { submit.disabled=false; }
+    });
     });
 
     // Auto-start scan if ?domain= query param is passed from seopune360.com homepage
