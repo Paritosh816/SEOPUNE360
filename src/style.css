@@ -1066,7 +1066,7 @@ a.content-card:hover { transform:translateY(-4px); border-color:rgba(51,225,208,
 .contact-result-card { display: flex; min-height: 220px; flex-direction: column; align-items: flex-start; padding: 23px; border: 1px solid var(--line); border-radius: 12px; background: linear-gradient(155deg,rgba(19,39,56,.8),rgba(8,23,31,.9)); transition: transform .22s ease, border-color .22s ease, background .22s ease; }
 .contact-result-card:hover { transform: translateY(-4px); border-color: rgba(51,225,208,.47); background: linear-gradient(155deg,rgba(22,49,61,.9),rgba(8,23,31,.95)); }
 .contact-result-card > span { color: #a5b7ba; font-size: .72rem; }
-.contact-result-card > b { margin-top: 21px; color: var(--aqua); font-size: clamp(2.7rem,4vw,3.8rem); letter-spacing: -.065em; line-height: 1; }
+.contact-result-card > b { margin-top: 21px; color: var(--aqua); font-size: clamp(1.6rem,2.4vw,2.2rem); letter-spacing: -.035em; line-height: 1.15; }
 .contact-result-card > small { margin-top: 7px; color: var(--muted-strong); font-size: .86rem; }
 .contact-result-card > i { display: inline-flex; align-items: center; gap: 7px; margin-top: auto; padding-top: 19px; color: #8da4a7; font-size: .76rem; font-style: normal; }
 .contact-result-card > i svg { width: 15px; color: var(--aqua); }

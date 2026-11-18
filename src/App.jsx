@@ -781,11 +781,11 @@ function ContactPage() {
 
     <section className="section contact-results">
       <div className="container">
-        <div className="contact-section-heading"><p className="eyebrow">Published client outcomes</p><h2>Real work. <span>Useful proof.</span></h2><p>Selected results from the case studies published on this site. Outcomes vary by business and project.</p></div>
+        <div className="contact-section-heading"><p className="eyebrow">Published client work</p><h2>Real businesses. <span>Clear project scope.</span></h2><p>Explore the work described in our client portfolio, from brand identity to dealership enquiry campaigns.</p></div>
         <div className="contact-result-grid">
-          <a className="contact-result-card" href="/case-studies/kj-group/"><span>KJ Group · Real estate</span><b>+210%</b><small>Organic traffic</small><i>Read case study <ArrowIcon /></i></a>
-          <a className="contact-result-card" href="/case-studies/rivan-travels/"><span>Rivan Travels · Travel</span><b>+85%</b><small>Bookings</small><i>Read case study <ArrowIcon /></i></a>
-          <a className="contact-result-card" href="/case-studies/shaw-toyota/"><span>Shaw Toyota · Automotive</span><b>+190%</b><small>Local traffic</small><i>Read case study <ArrowIcon /></i></a>
+          <a className="contact-result-card" href="/case-studies/kj-group/"><span>KJ Group · Real estate</span><b>Brand identity</b><small>Logo variations and branded applications</small><i>Explore project <ArrowIcon /></i></a>
+          <a className="contact-result-card" href="/case-studies/rivan-travels/"><span>Rivan Travels · Travel</span><b>Branding & logo</b><small>A recognizable identity for travel services</small><i>Explore project <ArrowIcon /></i></a>
+          <a className="contact-result-card" href="/case-studies/shaw-toyota/"><span>Shaw Toyota · Automotive</span><b>PPC enquiries</b><small>Lead generation for prospective vehicle buyers</small><i>Explore project <ArrowIcon /></i></a>
         </div>
       </div>
     </section>
