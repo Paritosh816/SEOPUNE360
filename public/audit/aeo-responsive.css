@@ -1,0 +1,3 @@
+/* Keep compact schema labels inside the editorial scorecard at every report width. */
+.aeo-score-card>div:last-child{min-width:0;flex:1}.aeo-schema-bar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:5px;max-width:100%;overflow:hidden}.aeo-schema-bar span{min-width:0;overflow-wrap:anywhere;line-height:1.2;padding:7px 5px}@media(max-width:1120px){.aeo-score-grid{grid-template-columns:1fr}.aeo-schema-bar{grid-template-columns:repeat(5,minmax(0,1fr))}}@media(max-width:520px){.aeo-schema-bar{grid-template-columns:repeat(2,minmax(0,1fr))}.aeo-schema-bar span{min-height:38px;display:grid;place-items:center}.aeo-score-card{flex-direction:column}.aeo-donut{margin:auto}}
+
