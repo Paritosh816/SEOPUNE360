@@ -308,6 +308,14 @@ function Hero({ onPlayShowreel }) {
         <p className="eyebrow">SEO · Websites · Lead generation</p>
         <h1>From first search<br />to <span>real enquiries.</span></h1>
         <p className="hero-lead">Help customers discover your business, understand your offer, and take the next step. Bring search, website development, and lead generation together with SEOPune360.</p>
+        <div className="hero-scanner">
+          <label htmlFor="hero-scan-url">Laser Viewfinder · Free website scan</label>
+          <form className="hero-scan-form" action="/audit/" method="get">
+            <input id="hero-scan-url" name="domain" type="text" inputMode="url" autoComplete="url" aria-label="Website address to scan" placeholder="Enter your website URL" required pattern="(https?://)?[a-zA-Z0-9][a-zA-Z0-9.-]*\.[a-zA-Z]{2,}.*" title="Enter a website address such as example.com" />
+            <button className="button" type="submit">Scan my website <ArrowIcon /></button>
+          </form>
+          <small>Up to 25 pages · PageSpeed · Keyword rankings & competitors</small>
+        </div>
         <div className="hero-actions"><a className="button" href="/contact/">Discuss your project <ArrowIcon /></a><a className="text-link" href="#clients">Explore client work ↓</a></div>
         <div className="hero-service-links"><a href="/services/seo/">Search visibility</a><a href="/services/website-development/">Website experience</a><a href="/services/lead-generation/">Qualified enquiries</a></div>
       </div>

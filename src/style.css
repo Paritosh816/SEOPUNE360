@@ -1524,4 +1524,8 @@ a.content-card:hover { transform:translateY(-4px); border-color:rgba(51,225,208,
 .industry-tab:active { color: #052a26; }
 
 .service-faq{margin-top:64px;max-width:850px}.service-faq h2{margin-bottom:24px}.service-faq details{padding:22px 0;border-bottom:1px solid rgba(185,222,216,.2)}.service-faq summary{cursor:pointer;font-weight:600;line-height:1.5}.service-faq details p{margin-top:16px;line-height:1.75;color:#b6c5d2}
+.hero-scanner{margin:24px 0 20px;max-width:620px;padding:18px;border:1px solid rgba(51,225,208,.3);border-radius:14px;background:rgba(12,35,46,.85)}
+.hero-scanner>label{display:block;margin-bottom:12px;color:var(--aqua);font-size:.78rem;font-weight:700;letter-spacing:.025em}
+.hero-scan-form{display:flex;gap:8px;align-items:stretch}.hero-scan-form input{flex:1;min-width:0;width:100%;padding:14px;border:1px solid rgba(185,222,216,.3);border-radius:8px;background:#07131d;color:#edf7f3;font:inherit;font-size:.9rem}.hero-scan-form input::placeholder{color:#a8bcc8}.hero-scan-form input:focus-visible{outline:2px solid #33e1d0;outline-offset:2px}.hero-scan-form .button{flex-shrink:0;padding:14px 16px;white-space:nowrap}.hero-scanner>small{display:block;margin-top:10px;color:#b6c5d2;font-size:.7rem;line-height:1.5}
+@media(max-width:600px){.hero-scanner{padding:14px;margin-top:20px}.hero-scan-form{flex-direction:column}.hero-scan-form .button{justify-content:center;width:100%;min-height:48px}.hero-scan-form input{min-height:48px}}
 
