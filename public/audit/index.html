@@ -7,6 +7,7 @@
   <title>Laser Viewfinder Live Website & SEO Audit | SEOPune360</title>
   <link rel="stylesheet" href="/audit/seo-report.css" />
   <script src="/audit/seo-report.js" defer></script>
+  <script src="/audit/traffic-visibility.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -1280,6 +1281,7 @@
       renderHeroBars(result.overallScore);
       renderPageSpeed(result.pageSpeed);
       window.renderSeoReport?.(result, startScan);
+      window.renderTrafficVisibility?.(result);
       renderDiagnostics(result.crawlDiagnostics);
       renderCrawl(result.scan);
       renderFindings();
@@ -1288,7 +1290,7 @@
       if (pdfButton && !pdfButton.dataset.bound) { pdfButton.dataset.bound = '1'; pdfButton.addEventListener('click', () => openLeadGate('pdf')); }
       drawRadar();
       showReport();
-      document.getElementById('jump-links').insertAdjacentHTML('afterbegin', '<li><a href="#equity-heading">PageRank & link equity</a></li><li><a href="#keywords-heading">Keywords & competitors</a></li><li><a href="#crawl-diagnostics">Crawl diagnostics</a></li>');
+      document.getElementById('jump-links').insertAdjacentHTML('afterbegin', '<li><a href="#equity-heading">Important pages</a></li><li><a href="#keywords-heading">Keywords & competitors</a></li><li><a href="#traffic-heading">Traffic & top pages</a></li><li><a href="#crawl-diagnostics">Crawl diagnostics</a></li>');
     }
 
     function renderSampleReport(domain) {
