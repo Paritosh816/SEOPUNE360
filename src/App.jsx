@@ -680,6 +680,7 @@ function ContactPage() {
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState(false);
   const [formError, setFormError] = useState('');
+  const [formStartedAt] = useState(() => Date.now());
   const [planContext] = useState(() => {
     if (new URLSearchParams(window.location.search).get('growth-plan') !== '1') return null;
     try {
@@ -749,6 +750,7 @@ function ContactPage() {
           <div className="contact-form-heading"><p className="eyebrow">Start a conversation</p><h2>Tell us about your project.</h2><p>Share a few details and we’ll get back to you by email.</p></div>
           <form className="contact-form" onSubmit={handleContactSubmit}>
             <input type="text" name="_honey" className="contact-honey" tabIndex="-1" autoComplete="off" aria-hidden="true" />
+            <input type="hidden" name="_started_at" value={formStartedAt} />
             <input type="hidden" name="_subject" value="New SEOPune360 website enquiry" />
             <input type="hidden" name="_captcha" value="false" />
             <div className="contact-form-grid">
