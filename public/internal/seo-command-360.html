@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SEOPune360 — 90-Day Page-1 SEO Command Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          colors: {
+            obsidian: '#080c14',
+            slatecard: '#0e1525',
+            tealbrand: '#2dd4bf',
+            tealdim: '#14b8a6'
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      background-color: #080c14;
+      color: #f1f5f9;
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    .glass-card {
+      background: linear-gradient(180deg, rgba(16, 24, 40, 0.92) 0%, rgba(11, 17, 30, 0.96) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .tab-active {
+      background: rgba(45, 212, 191, 0.14);
+      color: #2dd4bf;
+      border-color: rgba(45, 212, 191, 0.4);
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: rgba(45, 212, 191, 0.25);
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="min-h-screen antialiased selection:bg-teal-400/20 selection:text-teal-200">
+  <!-- Top Bar -->
+  <header class="sticky top-0 z-30 border-b border-white/10 bg-[#080c14]/90 backdrop-blur-md">
+    <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
+      <div class="flex items-center gap-3">
+        <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-teal-400/15 text-sm font-extrabold text-teal-300 ring-1 ring-teal-400/30">
+          360
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-base font-bold tracking-tight text-white sm:text-lg">SEOPune360 SEO Command</h1>
+            <span class="rounded-full bg-teal-400/10 px-2 py-0.5 text-[11px] font-semibold text-teal-300 ring-1 ring-teal-400/25">90-Day Page-1 Sprint</span>
+          </div>
+          <p class="text-xs text-slate-400">seopune360.com · 5 Core Money Pages · 15 Commercial Pune Keywords · 100% Online (No GBP)</p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <button id="btnSaveBackup" type="button" class="rounded-lg border border-teal-400/35 bg-teal-400/15 px-3 py-1.5 text-xs font-semibold text-teal-200 transition hover:bg-teal-400/25">
+          Save Backup
+        </button>
+        <button id="btnLoadBackup" type="button" class="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-200 transition hover:border-teal-400/40 hover:text-teal-300">
+          Load Backup
+        </button>
+        <input id="inputLoadBackup" type="file" accept=".json,application/json" class="hidden" />
+        <button id="btnExportCsv" type="button" class="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-200 transition hover:border-teal-400/40 hover:text-teal-300">
+          Export CSV
+        </button>
+        <button id="btnResetState" type="button" class="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-300 transition hover:border-rose-400/40 hover:text-rose-300">
+          Reset Demo Data
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="mx-auto max-w-7xl overflow-x-auto px-4 sm:px-6">
+      <nav id="mainNav" class="flex gap-2 pb-3" aria-label="Dashboard Sections">
+        <button data-tab="overview" type="button" class="nav-tab tab-active whitespace-nowrap rounded-lg border border-transparent px-3.5 py-1.5 text-xs font-semibold transition">
+          01 / Overview
+        </button>
+        <button data-tab="pages" type="button" class="nav-tab whitespace-nowrap rounded-lg border border-white/5 bg-white/[0.03] px-3.5 py-1.5 text-xs font-semibold text-slate-300 transition hover:text-white">
+          02 / 5 Pages &amp; 15 Keywords
+        </button>
+        <button data-tab="tasks" type="button" class="nav-tab whitespace-nowrap rounded-lg border border-white/5 bg-white/[0.03] px-3.5 py-1.5 text-xs font-semibold text-slate-300 transition hover:text-white">
+          03 / On-Page, Tech &amp; Off-Page Tasks
+        </button>
+        <button data-tab="strategy" type="button" class="nav-tab whitespace-nowrap rounded-lg border border-white/5 bg-white/[0.03] px-3.5 py-1.5 text-xs font-semibold text-slate-300 transition hover:text-white">
+          04 / 90-Day Page-1 Strategy
+        </button>
+        <button data-tab="offpage" type="button" class="nav-tab whitespace-nowrap rounded-lg border border-white/5 bg-white/[0.03] px-3.5 py-1.5 text-xs font-semibold text-slate-300 transition hover:text-white">
+          05 / Off-Page &amp; Backlink Tracker
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Toast Banner -->
+  <div id="toastBox" class="pointer-events-none fixed bottom-5 right-5 z-50 hidden rounded-xl border border-teal-400/30 bg-[#0d1829] px-4 py-2.5 text-xs font-medium text-teal-200 shadow-2xl"></div>
+
+  <!-- Main Container -->
+  <main class="mx-auto max-w-7xl px-4 py-6 sm:px-6">
+
+    <!-- ==================== TAB 1: OVERVIEW ==================== -->
+    <section id="tab-overview" class="tab-panel space-y-6">
+      <!-- Top 4 KPI Cards -->
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div class="glass-card rounded-2xl p-5">
+          <p class="text-xs font-medium text-slate-400">Overall 90-Day Execution</p>
+          <div class="mt-2 flex items-baseline justify-between">
+            <span id="kpiCompletionPct" class="text-3xl font-extrabold text-teal-300">0%</span>
+            <span id="kpiTasksRatio" class="text-xs font-medium text-slate-400">0 / 0 tasks</span>
+          </div>
+          <div class="mt-3 h-2 w-full overflow-hidden rounded-full bg-white/10">
+            <div id="kpiCompletionBar" class="h-full rounded-full bg-teal-400 transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-5">
+          <p class="text-xs font-medium text-slate-400">Target Keywords on Page 1</p>
+          <div class="mt-2 flex items-baseline justify-between">
+            <span id="kpiPageOneCount" class="text-3xl font-extrabold text-white">0 <span class="text-base font-semibold text-slate-400">/ 15</span></span>
+            <span id="kpiPageTwoCount" class="rounded-full bg-amber-400/15 px-2 py-0.5 text-[11px] font-semibold text-amber-300">0 on Page 2</span>
+          </div>
+          <p class="mt-2 text-xs text-slate-400">Update live ranks in Tab 02 as Google crawls updates</p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-5">
+          <p class="text-xs font-medium text-slate-400">Live Site Baseline (Verified)</p>
+          <div class="mt-2 flex items-baseline gap-3">
+            <span class="text-3xl font-extrabold text-emerald-300">95</span>
+            <span class="text-xs text-slate-400">Desktop · <strong class="text-teal-300">89</strong> Mobile · <strong class="text-white">100</strong> Tech SEO</span>
+          </div>
+          <p class="mt-2 text-xs text-slate-400">Fast Core Web Vitals give you a speed edge in Pune</p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-5">
+          <p class="text-xs font-medium text-slate-400">Live Off-Page Links &amp; Citations</p>
+          <div class="mt-2 flex items-baseline justify-between">
+            <span id="kpiLiveLinks" class="text-3xl font-extrabold text-sky-300">0</span>
+            <span id="kpiPendingLinks" class="text-xs text-slate-400">0 planned</span>
+          </div>
+          <p class="mt-2 text-xs text-slate-400">Target: 25+ online agency profiles, editorial links &amp; client credits (no GBP)</p>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        <div class="glass-card rounded-2xl p-5 lg:col-span-5">
+          <div class="mb-3 flex items-center justify-between">
+            <div>
+              <h2 class="text-sm font-bold text-white">SEO Pillar Completion</h2>
+              <p class="text-xs text-slate-400">On-Page vs. Technical vs. Off-Page progress</p>
+            </div>
+            <span class="rounded-full bg-white/5 px-2.5 py-1 text-[11px] font-medium text-slate-300">Live Sync</span>
+          </div>
+          <div class="relative h-64">
+            <canvas id="pillarChart"></canvas>
+          </div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-5 lg:col-span-7">
+          <div class="mb-3 flex items-center justify-between">
+            <div>
+              <h2 class="text-sm font-bold text-white">5 Target Pages Readiness</h2>
+              <p class="text-xs text-slate-400">Task completion % per money page targeting Page 1</p>
+            </div>
+            <span class="rounded-full bg-teal-400/10 px-2.5 py-1 text-[11px] font-semibold text-teal-300">3 Keywords / Page</span>
+          </div>
+          <div class="relative h-64">
+            <canvas id="pageReadinessChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Priority Bottlenecks to Fix First -->
+      <div class="glass-card rounded-2xl p-5">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3">
+          <div>
+            <h2 class="text-sm font-bold text-white">Immediate Week 1–2 Priority Actions (Highest Ranking Impact)</h2>
+            <p class="text-xs text-slate-400">Tick these off right here—they sync with your main Task Board</p>
+          </div>
+          <button data-goto-tab="tasks" type="button" class="goto-btn rounded-lg bg-teal-400/15 px-3 py-1.5 text-xs font-semibold text-teal-300 hover:bg-teal-400/25">
+            Open Full Task Board &rarr;
+          </button>
+        </div>
+        <div id="overviewPriorityList" class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2"></div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 2: 5 PAGES x 15 KEYWORDS ==================== -->
+    <section id="tab-pages" class="tab-panel hidden space-y-6">
+      <div class="glass-card rounded-2xl p-5">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 class="text-base font-bold text-white">5 Target Money Pages &times; 3 Commercial Pune Keywords Each</h2>
+            <p class="text-xs text-slate-400">Select a page to inspect exact SEO Title, H1, content blueprint, Pune competitors, and update your live Google rank.</p>
+          </div>
+          <span class="rounded-full bg-teal-400/10 px-3 py-1 text-xs font-semibold text-teal-300">Zero Keyword Cannibalization Map</span>
+        </div>
+
+        <!-- 5 Page Selector Buttons -->
+        <div id="pageSelectorGrid" class="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-5"></div>
+      </div>
+
+      <!-- Active Page Detail Card -->
+      <div id="activePageDetail" class="space-y-5"></div>
+    </section>
+
+    <!-- ==================== TAB 3: TASK BOARD ==================== -->
+    <section id="tab-tasks" class="tab-panel hidden space-y-5">
+      <!-- Filters + Add Task Bar -->
+      <div class="glass-card rounded-2xl p-5">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 class="text-base font-bold text-white">SEO Execution Checklist (On-Page, Technical &amp; Off-Page)</h2>
+            <p class="text-xs text-slate-400">Filter by SEO pillar, target page, or sprint month. Changes save automatically in your browser.</p>
+          </div>
+          <button id="btnToggleAddTask" type="button" class="rounded-lg bg-teal-400 px-3.5 py-2 text-xs font-bold text-slate-950 transition hover:bg-teal-300">
+            + Add Custom Task
+          </button>
+        </div>
+
+        <!-- Add Custom Task Drawer -->
+        <form id="addTaskForm" class="mt-4 hidden rounded-xl border border-teal-400/25 bg-white/[0.03] p-4">
+          <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <input id="newTaskTitle" type="text" required placeholder="Task title (e.g. Add FAQ schema to /services/seo/)" class="rounded-lg border border-white/10 bg-[#080c14] px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-teal-400 focus:outline-none sm:col-span-2" />
+            <select id="newTaskPillar" class="rounded-lg border border-white/10 bg-[#080c14] px-3 py-2 text-xs text-white focus:border-teal-400 focus:outline-none">
+              <option value="On-Page">On-Page SEO</option>
+              <option value="Technical">Technical SEO</option>
+              <option value="Off-Page">Off-Page SEO</option>
+            </select>
+            <select id="newTaskPage" class="rounded-lg border border-white/10 bg-[#080c14] px-3 py-2 text-xs text-white focus:border-teal-400 focus:outline-none">
+              <option value="Sitewide">Sitewide</option>
+              <option value="Homepage">Homepage (/)</option>
+              <option value="Web Dev">Web Development</option>
+              <option value="SEO">SEO Services</option>
+              <option value="Growth">Growth Marketing</option>
+              <option value="Branding">Business Branding</option>
+            </select>
+            <select id="newTaskMonth" class="rounded-lg border border-white/10 bg-[#080c14] px-3 py-2 text-xs text-white focus:border-teal-400 focus:outline-none">
+              <option value="Month 1">Month 1 (Days 1–30)</option>
+              <option value="Month 2">Month 2 (Days 31–60)</option>
+              <option value="Month 3">Month 3 (Days 61–90)</option>
+            </select>
+            <select id="newTaskPriority" class="rounded-lg border border-white/10 bg-[#080c14] px-3 py-2 text-xs text-white focus:border-teal-400 focus:outline-none">
+              <option value="High">High Impact</option>
+              <option value="Medium">Medium Impact</option>
+            </select>
+            <input id="newTaskNote" type="text" placeholder="Action note / deliverable detail" class="rounded-lg border border-white/10 bg-[#080c14] px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-teal-400 focus:outline-none sm:col-span-2" />
+          </div>
+          <div class="mt-3 flex justify-end gap-2">
+            <button id="btnCancelAddTask" type="button" class="rounded-lg border border-white/10 px-3 py-1.5 text-xs text-slate-300 hover:text-white">Cancel</button>
+            <button type="submit" class="rounded-lg bg-teal-400 px-4 py-1.5 text-xs font-bold text-slate-950 hover:bg-teal-300">Save Task</button>
+          </div>
+        </form>
+
+        <!-- Filter Controls -->
+        <div class="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <select id="filterPillar" class="rounded-lg border border-white/10 bg-[#080c14] px-3 py-2 text-xs text-slate-200 focus:border-teal-400 focus:outline-none">
+            <option value="All">All Pillars (On-Page, Technical, Off-Page)</option>
+            <option value="On-Page">On-Page SEO</option>
+            <option value="Technical">Technical SEO</option>
+            <option value="Off-Page">Off-Page SEO</option>
+          </select>
+          <select id="filterPage" class="rounded-lg border border-white/10 bg-[#080c14] px-3 py-2 text-xs text-slate-200 focus:border-teal-400 focus:outline-none">
+            <option value="All">All Pages</option>
+            <option value="Sitewide">Sitewide</option>
+            <option value="Homepage">Homepage (/)</option>
+            <option value="Web Dev">Web Development</option>
+            <option value="SEO">SEO Services</option>
+            <option value="Growth">Growth Marketing</option>
+            <option value="Branding">Business Branding</option>
+          </select>
+          <select id="filterMonth" class="rounded-lg border border-white/10 bg-[#080c14] px-3 py-2 text-xs text-slate-200 focus:border-teal-400 focus:outline-none">
+            <option value="All">All 3 Months</option>
+            <option value="Month 1">Month 1 (Days 1–30)</option>
+            <option value="Month 2">Month 2 (Days 31–60)</option>
+            <option value="Month 3">Month 3 (Days 61–90)</option>
+          </select>
+          <input id="filterSearch" type="text" placeholder="Search tasks..." class="rounded-lg border border-white/10 bg-[#080c14] px-3 py-2 text-xs text-white placeholder-slate-500 focus:border-teal-400 focus:outline-none" />
+        </div>
+      </div>
+
+      <!-- Task List Table -->
+      <div class="glass-card overflow-hidden rounded-2xl">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead>
+              <tr class="border-b border-white/10 bg-white/[0.02] text-[11px] uppercase tracking-wider text-slate-400">
+                <th class="px-4 py-3 w-10">Done</th>
+                <th class="px-4 py-3">Activity &amp; Execution Detail</th>
+                <th class="px-4 py-3">Pillar</th>
+                <th class="px-4 py-3">Target Page</th>
+                <th class="px-4 py-3">Sprint</th>
+                <th class="px-4 py-3">Impact</th>
+                <th class="px-4 py-3 text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody id="taskTableBody" class="divide-y divide-white/5"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 4: 90-DAY STRATEGY PLAYBOOK ==================== -->
+    <section id="tab-strategy" class="tab-panel hidden space-y-6">
+      <div class="glass-card rounded-2xl p-6">
+        <span class="text-xs font-semibold uppercase tracking-widest text-teal-300">Realistic 3-Month Page-1 Blueprint</span>
+        <h2 class="mt-1 text-xl font-bold text-white">How SEOPune360 Can Break Into Google Page 1 in 90 Days</h2>
+        <p class="mt-2 max-w-3xl text-sm leading-relaxed text-slate-300">
+          Right now your technical speed is already strong (<strong class="text-teal-300">95 Desktop / 89 Mobile / 100 Lighthouse SEO</strong>), but your core service pages only have ~100 words of copy and your homepage doesn't target exact Pune commercial terms. In Pune's agency market, long-tail &amp; mid-competition keywords (like <em>growth marketing agency in Pune</em>, <em>AI search &amp; GEO services Pune</em>, and <em>business branding services Pune</em>) can hit Page 1 in <strong>45–75 days</strong>, while head terms (<em>SEO company in Pune</em>, <em>digital marketing agency in Pune</em>) require consistent authority building through Day 90.
+        </p>
+      </div>
+
+      <!-- 3-Month Sprint Columns -->
+      <div class="grid grid-cols-1 gap-5 lg:grid-cols-3">
+        <!-- Month 1 -->
+        <div class="glass-card flex flex-col justify-between rounded-2xl p-5">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="rounded-full bg-teal-400/15 px-3 py-1 text-xs font-bold text-teal-300">Month 1 · Days 1–30</span>
+              <span class="text-xs text-slate-400">Foundation &amp; Rewrite</span>
+            </div>
+            <h3 class="mt-3 text-base font-bold text-white">Fix Thin Service Pages, Schema &amp; Online Entity Signals</h3>
+            <ul class="mt-3 space-y-2.5 text-xs leading-relaxed text-slate-300">
+              <li class="flex gap-2"><span class="text-teal-300">&bull;</span><span><strong>Expand all 5 money pages</strong> from ~100 words to <strong>900–1,400 words</strong> each: exact H1/Title mapping, deliverables, process, Pune locality coverage (Baner, Kharadi, Hinjewadi, Wakad, Viman Nagar, PCMC), and 5–6 FAQ Q&amp;As.</span></li>
+              <li class="flex gap-2"><span class="text-teal-300">&bull;</span><span><strong>Deploy Online-First JSON-LD Schema</strong> (`Organization`, `ProfessionalService` with `areaServed: Pune`, `Service`, `FAQPage`, `BreadcrumbList`) — no street address needed — plus publish `/llms.txt` and verify `/sitemap.xml` returns `200 OK` in GSC.</span></li>
+              <li class="flex gap-2"><span class="text-teal-300">&bull;</span><span><strong>Surface real proof on every page:</strong> Embed KJ Group (`+210%` organic traffic), Shaw Toyota (`+190%` local traffic), Rivan Travels (`+85%` bookings), Lusso Marco, and Ananya Rishtey directly on their matching service pages.</span></li>
+              <li class="flex gap-2"><span class="text-teal-300">&bull;</span><span><strong>Online Trust &amp; Verified Reviews (No GBP):</strong> Build verified agency profiles on Clutch, GoodFirms, and LinkedIn, and collect 10+ client reviews mentioning your core services (zero physical office needed).</span></li>
+            </ul>
+          </div>
+          <div class="mt-5 rounded-xl border border-white/10 bg-white/[0.03] p-3 text-xs">
+            <span class="font-semibold text-teal-300">Month 1 Target:</span> All 5 pages indexed cleanly, 100% Schema pass, initial impressions on all 15 keywords (Ranks #20–#50).
+          </div>
+        </div>
+
+        <!-- Month 2 -->
+        <div class="glass-card flex flex-col justify-between rounded-2xl p-5">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="rounded-full bg-sky-400/15 px-3 py-1 text-xs font-bold text-sky-300">Month 2 · Days 31–60</span>
+              <span class="text-xs text-slate-400">Topical Authority &amp; Links</span>
+            </div>
+            <h3 class="mt-3 text-base font-bold text-white">Supporting Content Clusters &amp; High-Trust Backlinks</h3>
+            <ul class="mt-3 space-y-2.5 text-xs leading-relaxed text-slate-300">
+              <li class="flex gap-2"><span class="text-sky-300">&bull;</span><span><strong>Publish 10 supporting guides (2 per money page):</strong> e.g., <em>"Website Development Cost in Pune (2026)"</em> linking to `/services/website-development/`, <em>"Local SEO Checklist for Pune Clinics &amp; Dealers"</em> linking to `/services/seo/`, and <em>"How Pune Brands Win AI Search (GEO)"</em>.</span></li>
+              <li class="flex gap-2"><span class="text-sky-300">&bull;</span><span><strong>Internal Anchor-Text Hub:</strong> Link all 15 client case studies and new blog posts back to the 5 money pages using natural exact/partial anchors (e.g., <em>"SEO services in Pune"</em>, <em>"website development company in Pune"</em>).</span></li>
+              <li class="flex gap-2"><span class="text-sky-300">&bull;</span><span><strong>Online Agency &amp; B2B Directory Sprint:</strong> Claim &amp; optimize Clutch, GoodFirms, DesignRush, TechBehemoths, Sortlist, Crunchbase, and Behance with consistent brand details (`seopune360.com`, `+91 84838 37969`, `seopune360@gmail.com`, Service Area: Pune &amp; India).</span></li>
+              <li class="flex gap-2"><span class="text-sky-300">&bull;</span><span><strong>Client Portfolio Backlinks:</strong> Request a subtle <em>"Website by SEOPune360"</em> or partner credit link from your active web dev clients (Ananya Rishtey, IntelliDant, A.D.I DEV, Hotel Shivtara, Krishna Clinic).</span></li>
+            </ul>
+          </div>
+          <div class="mt-5 rounded-xl border border-white/10 bg-white/[0.03] p-3 text-xs">
+            <span class="font-semibold text-sky-300">Month 2 Target:</span> 5–7 mid-competition keywords reach Page 1 (#5–#10); core head terms climb onto Page 2 (#11–#20).
+          </div>
+        </div>
+
+        <!-- Month 3 -->
+        <div class="glass-card flex flex-col justify-between rounded-2xl p-5">
+          <div>
+            <div class="flex items-center justify-between">
+              <span class="rounded-full bg-emerald-400/15 px-3 py-1 text-xs font-bold text-emerald-300">Month 3 · Days 61–90</span>
+              <span class="text-xs text-slate-400">Page-1 Push &amp; Conversion</span>
+            </div>
+            <h3 class="mt-3 text-base font-bold text-white">Page-2 Striking-Distance Push, PR &amp; Laser Viewfinder Links</h3>
+            <ul class="mt-3 space-y-2.5 text-xs leading-relaxed text-slate-300">
+              <li class="flex gap-2"><span class="text-emerald-300">&bull;</span><span><strong>Promote Laser Viewfinder as a Link Magnet:</strong> Pitch your free SEO + AEO/GEO scanner in Pune startup communities, LinkedIn founder groups, Product Hunt / Indie directories, and local business newsletters to earn natural editorial backlinks.</span></li>
+              <li class="flex gap-2"><span class="text-emerald-300">&bull;</span><span><strong>GSC Striking-Distance Optimization:</strong> Export every keyword sitting at positions #8–#18 in Google Search Console, add missing H2 subtopics and FAQs to those exact pages, and refresh Title tags for higher CTR.</span></li>
+              <li class="flex gap-2"><span class="text-emerald-300">&bull;</span><span><strong>6–8 Guest Posts / Niche Edits:</strong> Publish Pune real estate, automotive, and healthcare digital growth case-study articles on Indian marketing/startup publications linking directly to your 5 service pages.</span></li>
+              <li class="flex gap-2"><span class="text-emerald-300">&bull;</span><span><strong>Conversion Rate Boost:</strong> Add instant WhatsApp + Laser Viewfinder audit widgets directly inside each of the 5 service pages so Page-1 clicks turn into calls.</span></li>
+            </ul>
+          </div>
+          <div class="mt-5 rounded-xl border border-white/10 bg-white/[0.03] p-3 text-xs">
+            <span class="font-semibold text-emerald-300">Month 3 Target:</span> 10–15 target keywords ranking on Google Page 1 + steady inbound Pune agency enquiries.
+          </div>
+        </div>
+      </div>
+
+      <!-- Cannibalization & Internal Linking Rules -->
+      <div class="glass-card rounded-2xl p-5">
+        <h3 class="text-sm font-bold text-white">3 Non-Negotiable Rules to Win in 90 Days</h3>
+        <div class="mt-3 grid grid-cols-1 gap-4 md:grid-cols-3">
+          <div class="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+            <p class="text-xs font-bold text-teal-300">01 · Zero Keyword Overlap</p>
+            <p class="mt-1.5 text-xs leading-relaxed text-slate-300">
+              Keep <strong>Homepage</strong> focused on broad agency intent (<em>digital marketing agency in Pune</em> / <em>SEO company in Pune</em>) and route specific buyer intent (<em>SEO services</em>, <em>website development</em>, <em>growth marketing</em>, <em>branding</em>) strictly to their 4 dedicated service pages.
+            </p>
+          </div>
+          <div class="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+            <p class="text-xs font-bold text-teal-300">02 · Local Pune Proof Signals</p>
+            <p class="mt-1.5 text-xs leading-relaxed text-slate-300">
+              Top competitors like Zerozilla, Movinnza, and Technik Growth explicitly mention Pune hubs (Baner, Hinjewadi, Kharadi, Wakad, Viman Nagar, PCMC) and client counts. Add your 15 clients + Pune areas cleanly on every target page.
+            </p>
+          </div>
+          <div class="rounded-xl border border-white/10 bg-white/[0.02] p-4">
+            <p class="text-xs font-bold text-teal-300">03 · Use Your Scanner as Link Bait</p>
+            <p class="mt-1.5 text-xs leading-relaxed text-slate-300">
+              Most Pune agencies only have static brochures. Your live <strong>Laser Viewfinder (SEO + AEO/GEO)</strong> tool earns backlinks and increases time-on-site—two strong ranking signals Google rewards quickly.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 5: OFF-PAGE & BACKLINK TRACKER ==================== -->
+    <section id="tab-offpage" class="tab-panel hidden space-y-5">
+      <div class="glass-card rounded-2xl p-5">
+        <div class="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <h2 class="text-base font-bold text-white">Off-Page Authority, Citations &amp; Backlink Tracker</h2>
+            <p class="text-xs text-slate-400">Click any status pill to cycle between <strong>Pending</strong> &rarr; <strong>Submitted</strong> &rarr; <strong>Live</strong>. Build authority evenly across all 5 money pages.</p>
+          </div>
+          <div class="flex gap-2">
+            <select id="filterLinkType" class="rounded-lg border border-white/10 bg-[#080c14] px-3 py-1.5 text-xs text-slate-200 focus:border-teal-400 focus:outline-none">
+              <option value="All">All Backlink Types</option>
+              <option value="Agency Directory">Agency Directory</option>
+              <option value="Online Entity Profile">Online Entity Profile</option>
+              <option value="Client Credit Link">Client Credit Link</option>
+              <option value="Guest Post / PR">Guest Post / PR</option>
+              <option value="Tool / Link Magnet">Tool / Link Magnet</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card overflow-hidden rounded-2xl">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead>
+              <tr class="border-b border-white/10 bg-white/[0.02] text-[11px] uppercase tracking-wider text-slate-400">
+                <th class="px-4 py-3">Platform / Source</th>
+                <th class="px-4 py-3">Type</th>
+                <th class="px-4 py-3">Target Page on SEOPune360</th>
+                <th class="px-4 py-3">Suggested Anchor / Action</th>
+                <th class="px-4 py-3 text-right">Status (Click to Toggle)</th>
+              </tr>
+            </thead>
+            <tbody id="backlinkTableBody" class="divide-y divide-white/5"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const STORAGE_KEY = 'seopune360_seo_dashboard_v2';
+
+    const DEFAULT_PAGES = [
+      {
+        id: 'Homepage',
+        name: 'Homepage',
+        url: 'https://seopune360.com/',
+        path: '/',
+        recommendedTitle: 'SEO Company & Digital Marketing Agency in Pune | SEOPune360',
+        recommendedH1: 'Digital Marketing & SEO Company in Pune Built for Real Business Enquiries',
+        wordCountTarget: '1,100–1,400 words',
+        competitors: ['globuzzmedia.com', 'srvmedia.com', 'awrange.com', 'digitalmogli.com'],
+        localProof: 'Highlight 15 published Pune/India clients, KJ Group (+210% organic traffic), Shaw Toyota (+190% local traffic), and Pune service areas (Baner, Hinjewadi, Kharadi, Viman Nagar, Wakad, PCMC).',
+        keywords: [
+          { id: 'kw-1', term: 'digital marketing agency in Pune', intent: 'Commercial', difficulty: 'High', currentRank: 42 },
+          { id: 'kw-2', term: 'SEO company in Pune', intent: 'Commercial', difficulty: 'High', currentRank: 38 },
+          { id: 'kw-3', term: 'digital growth agency Pune', intent: 'Commercial', difficulty: 'Medium', currentRank: 19 }
+        ]
+      },
+      {
+        id: 'Web Dev',
+        name: 'Website Development',
+        url: 'https://seopune360.com/services/website-development/',
+        path: '/services/website-development/',
+        recommendedTitle: 'Website Development Company in Pune | Fast Business Websites — SEOPune360',
+        recommendedH1: 'Website Development Company in Pune for High-Converting Business Sites',
+        wordCountTarget: '1,000–1,300 words',
+        competitors: ['zerozilla.com', 'gigante.co.in', 'brainminetech.com', 'mplussoft.com'],
+        localProof: 'Showcase Ananya Rishtey, IntelliDant, A.D.I DEV, Hotel Shivtara, and Krishna Classical Homoeopathy Clinic + 8-week build process & Core Web Vitals speed guarantee (90+ PageSpeed).',
+        keywords: [
+          { id: 'kw-4', term: 'website development company in Pune', intent: 'Commercial', difficulty: 'High', currentRank: 48 },
+          { id: 'kw-5', term: 'business website design Pune', intent: 'Commercial', difficulty: 'Medium', currentRank: 27 },
+          { id: 'kw-6', term: 'custom web development agency Pune', intent: 'Commercial', difficulty: 'Medium', currentRank: 24 }
+        ]
+      },
+      {
+        id: 'SEO',
+        name: 'SEO Services',
+        url: 'https://seopune360.com/services/seo/',
+        path: '/services/seo/',
+        recommendedTitle: 'SEO Services in Pune | Local SEO, Technical & AI GEO — SEOPune360',
+        recommendedH1: 'Result-Driven SEO & Local Search Services in Pune',
+        wordCountTarget: '1,200–1,500 words',
+        competitors: ['movinnza.in', 'brainminetech.com', 'srvmedia.com', 'dimakhconsultants.com', 'ikf.co.in'],
+        localProof: 'Embed Laser Viewfinder free audit box directly on this page, add KJ Group (+210% organic traffic) & Shaw Toyota (+190% local traffic) proof, and link tightly to /services/geo/.',
+        keywords: [
+          { id: 'kw-7', term: 'SEO services in Pune', intent: 'Commercial', difficulty: 'High', currentRank: 45 },
+          { id: 'kw-8', term: 'local SEO agency in Pune', intent: 'Commercial', difficulty: 'Medium', currentRank: 21 },
+          { id: 'kw-9', term: 'AI search & GEO services Pune', intent: 'Emerging', difficulty: 'Low', currentRank: 12 }
+        ]
+      },
+      {
+        id: 'Growth',
+        name: 'Growth Marketing',
+        url: 'https://seopune360.com/services/business-growth/',
+        path: '/services/business-growth/',
+        recommendedTitle: 'Growth Marketing & Lead Generation Agency in Pune | SEOPune360',
+        recommendedH1: 'Growth Marketing & Lead Generation Agency in Pune',
+        wordCountTarget: '950–1,200 words',
+        competitors: ['technikgrowthmarketing.com', 'circle360bs.com', 'ademi.solutions'],
+        localProof: 'Showcase Lusso Marco (Google & Meta Ads), Shaw Toyota & Shaw Tata (PPC Lead Gen), and Rivan Travels (+85% bookings) with a clear Full-Funnel CRO & Lead Pipeline breakdown.',
+        keywords: [
+          { id: 'kw-10', term: 'growth marketing agency in Pune', intent: 'Commercial', difficulty: 'Medium', currentRank: 18 },
+          { id: 'kw-11', term: 'lead generation agency in Pune', intent: 'Commercial', difficulty: 'Medium', currentRank: 29 },
+          { id: 'kw-12', term: 'business growth marketing Pune', intent: 'Commercial', difficulty: 'Low', currentRank: 15 }
+        ]
+      },
+      {
+        id: 'Branding',
+        name: 'Business Branding',
+        url: 'https://seopune360.com/services/business-branding/',
+        path: '/services/business-branding/',
+        recommendedTitle: 'Branding Agency in Pune | Logo & Business Brand Identity — SEOPune360',
+        recommendedH1: 'Business Branding & Visual Identity Agency in Pune',
+        wordCountTarget: '900–1,200 words',
+        competitors: ['stuvio.co', 'circle360bs.com', 'globuzzmedia.com', 'wdsoft.in', 'aadharshila.com'],
+        localProof: 'Feature KJ Group, Crevolution LLP, Rivan Travels, ERA Infratech, FPT Powertrain Technologies (India Office), Koriv Studio, and The Jolly Box visual identity mockups.',
+        keywords: [
+          { id: 'kw-13', term: 'branding agency in Pune', intent: 'Commercial', difficulty: 'Medium', currentRank: 34 },
+          { id: 'kw-14', term: 'business branding services Pune', intent: 'Commercial', difficulty: 'Low', currentRank: 16 },
+          { id: 'kw-15', term: 'brand identity design agency Pune', intent: 'Commercial', difficulty: 'Low', currentRank: 14 }
+        ]
+      }
+    ];
+
+    const DEFAULT_TASKS = [
+      // ON-PAGE SEO
+      { id: 't1', title: 'Rewrite Homepage <title>, <meta description> & H1 for Pune agency keywords', note: 'Include "SEO Company" & "Digital Marketing Agency in Pune" + surface KJ Group (+210%) & Shaw Toyota (+190%) proof.', pillar: 'On-Page', page: 'Homepage', month: 'Month 1', priority: 'High', done: false },
+      { id: 't2', title: 'Expand /services/seo/ to 1,200+ words with deliverables, pricing scope & 6 FAQs', note: 'Remove repeated hero subheading; target "SEO services in Pune", "local SEO agency in Pune", and "AI search & GEO".', pillar: 'On-Page', page: 'SEO', month: 'Month 1', priority: 'High', done: false },
+      { id: 't3', title: 'Expand /services/website-development/ with tech stack, 5 client previews & Pune hubs', note: 'Target "website development company in Pune" & list Baner, Hinjewadi, Kharadi, Wakad, Viman Nagar, PCMC.', pillar: 'On-Page', page: 'Web Dev', month: 'Month 1', priority: 'High', done: false },
+      { id: 't4', title: 'Expand /services/business-growth/ with PPC, CRO & funnel case studies', note: 'Target "growth marketing agency in Pune" & "lead generation agency in Pune" featuring Shaw Toyota, Lusso Marco & Rivan Travels.', pillar: 'On-Page', page: 'Growth', month: 'Month 1', priority: 'High', done: false },
+      { id: 't5', title: 'Expand /services/business-branding/ with 7 branding client showcases & process', note: 'Target "branding agency in Pune" & "business branding services Pune" featuring KJ Group, FPT Powertrain, ERA & Jolly Box.', pillar: 'On-Page', page: 'Branding', month: 'Month 1', priority: 'High', done: false },
+      { id: 't6', title: 'Optimize all image ALT tags & filenames across 5 target pages', note: 'Use descriptive keyword-relevant alt text (e.g., "Pune website development project for Ananya Rishtey").', pillar: 'On-Page', page: 'Sitewide', month: 'Month 1', priority: 'Medium', done: false },
+      { id: 't7', title: 'Build contextual internal links from all 15 case studies to the 5 money pages', note: 'Use exact/partial commercial anchor text pointing up to SEO, Web Dev, Growth, and Branding pages.', pillar: 'On-Page', page: 'Sitewide', month: 'Month 2', priority: 'High', done: false },
+      { id: 't8', title: 'Publish 10 supporting cluster articles (2 per money page)', note: 'Examples: "Website Development Cost in Pune 2026", "Pune Local SEO Playbook", "AEO & GEO Guide for Indian Brands".', pillar: 'On-Page', page: 'Sitewide', month: 'Month 2', priority: 'High', done: false },
+      { id: 't9', title: 'Run GSC Striking-Distance CTR & H2 refresh on Page-2 keywords', note: 'Rewrite titles & add missing FAQ blocks for any keyword sitting at Google ranks #8–#18.', pillar: 'On-Page', page: 'Sitewide', month: 'Month 3', priority: 'High', done: false },
+
+      // TECHNICAL SEO
+      { id: 't10', title: 'Verify /sitemap.xml & /robots.txt return public 200 OK and submit in GSC', note: 'Ensure Googlebot & AI bots (GPTBot, PerplexityBot, OAI-SearchBot) are allowed cleanly.', pillar: 'Technical', page: 'Sitewide', month: 'Month 1', priority: 'High', done: false },
+      { id: 't11', title: 'Deploy Organization, ProfessionalService (areaServed: Pune), Service & FAQPage Schema', note: '100% online setup (no physical address required): declare areaServed Pune/India, +91 84838 37969, seopune360@gmail.com & sameAs links.', pillar: 'Technical', page: 'Sitewide', month: 'Month 1', priority: 'High', done: false },
+      { id: 't12', title: 'Publish /llms.txt at root for AI Search & GEO visibility', note: 'Summarize SEOPune360 services, 15 clients, Laser Viewfinder tool, and Pune contact details.', pillar: 'Technical', page: 'Homepage', month: 'Month 1', priority: 'Medium', done: false },
+      { id: 't13', title: 'Fix self-referencing canonical tags & trailing-slash consistency across all routes', note: 'Prevent duplicate indexing between /services/seo and /services/seo/.', pillar: 'Technical', page: 'Sitewide', month: 'Month 1', priority: 'High', done: false },
+      { id: 't14', title: 'Configure Google Consent Mode v2 + GA4/GSC conversion tracking', note: 'Track WhatsApp clicks, phone clicks, contact form submits, and Laser Viewfinder PDF unlocks.', pillar: 'Technical', page: 'Sitewide', month: 'Month 1', priority: 'Medium', done: false },
+      { id: 't15', title: 'Keep Mobile LCP under 2.5s on all 5 money pages (currently 2.8s on Home)', note: 'Preload hero font/image and lazy-load below-the-fold showreel & client logos.', pillar: 'Technical', page: 'Homepage', month: 'Month 2', priority: 'Medium', done: false },
+      { id: 't16', title: 'Monthly crawl check via Laser Viewfinder for 404s, redirect chains & thin pages', note: 'Confirm zero broken links and strong internal link flow to all 5 money pages.', pillar: 'Technical', page: 'Sitewide', month: 'Month 3', priority: 'Medium', done: false },
+
+      // OFF-PAGE SEO
+      { id: 't17', title: 'Build verified online review profiles (Clutch, GoodFirms, LinkedIn) & collect 10+ client reviews', note: 'Online-only trust substitute for GBP: ask clients to mention "SEO", "website development", or "branding" naturally.', pillar: 'Off-Page', page: 'Homepage', month: 'Month 1', priority: 'High', done: false },
+      { id: 't18', title: 'Submit SEOPune360 to Top 10 Agency Directories (Clutch, GoodFirms, DesignRush, Sortlist)', note: 'Ensure 100% consistent NAP (+91 84838 37969, Pune, seopune360.com) and link to core service pages.', pillar: 'Off-Page', page: 'SEO', month: 'Month 2', priority: 'High', done: false },
+      { id: 't19', title: 'Claim Online Brand & Entity Profiles (LinkedIn, Crunchbase, AmbitionBox, Behance, YouTube)', note: 'Strengthens online brand entity signals and sameAs trust for organic Page-1 & AI search (no physical office required).', pillar: 'Off-Page', page: 'Homepage', month: 'Month 2', priority: 'High', done: false },
+      { id: 't20', title: 'Add "Website by SEOPune360" footer credit backlinks on 5+ web dev client sites', note: 'Target Ananya Rishtey, IntelliDant, A.D.I DEV, Hotel Shivtara, and Krishna Clinic pointing to /services/website-development/.', pillar: 'Off-Page', page: 'Web Dev', month: 'Month 2', priority: 'High', done: false },
+      { id: 't21', title: 'Publish 4 niche guest posts / case study features on Indian SaaS & startup blogs', note: 'Link contextually to /services/business-growth/ and /services/business-branding/.', pillar: 'Off-Page', page: 'Growth', month: 'Month 2', priority: 'Medium', done: false },
+      { id: 't22', title: 'Launch Laser Viewfinder (Free SEO + AEO/GEO Scanner) on Product Hunt & startup lists', note: 'Earns high-authority editorial backlinks to seopune360.com that lift all 5 target pages.', pillar: 'Off-Page', page: 'SEO', month: 'Month 3', priority: 'High', done: false },
+      { id: 't23', title: 'Publish 4 Pune industry PR / LinkedIn authority articles (Real Estate, Auto, Healthcare)', note: 'Tag local Pune partners and link back to Branding & Growth Marketing pages.', pillar: 'Off-Page', page: 'Branding', month: 'Month 3', priority: 'Medium', done: false }
+    ];
+
+    const DEFAULT_BACKLINKS = [
+      { id: 'b1', source: 'LinkedIn Company Page & Crunchbase', type: 'Online Entity Profile', targetPage: 'Homepage', anchor: 'SEOPune360 — Online SEO & Digital Growth Agency (Pune)', status: 'Pending' },
+      { id: 'b2', source: 'GoodFirms (Pune SEO & Web Dev)', type: 'Agency Directory', targetPage: 'SEO', anchor: 'SEOPune360 Profile + Website Link', status: 'Pending' },
+      { id: 'b3', source: 'Clutch.co (Pune Agencies)', type: 'Agency Directory', targetPage: 'Homepage', anchor: 'SEOPune360 Verified Agency Profile', status: 'Pending' },
+      { id: 'b4', source: 'DesignRush & TechBehemoths', type: 'Agency Directory', targetPage: 'Branding', anchor: 'Branding & Web Design Agency in Pune', status: 'Pending' },
+      { id: 'b5', source: 'Sortlist & AmbitionBox (India / Pune)', type: 'Online Entity Profile', targetPage: 'Homepage', anchor: 'Consistent Online Brand Entity (+91 84838 37969)', status: 'Pending' },
+      { id: 'b6', source: 'Ananya Rishtey / IntelliDant / Hotel Shivtara', type: 'Client Credit Link', targetPage: 'Web Dev', anchor: 'Website developed by SEOPune360', status: 'Pending' },
+      { id: 'b7', source: 'A.D.I DEV / Krishna Homoeopathy Clinic', type: 'Client Credit Link', targetPage: 'Web Dev', anchor: 'Built by SEOPune360', status: 'Pending' },
+      { id: 'b8', source: 'Product Hunt / Free SEO Tool Directories', type: 'Tool / Link Magnet', targetPage: 'SEO', anchor: 'Free SEO & AEO/GEO Website Scanner', status: 'Pending' },
+      { id: 'b9', source: 'Indian Startup / Marketing Guest Blogs (4x)', type: 'Guest Post / PR', targetPage: 'Growth', anchor: 'Growth marketing & lead generation in Pune', status: 'Pending' },
+      { id: 'b10', source: 'Behance / Dribbble Portfolio Showcases', type: 'Agency Directory', targetPage: 'Branding', anchor: 'Business Branding & Logo Identity Pune', status: 'Pending' }
+    ];
+
+    let state = loadState();
+    let activeTab = 'overview';
+    let selectedPageId = 'Homepage';
+    let pillarChartInstance = null;
+    let pageReadinessChartInstance = null;
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && Array.isArray(parsed.pages) && Array.isArray(parsed.tasks) && Array.isArray(parsed.backlinks)) {
+            return parsed;
+          }
+        }
+      } catch (e) {}
+      return {
+        pages: JSON.parse(JSON.stringify(DEFAULT_PAGES)),
+        tasks: JSON.parse(JSON.stringify(DEFAULT_TASKS)),
+        backlinks: JSON.parse(JSON.stringify(DEFAULT_BACKLINKS))
+      };
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {}
+    }
+
+    function showToast(msg) {
+      const box = document.getElementById('toastBox');
+      if (!box) return;
+      box.textContent = msg;
+      box.classList.remove('hidden');
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => box.classList.add('hidden'), 2400);
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function getRankBadge(rank) {
+      const n = Number(rank);
+      if (!n || n <= 0) return '<span class="rounded-full bg-white/10 px-2.5 py-0.5 text-[11px] font-medium text-slate-400">Unranked</span>';
+      if (n <= 10) return `<span class="rounded-full bg-emerald-400/20 px-2.5 py-0.5 text-[11px] font-bold text-emerald-300">Page 1 (#${n})</span>`;
+      if (n <= 20) return `<span class="rounded-full bg-amber-400/20 px-2.5 py-0.5 text-[11px] font-bold text-amber-300">Page 2 (#${n})</span>`;
+      return `<span class="rounded-full bg-rose-400/15 px-2.5 py-0.5 text-[11px] font-semibold text-rose-300">Page ${Math.ceil(n / 10)} (#${n})</span>`;
+    }
+
+    function getPillarBadge(pillar) {
+      if (pillar === 'On-Page') return 'bg-teal-400/15 text-teal-300 border-teal-400/30';
+      if (pillar === 'Technical') return 'bg-sky-400/15 text-sky-300 border-sky-400/30';
+      return 'bg-purple-400/15 text-purple-300 border-purple-400/30';
+    }
+
+    function renderOverview() {
+      const totalTasks = state.tasks.length;
+      const doneTasks = state.tasks.filter((t) => t.done).length;
+      const pct = totalTasks ? Math.round((doneTasks / totalTasks) * 100) : 0;
+
+      let page1 = 0;
+      let page2 = 0;
+      state.pages.forEach((p) => {
+        p.keywords.forEach((k) => {
+          const r = Number(k.currentRank);
+          if (r >= 1 && r <= 10) page1++;
+          else if (r >= 11 && r <= 20) page2++;
+        });
+      });
+
+      const liveLinks = state.backlinks.filter((b) => b.status === 'Live').length;
+      const pendingLinks = state.backlinks.length - liveLinks;
+
+      document.getElementById('kpiCompletionPct').textContent = `${pct}%`;
+      document.getElementById('kpiTasksRatio').textContent = `${doneTasks} / ${totalTasks} tasks`;
+      document.getElementById('kpiCompletionBar').style.width = `${pct}%`;
+      document.getElementById('kpiPageOneCount').innerHTML = `${page1} <span class="text-base font-semibold text-slate-400">/ 15</span>`;
+      document.getElementById('kpiPageTwoCount').textContent = `${page2} on Page 2`;
+      document.getElementById('kpiLiveLinks').textContent = `${liveLinks}`;
+      document.getElementById('kpiPendingLinks').textContent = `${pendingLinks} remaining`;
+
+      // Priority List (first 6 Month 1 high-impact tasks)
+      const priorityTasks = state.tasks.filter((t) => t.month === 'Month 1' && t.priority === 'High').slice(0, 6);
+      const container = document.getElementById('overviewPriorityList');
+      container.innerHTML = priorityTasks
+        .map(
+          (t) => `
+          <label class="flex cursor-pointer items-start gap-3 rounded-xl border border-white/10 bg-white/[0.02] p-3.5 transition hover:border-teal-400/35">
+            <input type="checkbox" data-toggle-task="${escapeHtml(t.id)}" ${t.done ? 'checked' : ''} class="mt-0.5 h-4 w-4 rounded border-white/20 bg-[#080c14] text-teal-400 focus:ring-teal-400" />
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-xs font-semibold ${t.done ? 'line-through text-slate-500' : 'text-white'}">${escapeHtml(t.title)}</span>
+              </div>
+              <div class="mt-1.5 flex flex-wrap items-center gap-1.5">
+                <span class="rounded border px-1.5 py-0.5 text-[10px] font-semibold ${getPillarBadge(t.pillar)}">${escapeHtml(t.pillar)}</span>
+                <span class="rounded bg-white/5 px-1.5 py-0.5 text-[10px] text-slate-300">${escapeHtml(t.page)}</span>
+              </div>
+            </div>
+          </label>`
+        )
+        .join('');
+
+      renderCharts();
+    }
+
+    function renderCharts() {
+      const pillars = ['On-Page', 'Technical', 'Off-Page'];
+      const pillarPcts = pillars.map((pil) => {
+        const subset = state.tasks.filter((t) => t.pillar === pil);
+        const done = subset.filter((t) => t.done).length;
+        return subset.length ? Math.round((done / subset.length) * 100) : 0;
+      });
+
+      const ctx1 = document.getElementById('pillarChart');
+      if (ctx1) {
+        if (pillarChartInstance) pillarChartInstance.destroy();
+        pillarChartInstance = new Chart(ctx1, {
+          type: 'bar',
+          data: {
+            labels: ['On-Page SEO', 'Technical SEO', 'Off-Page SEO'],
+            datasets: [
+              {
+                label: 'Completion %',
+                data: pillarPcts,
+                backgroundColor: ['rgba(45, 212, 191, 0.8)', 'rgba(56, 189, 248, 0.8)', 'rgba(192, 132, 252, 0.8)'],
+                borderRadius: 8,
+                barThickness: 36
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 100,
+                grid: { color: 'rgba(255,255,255,0.06)' },
+                ticks: { color: '#94a3b8', callback: (v) => `${v}%` }
+              },
+              x: {
+                grid: { display: false },
+                ticks: { color: '#cbd5e1', font: { size: 11 } }
+              }
+            },
+            plugins: { legend: { display: false } }
+          }
+        });
+      }
+
+      const pageLabels = state.pages.map((p) => p.name);
+      const pageTaskScores = state.pages.map((p) => {
+        const rel = state.tasks.filter((t) => t.page === p.id || t.page === 'Sitewide');
+        const done = rel.filter((t) => t.done).length;
+        return rel.length ? Math.round((done / rel.length) * 100) : 0;
+      });
+      const pageKeywordScores = state.pages.map((p) => {
+        const p1 = p.keywords.filter((k) => Number(k.currentRank) >= 1 && Number(k.currentRank) <= 10).length;
+        return Math.round((p1 / p.keywords.length) * 100);
+      });
+
+      const ctx2 = document.getElementById('pageReadinessChart');
+      if (ctx2) {
+        if (pageReadinessChartInstance) pageReadinessChartInstance.destroy();
+        pageReadinessChartInstance = new Chart(ctx2, {
+          type: 'bar',
+          data: {
+            labels: pageLabels,
+            datasets: [
+              {
+                label: 'SEO Tasks Done %',
+                data: pageTaskScores,
+                backgroundColor: 'rgba(45, 212, 191, 0.8)',
+                borderRadius: 6
+              },
+              {
+                label: 'Keywords on Page 1 %',
+                data: pageKeywordScores,
+                backgroundColor: 'rgba(251, 191, 36, 0.8)',
+                borderRadius: 6
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              y: {
+                beginAtZero: true,
+                max: 100,
+                grid: { color: 'rgba(255,255,255,0.06)' },
+                ticks: { color: '#94a3b8', callback: (v) => `${v}%` }
+              },
+              x: {
+                grid: { display: false },
+                ticks: { color: '#cbd5e1', font: { size: 11 } }
+              }
+            },
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: { color: '#cbd5e1', boxWidth: 12, font: { size: 11 } }
+              }
+            }
+          }
+        });
+      }
+    }
+
+    function renderPagesTab() {
+      const grid = document.getElementById('pageSelectorGrid');
+      grid.innerHTML = state.pages
+        .map((p) => {
+          const isSelected = p.id === selectedPageId;
+          const p1Count = p.keywords.filter((k) => Number(k.currentRank) >= 1 && Number(k.currentRank) <= 10).length;
+          return `
+            <button data-select-page="${escapeHtml(p.id)}" type="button" class="rounded-xl border p-3 text-left transition ${
+              isSelected
+                ? 'border-teal-400/50 bg-teal-400/10 text-white'
+                : 'border-white/10 bg-white/[0.02] text-slate-300 hover:border-white/25'
+            }">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold">${escapeHtml(p.name)}</span>
+                <span class="rounded-full bg-white/10 px-2 py-0.5 text-[10px] font-semibold ${p1Count > 0 ? 'text-emerald-300' : 'text-slate-400'}">${p1Count}/3 P1</span>
+              </div>
+              <p class="mt-1 truncate font-mono text-[10px] text-slate-400">${escapeHtml(p.path)}</p>
+            </button>`;
+        })
+        .join('');
+
+      const active = state.pages.find((p) => p.id === selectedPageId) || state.pages[0];
+      const detail = document.getElementById('activePageDetail');
+
+      detail.innerHTML = `
+        <div class="grid grid-cols-1 gap-5 lg:grid-cols-12">
+          <!-- Left: 3 Target Keywords + Live Rank Editor -->
+          <div class="glass-card rounded-2xl p-5 lg:col-span-7">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3">
+              <div>
+                <h3 class="text-sm font-bold text-white">${escapeHtml(active.name)} — 3 Target Keywords</h3>
+                <p class="font-mono text-[11px] text-teal-300">${escapeHtml(active.url)}</p>
+              </div>
+              <span class="rounded-full bg-white/5 px-2.5 py-1 text-[11px] text-slate-300">Goal: Top 10 (Page 1)</span>
+            </div>
+
+            <div class="mt-4 overflow-x-auto">
+              <table class="w-full text-left text-xs">
+                <thead>
+                  <tr class="border-b border-white/10 text-[11px] uppercase text-slate-400">
+                    <th class="pb-2.5 pr-3">Target Keyword</th>
+                    <th class="pb-2.5 px-2">Difficulty</th>
+                    <th class="pb-2.5 px-2">Current Rank</th>
+                    <th class="pb-2.5 pl-2 text-right">SERP Status</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-white/5">
+                  ${active.keywords
+                    .map(
+                      (kw) => `
+                    <tr>
+                      <td class="py-3 pr-3 font-semibold text-white">${escapeHtml(kw.term)}</td>
+                      <td class="py-3 px-2">
+                        <span class="rounded bg-white/5 px-2 py-0.5 text-[11px] ${
+                          kw.difficulty === 'High' ? 'text-rose-300' : kw.difficulty === 'Medium' ? 'text-amber-300' : 'text-emerald-300'
+                        }">${escapeHtml(kw.difficulty)}</span>
+                      </td>
+                      <td class="py-3 px-2">
+                        <input
+                          type="number"
+                          min="0"
+                          max="100"
+                          value="${kw.currentRank}"
+                          data-rank-page="${escapeHtml(active.id)}"
+                          data-rank-kw="${escapeHtml(kw.id)}"
+                          class="w-16 rounded-lg border border-white/15 bg-[#080c14] px-2 py-1 text-center text-xs font-bold text-teal-300 focus:border-teal-400 focus:outline-none"
+                        />
+                      </td>
+                      <td class="py-3 pl-2 text-right">${getRankBadge(kw.currentRank)}</td>
+                    </tr>`
+                    )
+                    .join('')}
+                </tbody>
+              </table>
+            </div>
+            <p class="mt-3 text-[11px] text-slate-400">Tip: Enter <strong>1–10</strong> as you hit Google Page 1 (or <strong>0</strong> if not yet in Top 100). KPIs &amp; charts update instantly.</p>
+          </div>
+
+          <!-- Right: On-Page Blueprint & Pune Competitors -->
+          <div class="glass-card rounded-2xl p-5 lg:col-span-5 space-y-4">
+            <h3 class="text-sm font-bold text-white">On-Page Blueprint for ${escapeHtml(active.name)}</h3>
+
+            <div class="rounded-xl border border-white/10 bg-white/[0.02] p-3">
+              <p class="text-[10px] font-semibold uppercase tracking-wider text-teal-300">Recommended Title Tag (&lt; 60 chars)</p>
+              <p class="mt-1 text-xs font-medium text-white">${escapeHtml(active.recommendedTitle)}</p>
+            </div>
+
+            <div class="rounded-xl border border-white/10 bg-white/[0.02] p-3">
+              <p class="text-[10px] font-semibold uppercase tracking-wider text-teal-300">Recommended H1 Heading</p>
+              <p class="mt-1 text-xs font-medium text-white">${escapeHtml(active.recommendedH1)}</p>
+            </div>
+
+            <div class="rounded-xl border border-white/10 bg-white/[0.02] p-3">
+              <p class="text-[10px] font-semibold uppercase tracking-wider text-teal-300">Content Depth &amp; Proof (${escapeHtml(active.wordCountTarget)})</p>
+              <p class="mt-1 text-xs leading-relaxed text-slate-300">${escapeHtml(active.localProof)}</p>
+            </div>
+
+            <div>
+              <p class="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Live Pune Competitors to Outrank</p>
+              <div class="mt-2 flex flex-wrap gap-1.5">
+                ${active.competitors
+                  .map(
+                    (c) =>
+                      `<span class="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 font-mono text-[11px] text-slate-200">${escapeHtml(c)}</span>`
+                  )
+                  .join('')}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderTasksTab() {
+      const pillarVal = document.getElementById('filterPillar').value;
+      const pageVal = document.getElementById('filterPage').value;
+      const monthVal = document.getElementById('filterMonth').value;
+      const searchVal = document.getElementById('filterSearch').value.trim().toLowerCase();
+
+      const filtered = state.tasks.filter((t) => {
+        if (pillarVal !== 'All' && t.pillar !== pillarVal) return false;
+        if (pageVal !== 'All' && t.page !== pageVal) return false;
+        if (monthVal !== 'All' && t.month !== monthVal) return false;
+        if (searchVal && !(t.title.toLowerCase().includes(searchVal) || t.note.toLowerCase().includes(searchVal))) return false;
+        return true;
+      });
+
+      const tbody = document.getElementById('taskTableBody');
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" class="px-4 py-8 text-center text-xs text-slate-400">No tasks match your current filters.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered
+        .map(
+          (t) => `
+          <tr class="transition hover:bg-white/[0.02]">
+            <td class="px-4 py-3.5 align-top">
+              <input type="checkbox" data-toggle-task="${escapeHtml(t.id)}" ${t.done ? 'checked' : ''} class="h-4 w-4 cursor-pointer rounded border-white/20 bg-[#080c14] text-teal-400 focus:ring-teal-400" />
+            </td>
+            <td class="px-4 py-3.5">
+              <p class="font-semibold ${t.done ? 'line-through text-slate-500' : 'text-white'}">${escapeHtml(t.title)}</p>
+              <p class="mt-0.5 text-[11px] text-slate-400">${escapeHtml(t.note)}</p>
+            </td>
+            <td class="px-4 py-3.5 align-top">
+              <span class="inline-block whitespace-nowrap rounded-full border px-2 py-0.5 text-[10px] font-semibold ${getPillarBadge(t.pillar)}">${escapeHtml(t.pillar)}</span>
+            </td>
+            <td class="px-4 py-3.5 align-top whitespace-nowrap text-slate-300">${escapeHtml(t.page)}</td>
+            <td class="px-4 py-3.5 align-top whitespace-nowrap text-slate-300">${escapeHtml(t.month)}</td>
+            <td class="px-4 py-3.5 align-top whitespace-nowrap">
+              <span class="rounded px-2 py-0.5 text-[10px] font-semibold ${t.priority === 'High' ? 'bg-amber-400/15 text-amber-300' : 'bg-white/5 text-slate-300'}">${escapeHtml(t.priority)}</span>
+            </td>
+            <td class="px-4 py-3.5 align-top text-right">
+              <button data-delete-task="${escapeHtml(t.id)}" type="button" class="text-[11px] text-slate-500 transition hover:text-rose-400">Delete</button>
+            </td>
+          </tr>`
+        )
+        .join('');
+    }
+
+    function renderOffPageTab() {
+      const typeFilter = document.getElementById('filterLinkType').value;
+      const list = state.backlinks.filter((b) => typeFilter === 'All' || b.type === typeFilter);
+      const tbody = document.getElementById('backlinkTableBody');
+
+      tbody.innerHTML = list
+        .map((b) => {
+          const pillClass =
+            b.status === 'Live'
+              ? 'bg-emerald-400/20 text-emerald-300 border-emerald-400/40'
+              : b.status === 'Submitted'
+              ? 'bg-sky-400/20 text-sky-300 border-sky-400/40'
+              : 'bg-white/5 text-slate-300 border-white/15';
+          return `
+            <tr class="transition hover:bg-white/[0.02]">
+              <td class="px-4 py-3.5 font-semibold text-white">${escapeHtml(b.source)}</td>
+              <td class="px-4 py-3.5 whitespace-nowrap text-slate-300">${escapeHtml(b.type)}</td>
+              <td class="px-4 py-3.5 whitespace-nowrap text-teal-300">${escapeHtml(b.targetPage)}</td>
+              <td class="px-4 py-3.5 text-slate-300">${escapeHtml(b.anchor)}</td>
+              <td class="px-4 py-3.5 text-right">
+                <button data-cycle-link="${escapeHtml(b.id)}" type="button" class="rounded-full border px-3 py-1 text-[11px] font-semibold transition ${pillClass}">
+                  ${escapeHtml(b.status)}
+                </button>
+              </td>
+            </tr>`;
+        })
+        .join('');
+    }
+
+    function switchTab(tabName) {
+      activeTab = tabName;
+      document.querySelectorAll('.tab-panel').forEach((el) => el.classList.add('hidden'));
+      const activePanel = document.getElementById(`tab-${tabName}`);
+      if (activePanel) activePanel.classList.remove('hidden');
+
+      document.querySelectorAll('.nav-tab').forEach((btn) => {
+        if (btn.dataset.tab === tabName) {
+          btn.classList.add('tab-active');
+          btn.classList.remove('text-slate-300', 'bg-white/[0.03]', 'border-white/5');
+        } else {
+          btn.classList.remove('tab-active');
+          btn.classList.add('text-slate-300', 'bg-white/[0.03]', 'border-white/5');
+        }
+      });
+
+      if (tabName === 'overview') renderOverview();
+      if (tabName === 'pages') renderPagesTab();
+      if (tabName === 'tasks') renderTasksTab();
+      if (tabName === 'offpage') renderOffPageTab();
+    }
+
+    function renderAll() {
+      renderOverview();
+      renderPagesTab();
+      renderTasksTab();
+      renderOffPageTab();
+    }
+
+    // Event Delegation & Listeners
+    document.getElementById('mainNav').addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-tab]');
+      if (btn) switchTab(btn.dataset.tab);
+    });
+
+    document.addEventListener('click', (e) => {
+      const gotoBtn = e.target.closest('[data-goto-tab]');
+      if (gotoBtn) {
+        switchTab(gotoBtn.dataset.gotoTab);
+        return;
+      }
+
+      const pageBtn = e.target.closest('[data-select-page]');
+      if (pageBtn) {
+        selectedPageId = pageBtn.dataset.selectPage;
+        renderPagesTab();
+        return;
+      }
+
+      const delBtn = e.target.closest('[data-delete-task]');
+      if (delBtn) {
+        const id = delBtn.dataset.deleteTask;
+        state.tasks = state.tasks.filter((t) => t.id !== id);
+        saveState();
+        renderAll();
+        showToast('Task removed');
+        return;
+      }
+
+      const linkBtn = e.target.closest('[data-cycle-link]');
+      if (linkBtn) {
+        const id = linkBtn.dataset.cycleLink;
+        const order = ['Pending', 'Submitted', 'Live'];
+        const item = state.backlinks.find((b) => b.id === id);
+        if (item) {
+          item.status = order[(order.indexOf(item.status) + 1) % order.length];
+          saveState();
+          renderOffPageTab();
+          renderOverview();
+          showToast(`${item.source}: ${item.status}`);
+        }
+      }
+    });
+
+    document.addEventListener('change', (e) => {
+      const taskCb = e.target.closest('[data-toggle-task]');
+      if (taskCb) {
+        const id = taskCb.dataset.toggleTask;
+        const task = state.tasks.find((t) => t.id === id);
+        if (task) {
+          task.done = taskCb.checked;
+          saveState();
+          renderAll();
+          showToast(task.done ? 'Task marked complete' : 'Task reopened');
+        }
+        return;
+      }
+
+      const rankInput = e.target.closest('[data-rank-kw]');
+      if (rankInput) {
+        const pageObj = state.pages.find((p) => p.id === rankInput.dataset.rankPage);
+        if (pageObj) {
+          const kw = pageObj.keywords.find((k) => k.id === rankInput.dataset.rankKw);
+          if (kw) {
+            const val = Math.max(0, Math.min(100, parseInt(rankInput.value, 10) || 0));
+            kw.currentRank = val;
+            saveState();
+            renderPagesTab();
+            renderOverview();
+            showToast(`Updated rank for "${kw.term}" to #${val}`);
+          }
+        }
+      }
+    });
+
+    // Filters
+    ['filterPillar', 'filterPage', 'filterMonth'].forEach((id) => {
+      document.getElementById(id).addEventListener('change', renderTasksTab);
+    });
+    document.getElementById('filterSearch').addEventListener('input', renderTasksTab);
+    document.getElementById('filterLinkType').addEventListener('change', renderOffPageTab);
+
+    // Add Task Form
+    document.getElementById('btnToggleAddTask').addEventListener('click', () => {
+      document.getElementById('addTaskForm').classList.toggle('hidden');
+    });
+    document.getElementById('btnCancelAddTask').addEventListener('click', () => {
+      document.getElementById('addTaskForm').classList.add('hidden');
+    });
+    document.getElementById('addTaskForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const title = document.getElementById('newTaskTitle').value.trim();
+      if (!title) return;
+      state.tasks.unshift({
+        id: 'custom-' + Date.now(),
+        title,
+        note: document.getElementById('newTaskNote').value.trim() || 'Custom SEO action',
+        pillar: document.getElementById('newTaskPillar').value,
+        page: document.getElementById('newTaskPage').value,
+        month: document.getElementById('newTaskMonth').value,
+        priority: document.getElementById('newTaskPriority').value,
+        done: false
+      });
+      saveState();
+      e.target.reset();
+      document.getElementById('addTaskForm').classList.add('hidden');
+      renderAll();
+      showToast('Custom task added');
+    });
+
+    // Export CSV
+    document.getElementById('btnExportCsv').addEventListener('click', () => {
+      const rows = [['Task', 'Pillar', 'Target Page', 'Month', 'Priority', 'Status', 'Notes']];
+      state.tasks.forEach((t) => {
+        rows.push([
+          `"${t.title.replace(/"/g, '""')}"`,
+          t.pillar,
+          t.page,
+          t.month,
+          t.priority,
+          t.done ? 'Done' : 'Pending',
+          `"${t.note.replace(/"/g, '""')}"`
+        ]);
+      });
+      const csv = rows.map((r) => r.join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'seopune360-90day-seo-plan.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Exported seopune360-90day-seo-plan.csv');
+    });
+
+    // Save Backup (JSON)
+    document.getElementById('btnSaveBackup').addEventListener('click', () => {
+      const payload = {
+        version: 2,
+        exportedAt: new Date().toISOString(),
+        pages: state.pages,
+        tasks: state.tasks,
+        backlinks: state.backlinks
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const dateStamp = new Date().toISOString().slice(0, 10);
+      a.href = url;
+      a.download = `seopune360-seo-backup-${dateStamp}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast(`Saved backup (seopune360-seo-backup-${dateStamp}.json)`);
+    });
+
+    // Load Backup (JSON)
+    const inputLoadBackup = document.getElementById('inputLoadBackup');
+    document.getElementById('btnLoadBackup').addEventListener('click', () => {
+      inputLoadBackup.click();
+    });
+    inputLoadBackup.addEventListener('change', (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(String(reader.result || ''));
+          if (!parsed || !Array.isArray(parsed.pages) || !Array.isArray(parsed.tasks) || !Array.isArray(parsed.backlinks)) {
+            showToast('Invalid backup file format');
+            return;
+          }
+          state = {
+            pages: parsed.pages,
+            tasks: parsed.tasks,
+            backlinks: parsed.backlinks
+          };
+          if (!state.pages.some((p) => p.id === selectedPageId) && state.pages.length > 0) {
+            selectedPageId = state.pages[0].id;
+          }
+          saveState();
+          renderAll();
+          showToast(`Loaded backup from ${file.name}`);
+        } catch (err) {
+          showToast('Could not read JSON backup file');
+        } finally {
+          inputLoadBackup.value = '';
+        }
+      };
+      reader.onerror = () => {
+        showToast('Failed to read backup file');
+        inputLoadBackup.value = '';
+      };
+      reader.readAsText(file);
+    });
+
+    // Reset Demo Data
+    document.getElementById('btnResetState').addEventListener('click', () => {
+      state = {
+        pages: JSON.parse(JSON.stringify(DEFAULT_PAGES)),
+        tasks: JSON.parse(JSON.stringify(DEFAULT_TASKS)),
+        backlinks: JSON.parse(JSON.stringify(DEFAULT_BACKLINKS))
+      };
+      saveState();
+      renderAll();
+      showToast('Dashboard reset to default 90-day plan');
+    });
+
+    // Initial Render
+    renderAll();
+  </script>
+</body>
+</html>
+
