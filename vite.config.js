@@ -20,7 +20,7 @@ const routes = [
   ['/portfolio/', 'Client Portfolio', 'Browse businesses represented in the current SEOPune360 client portfolio.'],
   ['/products/', 'Products & Platforms', 'Explore client products and platform journeys represented in SEOPune360 published work.'],
   ['/industries/', 'Industries', 'Explore the industries represented in the current SEOPune360 client portfolio.'],
-  ...['matrimonial', 'healthcare', 'real-estate', 'hospitality', 'automobile', 'manufacturing-industry', 'infratech'].map((slug) => [`/industries/${slug}/`, `${slug.replaceAll('-', ' ')} digital growth`, `Explore SEOPune360 services and published client work for ${slug.replaceAll('-', ' ')} businesses.`]),
+  ...['matrimonial', 'healthcare', 'real-estate', 'hospitality', 'automobile', 'manufacturing-industry', 'infratech', 'd2c-lifestyle'].map((slug) => [`/industries/${slug}/`, `${slug.replaceAll('-', ' ')} digital growth`, `Explore SEOPune360 services and published client work for ${slug.replaceAll('-', ' ')} businesses.`]),
   ['/about/', 'About SEOPune360', 'Learn about SEOPune360’s connected approach to search, websites, and business growth.'],
   ['/process/', 'Our Process', 'See how a SEOPune360 project moves from discovery through launch and support.'],
   ['/contact/', 'Contact SEOPune360', 'Start a conversation about your website, search visibility, or business growth goals.'],
@@ -95,5 +95,6 @@ function staticRoutePages() {
 export default defineConfig({
   plugins: [react(), staticRoutePages()],
 });
+
 
 

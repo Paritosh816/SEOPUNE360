@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="seo360-audit-api-url" content="" />
   <title>Laser Viewfinder Audit Preview | SEOPune360</title>
+  <link rel="stylesheet" href="/audit/seo-report.css" />
+  <script src="/audit/seo-report.js" defer></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -938,6 +940,7 @@
             <div id="psi-unavailable" class="psi-unavailable hidden"></div>
             <div class="psi-device-grid" id="psi-device-grid"></div>
           </section>
+          <div id="seo-intelligence" class="hidden"></div>
           <section class="crawl-summary" id="crawl-summary">
             <h2>Pages checked</h2>
             <p id="scan-summary">This preview does not perform a live crawl.</p>
@@ -1211,6 +1214,7 @@
       document.getElementById("overall-score").textContent = result.overallScore;
       renderHeroBars(result.overallScore);
       renderPageSpeed(result.pageSpeed);
+      window.renderSeoReport?.(result, startScan);
       renderCrawl(result.scan);
       renderFindings();
       renderRoadmap();
@@ -1242,7 +1246,7 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    async function startScan(rawDomain) {
+    async function startScan(rawDomain, keywords) {
       const raw = rawDomain.trim();
       let targetUrl;
       try {
@@ -1295,7 +1299,7 @@
           ? ["Checking the homepage", "Reading robots.txt and the sitemap"]
           : seconds < 10
             ? ["Crawling internal pages", "Checking page titles and headings"]
-            : ["Running Google PageSpeed Insights", "Preparing mobile and desktop results"];
+            : ["Running Google PageSpeed Insights", "Checking keyword positions and niche competitors", "Calculating internal link equity"];
         const label = stage[Math.floor(seconds / 3) % stage.length];
         document.getElementById("scan-subtitle").textContent = label;
         document.getElementById("vf-status").textContent = seconds < 10 ? "Scanning up to 25 public pages..." : "Waiting for Google Lighthouse checks...";
@@ -1306,7 +1310,8 @@
         const response = await fetch(AUDIT_API_URL, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ website: targetUrl.href }),
+          body: JSON.stringify({ website: targetUrl.href, ...(keywords ? { keywords } : {}) }),
+          signal: AbortSignal.timeout(65000),
         });
         const result = await response.json();
         if (!response.ok) throw new Error(result.error || `The audit service returned an error (${response.status}).`);
@@ -1337,4 +1342,5 @@
   </script>
 </body>
 </html>
+
 

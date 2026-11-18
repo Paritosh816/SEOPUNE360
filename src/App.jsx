@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { projectDetails } from './projectDetails';
+import ServiceDeliverables, { serviceIntro } from './ServiceDeliverables';
 const CONTACT_EMAIL = 'seopune360@gmail.com';
 const SHOWREEL_PATH = '/media/seopune360-showreel-short.mp4';
 
@@ -30,7 +31,7 @@ const clientProjects = [
   { id: 'kj-group', name: 'KJ Group', industries: ['Real Estate'], serviceTypes: ['Branding'], serviceIds: ['branding'], tone: 'case-realestate', description: 'Branding for KJ Group, with a visual identity presented across logo variations and branded applications.', scope: ['Branding', 'Visual identity', 'Brand applications'] },
   { id: 'crevolution', name: 'Crevolution LLP', industries: ['Real Estate'], serviceTypes: ['Branding'], serviceIds: ['branding'], tone: 'case-architecture', description: 'Branding for Crevolution LLP, supporting a consistent identity for its architecture and interiors business.', scope: ['Branding'] },
   { id: 'rivan-travels', name: 'Rivan Travels', industries: ['Hospitality'], serviceTypes: ['Branding', 'Logo'], serviceIds: ['branding'], tone: 'case-travel', description: 'Branding and logo work for Rivan Travels, giving its travel services a recognisable visual identity.', scope: ['Branding', 'Logo'] },
-  { id: 'lusso-marco', name: 'Lusso Marco', industries: ['Healthcare'], serviceTypes: ['Growth Marketing', 'Digital Campaigns'], serviceIds: ['growth', 'leads'], tone: 'case-fragrance', description: 'Growth marketing and digital campaigns for Lusso Marco, connecting brand discovery with product consideration and online sales activity.', scope: ['Growth Marketing', 'Digital Campaigns', 'Google Ads', 'Meta Ads'] },
+  { id: 'lusso-marco', name: 'Lusso Marco', industries: ['D2C / Lifestyle'], serviceTypes: ['Growth Marketing', 'Digital Campaigns'], serviceIds: ['growth', 'leads'], tone: 'case-fragrance', description: 'Growth marketing and digital campaigns for Lusso Marco, connecting brand discovery with product consideration and online sales activity.', scope: ['Growth Marketing', 'Digital Campaigns', 'Google Ads', 'Meta Ads'] },
   { id: 'shaw-toyota', name: 'Shaw Toyota', industries: ['Automobile'], serviceTypes: ['PPC Lead Generation'], serviceIds: ['leads'], tone: 'case-toyota', description: 'PPC lead generation for Shaw Toyota, focused on reaching prospective vehicle buyers and encouraging dealership enquiries.', scope: ['PPC Lead Generation'] },
   { id: 'shaw-tata', name: 'Shaw Tata', industries: ['Automobile'], serviceTypes: ['PPC Lead Generation'], serviceIds: ['leads'], tone: 'case-automobile', description: 'PPC lead generation for Shaw Tata, supporting vehicle discovery and enquiries from prospective customers.', scope: ['PPC Lead Generation'] },
   { id: 'krishna-clinic', name: 'Krishna Classical Homoeopathy Clinic', industries: ['Healthcare'], serviceTypes: ['Social Media / Growth Marketing', 'Website Development'], serviceIds: ['growth', 'development'], tone: 'case-healthcare', description: 'Social media, growth marketing and website development for Krishna Classical Homoeopathy Clinic, connecting a clear website presence with ongoing communication and patient enquiries.', scope: ['Social Media / Growth Marketing', 'Website Development'] },
@@ -515,7 +516,7 @@ function Footer({ onCookieSettings, onLegal }) {
       <div className="container footer-main"><div className="footer-brand-col"><Brand footer /><p>SEO, websites, and growth support for businesses ready to move forward.</p><a className="footer-email" href={'mailto:' + CONTACT_EMAIL}>{CONTACT_EMAIL} <ArrowIcon /></a></div>
         <div className="footer-column"><h3>Services</h3>{services.map((service) => <a href={servicePaths[service.id]} key={service.id}>{service.title}</a>)}</div>
         <div className="footer-column"><h3>Explore</h3><a href="/#showreel-story">Client Showreel</a><a href="/case-studies/">Case Studies</a><a href="/growth-plan/">Build my growth plan</a><a href="/portfolio/">Client Portfolio</a><a href="/products/">Products &amp; Platforms</a><a href="/industries/">Industries</a><a href="/process/">How We Work</a><a href="/about/">About Us</a><a href="/sitemap/">Sitemap</a></div>
-        <div className="footer-column footer-contact"><h3>Get in touch</h3><p>Tell us what you’re working toward. We’ll help you find the next step.</p><a className="footer-email" href={'mailto:' + CONTACT_EMAIL}>{CONTACT_EMAIL} <ArrowIcon /></a><a className="footer-audit-link" href="/contact/">Request a website audit <ArrowIcon /></a></div>
+        <div className="footer-column footer-contact"><h3>Get in touch</h3><p>Tell us what you’re working toward. We’ll help you find the next step.</p><a className="footer-email" href={'mailto:' + CONTACT_EMAIL}>{CONTACT_EMAIL} <ArrowIcon /></a><a href="tel:+918483837969">Call +91 84838 37969</a><a href="https://wa.me/918483837969" target="_blank" rel="noopener noreferrer">WhatsApp enquiry ↗</a><a className="footer-audit-link" href="/contact/">Request a website audit <ArrowIcon /></a></div>
       </div>
       <div className="container footer-bottom"><span>© {year} SEOPune360. All rights reserved.</span><div className="legal-links"><button onClick={() => onLegal('Terms & Conditions')}>Terms &amp; Conditions</button><button onClick={() => onLegal('Privacy Policy')}>Privacy Policy</button><button onClick={onCookieSettings}>Cookie Settings</button></div><a className="back-to-top" href="#top">Back to top ↑</a></div>
     </footer>
@@ -730,7 +731,7 @@ function ContactPage() {
           <h1>Let’s build a <span>stronger path to growth.</span></h1>
           <p className="contact-lead">Bring us the question, challenge, or next big idea on your mind. We’ll help you find a practical place to start.</p>
           <div className="contact-promise"><span className="contact-promise-mark">↗</span><div><b>A useful first conversation</b><small>Clear questions, thoughtful recommendations, and next steps shaped around your business.</small></div></div>
-          <div className="contact-direct">
+          <div className="contact-direct"><a href="tel:+918483837969"><span className="contact-direct-icon">↗</span><span><small>Call our team</small><b>+91 84838 37969</b></span><ArrowIcon /></a><a href="https://wa.me/918483837969" target="_blank" rel="noopener noreferrer"><span className="contact-direct-icon">↗</span><span><small>Start a conversation</small><b>WhatsApp enquiry</b></span><ArrowIcon /></a>
             <a href={'mailto:' + CONTACT_EMAIL}><span className="contact-direct-icon">@</span><span><small>Email our team</small><b>{CONTACT_EMAIL}</b></span><ArrowIcon /></a>
             <div><span className="contact-direct-icon">⌖</span><span><small>Based in</small><b>Pune, Maharashtra, India</b></span></div>
           </div>
@@ -819,7 +820,7 @@ function PageContent({ path }) {
   let body = null;
   if (service) {
     head = ['Our services', service.title, 'for business growth.', service.summary];
-    body = <><section className="section"><div className="container detail-layout"><div><p className="eyebrow">What’s included</p><h2>Focused work, <span>built around your goals.</span></h2><p>{service.summary}</p><a className="button" href="/contact/">Discuss this service <ArrowIcon /></a></div><ul className="detail-points">{service.items.map((item) => <li key={item}><span>↗</span>{item}</li>)}</ul></div></section>{service.id === 'branding' && <BrandingPortfolio />}<ServiceClientPortfolio service={service} /></>;
+    body = <><section className="section"><div className="container detail-layout"><div><p className="eyebrow">What’s included</p><h2>Focused work, <span>built around your goals.</span></h2><p>{serviceIntro(service.id) || service.summary}</p><a className="button" href="/contact/">Discuss this service <ArrowIcon /></a></div><ul className="detail-points">{service.items.map((item) => <li key={item}><span>↗</span>{item}</li>)}</ul></div></section><ServiceDeliverables id={service.id} />{service.id === 'branding' && <BrandingPortfolio />}<ServiceClientPortfolio service={service} /></>;
   } else if (page === 'services') items = services;
   else if (caseStudy) {
     head = [caseStudy.category, caseStudy.label, 'client story.', caseStudy.copy];
@@ -896,6 +897,7 @@ function App() {
 }
 
 export default App;
+
 
 
 
