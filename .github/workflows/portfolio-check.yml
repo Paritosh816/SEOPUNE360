@@ -18,3 +18,9 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+      - name: Check removed projects
+        run: |
+          if git grep -I -i -n -E 'crevol'ution'|rivan[ _-]*travel|jolly[ _-]*box'; then
+            echo "Removed project reference remains"
+            exit 1
+          fi

@@ -8,10 +8,10 @@ Toyota and Tata enquiry screenshots show empty public forms. No form was submitt
 
 Original logos downloaded from the rendered official websites: Ananya Rishtey, IntelliDant, A.D.I DEV, Shaw Toyota, Shaw Tata, FPT (https://www.fptindustrial.com/en). Lusso Marco is its inline original SVG. Hotel Shivtara is a capture of the site's original header lockup.
 
-Existing client-supplied branding artwork reused: KJ Group (Kishor Jamdar), ERA Infratech, Koriv Studio, The Jolly Box, FPT India-office artwork. Logo panels display the original artwork using CSS framing; no replacement identities were generated.
+Existing client-supplied branding artwork reused: KJ Group (Kishor Jamdar), ERA Infratech, Koriv Studio, FPT India-office artwork. Logo panels display the original artwork using CSS framing; no replacement identities were generated.
 
 Krishna Classical Homoeopathy Clinic: the user confirmed https://krishnaclassicalhomoeopathy.com/ on 15 November 2026. Its homepage was captured and its original header logo downloaded from https://krishnaclassicalhomoeopathy.com/assets/kch-logo-new.png. The project scope is Social Media / Growth Marketing + Website Development. Portfolio text describes the web and marketing work without making medical outcome claims.
 
-Unresolved: Crevolution LLP has Pune company-register matches but no confidently matched official website/logo. Its name remains text; screenshots of SEOPune360's own old case pages are not presented as client websites. Koriv and Jolly Box have supplied artwork; ambiguous external names were not substituted. Rivan Travels was excluded from new asset research at the user's request; its existing listing remains.
+
 
 Supplementary campaign journey graphics are original HTML/CSS explanatory diagrams. They include no invented performance metrics.
