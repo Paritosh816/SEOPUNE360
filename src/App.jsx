@@ -841,7 +841,7 @@ function PageContent({ path }) {
     head = ['Automotive lead generation', 'More local enquiries', 'for your dealership.', 'We help car dealerships and service centres reach more local customers through SEO, dedicated websites, landing pages and strong paid promotions. Our focus is on phone calls and enquiries for your team.'];
     body = <><section className="section"><div className="container"><p className="eyebrow">Our automotive experience</p><h2>Automotive businesses <span>we have worked with.</span></h2><p>Experience supporting dealerships and automotive service businesses across Pune, Thane and Indore.</p><div className="content-card-grid">{[
         { name: 'Garve Hyundai', url: 'https://www.garvehyundaipune.com/wadgaon-sales' },
-        { name: 'Garve Honda Service' },
+        { name: 'Garve Honda Service', url: 'https://www.garvehondapune.com/pimpricolony-pimpri-chinchwad' },
         { name: 'Hallmark Honda', url: 'https://www.hallmarkhondamumbai.com/' },
         { name: 'Garnet Škoda', url: 'https://www.garnetskodamumbai.com/' },
         { name: 'Shaw Toyota', url: 'https://www.shawtoyotapune.com/' },
