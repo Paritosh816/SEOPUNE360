@@ -349,9 +349,7 @@ function ClientSelector({ activeIndustry, setActiveIndustry }) {
     <div className="client-browser">
       <div className="industry-list" role="tablist" aria-label="Filter clients by industry">{industries.map((industry) => <button className={'industry-tab' + (activeIndustry === industry.id ? ' active' : '')} key={industry.id} role="tab" id={'industry-' + industry.id.replaceAll(' ', '-')} aria-selected={activeIndustry === industry.id} aria-controls="industry-panel" onClick={() => setActiveIndustry(industry.id)}>{industry.label}<span><ArrowIcon /></span></button>)}</div>
       <div className="industry-results" id="industry-panel" role="tabpanel" aria-labelledby={'industry-' + activeIndustry.replaceAll(' ', '-')} key={activeIndustry}>
-        <div className="client-box-grid">{matching.map((client, index) => <a className="client-box" href={'/case-studies/' + client.id + '/'} key={client.id} style={{ '--card-delay': Math.min(index, 5) * 24 + 'ms' }}>
-          <ClientLogo client={client} /><div className="client-box-body"><span className="client-type">{client.type}</span><h3>{client.name}</h3><p>{client.service}</p><span className="client-box-link">Explore project <ArrowIcon /></span></div>
-        </a>)}</div>
+        <div className="client-box-grid">{matching.map((client) => <PortfolioCard key={client.id} item={client} />)}</div>
         <div className="industry-footer"><span aria-live="polite">{matching.length} {matching.length === 1 ? 'client' : 'clients'}</span><a href="/portfolio/">Browse by service ↗</a></div>
       </div>
     </div>
@@ -373,7 +371,7 @@ function ClientProjectPage({ client }) {
     {gallery.length > 0 && <section className="project-gallery" aria-label={'Project visuals for ' + client.name}><div className="section-title-row"><div><p className="eyebrow">Work in context</p><h2>{client.campaign ? 'The landing experience.' : client.serviceIds.includes('branding') ? 'The identity, in detail.' : 'A closer look at the website.'}</h2></div></div>{gallery.map((item,index) => <figure className={'project-figure' + (client.serviceIds.includes('branding') ? ' project-figure-artwork' : '')} key={item.src}><div className="project-frame"><div className="project-frame-bar"><span><i /><i /><i /></span><b>{item.title}</b><span>{String(index + 1).padStart(2,'0')}</span></div><a href={item.src} target="_blank" rel="noopener noreferrer" aria-label={'View full-size ' + item.title}><img src={item.src} alt={item.caption} loading="lazy" decoding="async" /></a></div><figcaption><span>{item.caption}</span>{item.url && <a href={item.url} target="_blank" rel="noopener noreferrer">View source page ↗</a>}</figcaption></figure>)}</section>}
     {client.focus && <section className="project-focus"><p className="eyebrow">What matters in this project</p><h2>Clarity in <span>every detail.</span></h2><div className="project-focus-grid">{client.focus.map(([title,copy],index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{copy}</p></article>)}</div></section>}
     {client.campaign && <CampaignJourney client={client} />}
-    {related.length > 0 && <section className="project-related"><p className="eyebrow">Explore more work</p><h2>Related client projects.</h2><div className="project-related-grid">{related.map((item) => <a href={'/case-studies/' + item.id + '/'} key={item.id}><ClientLogo client={item} /><h3>{item.name}</h3><p>{item.service}</p><span className="text-link">View project <ArrowIcon /></span></a>)}</div></section>}
+    {related.length > 0 && <section className="project-related"><p className="eyebrow">Explore more work</p><h2>Related client projects.</h2><div className="project-related-grid">{related.map((item) => <PortfolioCard key={item.id} item={item} />)}</div></section>}
     <div className="project-end"><div><p className="eyebrow">Your next project</p><h2>Let’s create something <span>for your business.</span></h2></div><a className="button" href="/contact/">Discuss a project <ArrowIcon /></a><a className="text-link" href="/portfolio/">All client work <ArrowIcon /></a></div>
   </div></section>;
 }
@@ -401,15 +399,7 @@ function BrandingPortfolio() {
           <p>A selection of logo and brand identity artwork supplied for SEOPune360 client projects.</p>
         </div>
         <div className="branding-work-grid">
-          {brandingProjects.map((project) => (
-            <article className={'branding-work-card branding-work-' + project.id} key={project.id}>
-              <div className="branding-work-images">
-                {project.artworks.map((artwork, index) => (
-                  <a className={'branding-work-image' + (index === 0 ? ' branding-work-primary' : '')} href={artwork.src} target="_blank" rel="noreferrer" aria-label={'Open full-size artwork: ' + artwork.label + ' for ' + project.name} key={artwork.src}>
-                    <img src={artwork.src} alt={artwork.alt} loading="lazy" decoding="async" />
-                    <span>{artwork.label}</span>
-                  </a>
-                ))}
+          {brandingProjects.map((project) => <PortfolioCard key={project.id} item={project} imageOnly />)}
               </div>
               <div className="branding-work-copy">
                 <p className="eyebrow">{project.industry} · {project.category}</p>
@@ -595,13 +585,7 @@ function ServiceClientPortfolio({ service }) {
   if (!projects.length) return null;
   return <section className="section website-projects"><div className="container">
     <div className="section-title-row"><div><p className="eyebrow">{service.title}</p><h2>Client work.<br /><span>Across different industries.</span></h2></div><p className="section-intro">Explore the clients and project scopes for this service.</p></div>
-    <div className="case-explorer-grid">{projects.map((project) => <article className="case-explorer-card" key={project.id}>
-      <div className="case-explorer-meta"><span>{project.type}</span></div>
-      <ProjectCover client={project} /><h3>{project.name}</h3><span className="project-service">{project.service}</span><p>{project.description}</p>
-      <ul className="case-explorer-proof">{project.scope.map((point) => <li key={point}><span aria-hidden="true">↗</span>{point}</li>)}</ul>
-      <a className="text-link" href={'/case-studies/' + project.id + '/'}>View client project <ArrowIcon /></a>
-      {project.website && <a className="text-link project-website-link" href={project.website} target="_blank" rel="noopener noreferrer">Visit client website <ArrowIcon /></a>}
-    </article>)}</div>
+    <div className="case-explorer-grid">{projects.map((project) => <PortfolioCard key={project.id} item={project} />)}</div>
   </div></section>;
 }
 
@@ -616,12 +600,7 @@ function CaseStudyExplorer() {
     <div className="case-filter-list" role="group" aria-label="Filter clients by service">{serviceFilters.map((label) => <button className={'case-filter' + (activeServiceFilter === label ? ' active' : '')} key={label} type="button" aria-pressed={activeServiceFilter === label} onClick={() => setActiveServiceFilter(label)}>{label}</button>)}</div>
     <div className="case-filter-list" role="group" aria-label="Filter case studies by sector">{categories.map((category) => <button className={'case-filter' + (activeCategory === category ? ' active' : '')} key={category} type="button" aria-pressed={activeCategory === category} onClick={() => setActiveCategory(category)}>{category}</button>)}</div>
     <p className="case-result-count" aria-live="polite">{visibleStudies.length} {visibleStudies.length === 1 ? 'client' : 'clients'} shown</p>
-    <div className="case-explorer-grid">{visibleStudies.length === 0 && <p className="content-note">No clients match this service and industry combination. Try another filter.</p>}{visibleStudies.map((item) => <article className="case-explorer-card" key={item.id}>
-      <div className="case-explorer-meta"><span>{item.category}</span><span>{item.metrics.length ? 'Published outcomes' : 'Published scope'}</span></div>
-      <ProjectCover client={item} /><h3>{item.label}</h3>{item.service && <span className="project-service">{item.service}</span>}<p>{item.copy}</p>
-      <ul className="case-explorer-proof">{(item.metrics.length ? item.metrics : item.scope).map((point) => <li key={point}><span aria-hidden="true">{item.metrics.length ? '✦' : '↗'}</span>{point}</li>)}</ul>
-      <a className="text-link" href={'/case-studies/' + item.id + '/'}>Read client story <ArrowIcon /></a>
-    </article>)}</div>
+    <div className="case-explorer-grid">{visibleStudies.length === 0 && <p className="content-note">No clients match this service and industry combination. Try another filter.</p>}{visibleStudies.map((item) => <PortfolioCard key={item.id} item={item} />)}</div>
     <p className="content-note">Select a client to explore its project scope.</p>
   </div></section>;
 }
@@ -768,62 +747,64 @@ const automotiveClients = [
   { name: 'Shaw Tata, Indore', industry: 'Automotive', summary: 'A digital destination for Tata car buyers in Indore.', url: 'https://shawtatacarsindore.com/', previewImage: null },
 ];
 
-function PreviewThumbnail({ client, onPreview }) {
-  const [failed, setFailed] = useState(false);
-  const domain = new URL(client.url).hostname.replace(/^www\\./, '');
-  return <button className="portfolio-browser" type="button" onClick={onPreview} aria-label={'Live preview of ' + client.name}>
-    <span className="portfolio-browser-bar" aria-hidden="true"><span className="portfolio-browser-dots"><i /><i /><i /></span><span className="portfolio-browser-domain">{domain}</span></span>
-    <span className="portfolio-browser-screen">
-      {client.previewImage && !failed ? <img src={client.previewImage} alt="" loading="lazy" decoding="async" onError={() => setFailed(true)} /> : <span className="portfolio-placeholder" aria-hidden="true"><span className="portfolio-placeholder-mark">S<span>360</span></span><span>{client.name}</span><small>WEBSITE PREVIEW</small></span>}
+function PortfolioCard({ item, imageOnly = false }) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  const [width, setWidth] = useState(320);
+  const [mode, setMode] = useState('waiting');
+  const [loaded, setLoaded] = useState(false);
+  const [fallback, setFallback] = useState(false);
+  const url = imageOnly ? null : (item.url || item.website || item.landing);
+  const gallery = imageOnly ? item.artworks || [] : projectGallery(item);
+  const image = imageOnly ? gallery[0]?.src : (item.previewImage || gallery[0]?.src);
+  const destination = url || image || (item.id ? '/case-studies/' + item.id + '/' : null);
+  const external = Boolean(url || image);
+  const domain = url ? new URL(url).hostname.replace(/^www\\./, '') : '';
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return undefined;
+    const observer = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) { setVisible(true); observer.disconnect(); }
+    }, { rootMargin: '160px' });
+    observer.observe(element);
+    const resize = new ResizeObserver(entries => { if (entries[0]) setWidth(entries[0].contentRect.width); });
+    resize.observe(element);
+    return () => { observer.disconnect(); resize.disconnect(); };
+  }, []);
+  useEffect(() => {
+    if (!visible || !url) return undefined;
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), 5000);
+    setMode('checking');
+    fetch('https://seopune360-audit-module.vercel.app/api/frame-check?url=' + encodeURIComponent(url), { signal: controller.signal })
+      .then(response => response.ok ? response.json() : Promise.reject())
+      .then(data => setMode(data.status === 'allowed' ? 'frame' : 'screenshot'))
+      .catch(() => { if (ref.current) setMode('screenshot'); })
+      .finally(() => window.clearTimeout(timer));
+    return () => { window.clearTimeout(timer); controller.abort(); };
+  }, [visible, url]);
+  useEffect(() => {
+    if (mode !== 'frame' || loaded) return undefined;
+    const timer = window.setTimeout(() => { setMode('screenshot'); setLoaded(false); }, 10000);
+    return () => window.clearTimeout(timer);
+  }, [mode, loaded]);
+  const screenshot = url ? 'https://s0.wp.com/mshots/v1/' + encodeURIComponent(url) + '?w=1280' : image;
+  const src = fallback ? image : screenshot;
+  return <a ref={ref} className="portfolio-card" href={destination || '#'} {...(external ? { target:'_blank', rel:'noopener noreferrer' } : {})} aria-label={item.name + (external ? ' — open in a new tab' : ' — view project')}>
+    {url && <span className="portfolio-bar" aria-hidden="true"><span className="portfolio-dots"><i /><i /><i /></span><span className="portfolio-domain">{domain}</span><span className="portfolio-open">Open ↗</span></span>}
+    <span className={'portfolio-visual' + (loaded ? ' is-loaded' : '')}>
+      {visible && url && mode === 'frame' && <iframe title="" aria-hidden="true" tabIndex="-1" src={url} loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms" onLoad={() => setLoaded(true)} style={{ width: '1280px', height: '800px', transform: 'scale(' + (width / 1280) + ')' }} />}
+      {visible && ((url && mode === 'screenshot') || (!url && image)) && src && <img src={src} alt="" loading="lazy" decoding="async" onLoad={() => setLoaded(true)} onError={() => { if (!fallback && image && image !== src) { setFallback(true); setLoaded(false); } else { setMode('unavailable'); setLoaded(true); } }} />}
+      {visible && !url && !image && <span className="portfolio-no-image"><ClientLogo client={item} /></span>}
+      {mode === 'unavailable' && <span className="portfolio-unavailable">Preview unavailable</span>}
+      {!loaded && (url || image) && <span className="portfolio-shimmer" aria-hidden="true" />}
     </span>
-  </button>;
+    <span className="portfolio-card-copy"><span className="portfolio-tag">{item.industry || item.type || item.category || 'Client project'}</span><strong>{item.name}</strong><span className="portfolio-summary">{item.summary || item.description || item.copy}</span><span className="portfolio-card-open" aria-hidden="true">Open ↗</span></span>
+  </a>;
 }
 
 function AutomotivePortfolio() {
-  const [selected, setSelected] = useState(null);
-  const [viewport, setViewport] = useState('desktop');
-  const [loading, setLoading] = useState(true);
-  const [delayed, setDelayed] = useState(false);
-  const dialogRef = useRef(null);
-  const triggerRef = useRef(null);
-  const openPreview = (client, event) => {
-    triggerRef.current = event.currentTarget;
-    setViewport('desktop');
-    setLoading(true);
-    setDelayed(false);
-    setSelected(client);
-  };
-  const closePreview = () => setSelected(null);
-  useEffect(() => {
-    if (!selected) return undefined;
-    const dialog = dialogRef.current;
-    dialog.showModal();
-    const timer = window.setTimeout(() => setDelayed(true), 4000);
-    return () => {
-      window.clearTimeout(timer);
-      if (dialog.open) dialog.close();
-      triggerRef.current?.focus();
-    };
-  }, [selected]);
-
-  return <>
-    <div className="automotive-grid">{automotiveClients.map((client) => <article className="automotive-card" key={client.name}>
-      <PreviewThumbnail client={client} onPreview={(event) => openPreview(client, event)} />
-      <div className="automotive-card-body"><span className="automotive-pill">{client.industry}</span><h3>{client.name}</h3><p>{client.summary}</p>
-        <div className="automotive-actions"><button className="automotive-preview-button" type="button" onClick={(event) => openPreview(client, event)}>Live Preview</button><a className="automotive-visit-button" href={client.url} target="_blank" rel="noopener noreferrer" aria-label={'Visit ' + client.name + ' website (opens in a new tab)'}>Visit Site <span aria-hidden="true">↗</span></a></div>
-      </div>
-    </article>)}</div>
-    {selected && <dialog ref={dialogRef} className="portfolio-dialog" aria-labelledby="portfolio-dialog-title" onCancel={(event) => { event.preventDefault(); closePreview(); }} onClick={(event) => { if (event.target === event.currentTarget) closePreview(); }}>
-      <div className="portfolio-modal-header"><div className="portfolio-modal-title"><span className="automotive-pill">LIVE PREVIEW</span><h2 id="portfolio-dialog-title">{selected.name}</h2></div>
-        <div className="portfolio-modal-controls"><div className="portfolio-viewport" role="group" aria-label="Preview size"><button type="button" aria-pressed={viewport === 'desktop'} onClick={() => setViewport('desktop')}>Desktop</button><button type="button" aria-pressed={viewport === 'mobile'} onClick={() => setViewport('mobile')}>Mobile</button></div><a href={selected.url} target="_blank" rel="noopener noreferrer">Open in New Tab ↗</a><button className="portfolio-close" type="button" onClick={closePreview} aria-label="Close preview">×</button></div>
-      </div>
-      <div className="portfolio-modal-note" role="status">{delayed && loading ? 'This site may restrict embedded previews or be taking longer to load. Open it directly below.' : 'Some sites restrict embedded previews. If the preview is blank, open the site directly.'} <a href={selected.url} target="_blank" rel="noopener noreferrer">Open site ↗</a></div>
-      <div className="portfolio-frame-stage"><div className={'portfolio-frame-shell ' + (viewport === 'mobile' ? 'is-mobile' : '')}>
-        {loading && !delayed && <div className="portfolio-loading" role="status"><span className="portfolio-spinner" />Loading preview…</div>}
-        <iframe title={selected.name + ' website preview'} src={selected.url} loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-popups" onLoad={() => setLoading(false)} onError={() => { setLoading(true); setDelayed(true); }} />
-      </div></div>
-    </dialog>}
-  </>;
+  return <div className="automotive-grid">{automotiveClients.map(item => <PortfolioCard key={item.name} item={item} />)}</div>;
 }
 
 function PageContent({ path }) {
@@ -897,7 +878,7 @@ function PageContent({ path }) {
     if (page === 'services') return <a className="content-card" href={servicePaths[item.id]} key={item.id}><span className="card-number">{item.number} / 06</span><h2>{item.title}</h2><p>{item.summary}</p><span className="text-link">Explore service <ArrowIcon /></span></a>;
     if (page === 'industries' && !industry) return <a className="content-card" href={industryPath(item.id)} key={item.id}><span className="card-number">SECTOR</span><h2>{item.label}</h2><p>Explore the client work and digital growth needs represented in this sector.</p><span className="text-link">Explore industry <ArrowIcon /></span></a>;
     if (page === 'case-studies') return <a className="content-card" href={'/case-studies/' + item.id + '/'} key={item.id}><span className="card-number">{item.category}</span><h2>{item.label}</h2><p>{item.copy}</p><span className="text-link">Read client story <ArrowIcon /></span></a>;
-    return <article className="content-card" key={item.name}><span className="card-number">{page === 'products' ? 'CLIENT PLATFORM JOURNEY' : item.type.toUpperCase()}</span><h2>{item.name}</h2>{item.service && <span className="project-service">{item.service}</span>}<p>{item.description}</p>{page === 'products' && <p className="content-note">Portfolio showcase based on published client work; this is not a separate SEOPune360 product catalogue.</p>}{(item.caseId || page !== 'products') && <a className="text-link" href={item.caseId ? '/case-studies/' + item.caseId + '/' : '/case-studies/'}>{item.caseId ? 'View client project' : 'Browse client stories'} <ArrowIcon /></a>}</article>;
+    return <PortfolioCard key={item.id || item.name} item={item} />;
   };
   const titleParts = head[1].split(' ');
   return <><InsideHero kicker={head[0]} title={titleParts.slice(0, Math.max(1, titleParts.length - 1)).join(' ')} accent={titleParts.length > 1 ? titleParts.slice(-1).join(' ') + (head[2] ? ' ' + head[2] : '') : head[2]} copy={head[3]} />{((page === 'case-studies' && !caseStudy) || page === 'portfolio') ? <CaseStudyExplorer /> : items.length > 0 && <section className="section"><ContentCards items={items} render={renderCard} />{page === 'industries' && !industry && <p className="container content-note">A published client case study is not currently listed for every sector.</p>}{industry && items.length === 0 && <div className="container empty-state"><h2>No published client case study for this category yet.</h2><p>We can still discuss the search and website needs of your business.</p><a className="button" href="/contact/">Talk with us <ArrowIcon /></a></div>}</section>}{body}</>;
