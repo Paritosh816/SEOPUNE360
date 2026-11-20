@@ -1531,53 +1531,29 @@ a.content-card:hover { transform:translateY(-4px); border-color:rgba(51,225,208,
 
 
 
-/* Automotive portfolio cards and on-demand previews */
+/* Automotive portfolio grid */
 .automotive-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:22px; margin-top:32px; }
-.automotive-card { display:flex; flex-direction:column; min-width:0; overflow:hidden; border:1px solid rgba(185,222,216,.18); border-radius:16px; background:#102430; box-shadow:0 14px 32px rgba(0,0,0,.13); transition:transform .2s ease, border-color .2s ease, box-shadow .2s ease; }
-.automotive-card:hover { transform:translateY(-4px); border-color:rgba(93,224,207,.48); box-shadow:0 20px 40px rgba(0,0,0,.24); }
-.portfolio-browser { display:block; width:100%; padding:0; color:inherit; text-align:left; background:#112b37; border:0; cursor:pointer; }
-.portfolio-browser-bar { height:34px; display:flex; align-items:center; gap:13px; padding:0 12px; background:#203b47; }
-.portfolio-browser-dots { display:flex; gap:4px; flex:none; }
-.portfolio-browser-dots i { width:7px; height:7px; border-radius:50%; background:#76939a; }
-.portfolio-browser-dots i:first-child { background:#e78379; } .portfolio-browser-dots i:nth-child(2) { background:#dfbd73; } .portfolio-browser-dots i:nth-child(3) { background:#80bb97; }
-.portfolio-browser-domain { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#c3d3d2; font-size:.75rem; }
-.portfolio-browser-screen { position:relative; display:block; aspect-ratio:16/10; overflow:hidden; background:#153342; }
-.portfolio-browser-screen img { width:100%; height:100%; object-fit:cover; object-position:top; transition:transform .35s ease; }
-.portfolio-browser:hover img { transform:scale(1.035); }
-.portfolio-placeholder { display:flex; height:100%; flex-direction:column; align-items:center; justify-content:center; gap:8px; padding:20px; text-align:center; background:radial-gradient(circle at 70% 20%,rgba(69,213,195,.2),transparent 48%),linear-gradient(145deg,#193d4c,#0b1e2a); color:#edf8f6; font-weight:700; font-size:1.1rem; }
-.portfolio-placeholder-mark { display:grid; place-items:center; width:50px; height:50px; margin-bottom:7px; border:1px solid rgba(91,224,205,.55); border-radius:12px; color:#7fe3d5; font-weight:800; font-size:1.3rem; }
-.portfolio-placeholder-mark span { font-size:.55rem; }
-.portfolio-placeholder small { color:#a8c9c6; letter-spacing:.13em; font-size:.65rem; }
-.automotive-card-body { display:flex; flex:1; flex-direction:column; align-items:flex-start; padding:23px; }
-.automotive-pill { display:inline-block; padding:5px 10px; border:1px solid rgba(103,226,208,.3); border-radius:999px; color:#9be9dc; font-size:.72rem; font-weight:700; letter-spacing:.04em; }
-.automotive-card-body h3 { margin:15px 0 8px; color:#f3faf9; font-size:1.32rem; line-height:1.25; }
-.automotive-card-body p { margin:0 0 24px; color:#b9cecf; font-size:.95rem; line-height:1.5; }
-.automotive-actions { display:flex; gap:10px; width:100%; margin-top:auto; }
-.automotive-preview-button,.automotive-visit-button { display:inline-flex; justify-content:center; align-items:center; gap:8px; min-height:44px; padding:10px 14px; border-radius:8px; font:inherit; font-size:.87rem; font-weight:700; text-decoration:none; cursor:pointer; }
-.automotive-preview-button { flex:1; color:#ddf2ed; background:transparent; border:1px solid rgba(190,223,218,.35); }
-.automotive-visit-button { flex:1; color:#071d20; background:#62ddce; border:1px solid #62ddce; }
-.automotive-preview-button:hover { background:rgba(112,223,206,.09); } .automotive-visit-button:hover { background:#9cf4e7; color:#071d20; }
-.portfolio-browser:focus-visible,.automotive-preview-button:focus-visible,.automotive-visit-button:focus-visible,.portfolio-dialog button:focus-visible,.portfolio-dialog a:focus-visible { outline:3px solid #82f8e6; outline-offset:3px; }
-.portfolio-dialog { position:fixed; width:min(1180px,calc(100vw - 36px)); max-width:none; height:min(850px,calc(100dvh - 36px)); max-height:none; padding:0; border:1px solid #42626a; border-radius:16px; color:#effaf7; background:#0c202a; overflow:hidden; }
-.portfolio-dialog::backdrop { background:rgba(0,10,15,.8); }
-.portfolio-modal-header { display:flex; align-items:center; justify-content:space-between; gap:18px; padding:16px 20px; background:#102b36; }
-.portfolio-modal-title h2 { margin:6px 0 0; font-size:1.15rem; line-height:1.2; }
-.portfolio-modal-controls { display:flex; align-items:center; flex-wrap:wrap; justify-content:flex-end; gap:10px; }
-.portfolio-modal-controls a,.portfolio-modal-note a { color:#89eddf; font-size:.87rem; font-weight:700; }
-.portfolio-viewport { display:flex; padding:3px; background:#091a23; border-radius:8px; }
-.portfolio-viewport button,.portfolio-close { border:0; color:#d9efeb; background:transparent; cursor:pointer; }
-.portfolio-viewport button { padding:8px 10px; border-radius:6px; font-size:.8rem; }
-.portfolio-viewport button[aria-pressed="true"] { background:#38685f; color:white; }
-.portfolio-close { width:40px; height:40px; border-radius:8px; font-size:1.8rem; line-height:1; }
-.portfolio-close:hover { background:#25454d; }
-.portfolio-modal-note { padding:10px 20px; color:#c4dbd8; background:#183640; font-size:.83rem; line-height:1.45; }
-.portfolio-frame-stage { height:calc(100% - 130px); padding:14px; overflow:auto; background:#07171f; text-align:center; }
-.portfolio-frame-shell { position:relative; width:100%; height:100%; margin:auto; background:white; transition:width .2s ease; }
-.portfolio-frame-shell.is-mobile { width:min(390px,100%); }
-.portfolio-frame-shell iframe { position:relative; display:block; width:100%; height:100%; border:0; }
-.portfolio-loading { z-index:1; pointer-events:none; position:absolute; inset:0; display:flex; justify-content:center; align-items:center; gap:10px; color:#234148; background:#f4f9f8; }
-.portfolio-spinner { width:20px; height:20px; border:2px solid #aecbc5; border-top-color:#16796d; border-radius:50%; animation:portfolio-spin .8s linear infinite; }
-@keyframes portfolio-spin { to { transform:rotate(360deg); } }
 @media (max-width:900px) { .automotive-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-@media (max-width:600px) { .automotive-grid { grid-template-columns:1fr; } .portfolio-dialog { width:100vw; height:100dvh; border:0; border-radius:0; } .portfolio-modal-header { position:sticky; top:0; z-index:2; align-items:flex-start; padding:12px; } .portfolio-modal-title h2 { font-size:1rem; } .portfolio-modal-controls { gap:6px; } .portfolio-modal-controls a { font-size:.75rem; } .portfolio-modal-note { padding:8px 12px; } .portfolio-frame-stage { height:calc(100% - 150px); } }
-@media (prefers-reduced-motion:reduce) { .automotive-card,.portfolio-browser-screen img,.portfolio-frame-shell { transition:none; } .portfolio-spinner { animation-duration:2s; } }
+@media (max-width:600px) { .automotive-grid { grid-template-columns:1fr; } }
+
+/* Shared portfolio cards */
+.portfolio-card { display:flex; min-width:0; height:100%; flex-direction:column; overflow:hidden; border:1px solid rgba(185,222,216,.18); border-radius:15px; background:#102430; color:#effaf7; text-decoration:none; box-shadow:0 14px 32px rgba(0,0,0,.13); transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease; }
+.portfolio-card:hover,.portfolio-card:focus-visible { transform:translateY(-4px); border-color:rgba(93,224,207,.65); box-shadow:0 20px 40px rgba(0,0,0,.25); }
+.portfolio-card:focus-visible { outline:3px solid #82f8e6; outline-offset:3px; }
+.portfolio-bar { display:flex; align-items:center; gap:10px; height:34px; padding:0 12px; background:#203b47; flex:none; }
+.portfolio-dots { display:flex; flex:none; gap:4px; } .portfolio-dots i { width:7px; height:7px; border-radius:50%; background:#80bb97; } .portfolio-dots i:first-child { background:#e78379; } .portfolio-dots i:nth-child(2) { background:#dfbd73; }
+.portfolio-domain { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#c3d3d2; font-size:.75rem; }
+.portfolio-open { margin-left:auto; white-space:nowrap; color:#9be9dc; font-size:.75rem; }
+.portfolio-visual { display:block; position:relative; aspect-ratio:16/10; width:100%; overflow:hidden; background:#173440; }
+.portfolio-visual iframe { position:absolute; top:0; left:0; border:0; transform-origin:top left; pointer-events:none; opacity:0; transition:opacity .3s ease; }
+.portfolio-visual img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:top; opacity:0; transition:opacity .3s ease; }
+.portfolio-visual.is-loaded img,.portfolio-visual.is-loaded iframe { opacity:1; }
+.portfolio-shimmer { position:absolute; inset:0; background:linear-gradient(100deg,#173440 25%,#294d56 50%,#173440 75%); background-size:200% 100%; animation:portfolio-shimmer 1.6s linear infinite; pointer-events:none; }
+@keyframes portfolio-shimmer { to { background-position:-200% 0; } }
+.portfolio-unavailable,.portfolio-no-image { position:absolute; inset:0; display:flex; justify-content:center; align-items:center; padding:18px; text-align:center; color:#c1d8d3; }
+.portfolio-card-copy { display:flex; flex:1; min-width:0; flex-direction:column; align-items:flex-start; gap:10px; padding:20px; }
+.portfolio-tag { display:inline-block; padding:4px 9px; border:1px solid rgba(103,226,208,.3); border-radius:999px; color:#9be9dc; font-size:.72rem; font-weight:700; }
+.portfolio-card-copy strong { font-size:1.25rem; line-height:1.25; color:#f3faf9; }
+.portfolio-summary { color:#b9cecf; font-size:.9rem; line-height:1.45; }
+.portfolio-card-open { margin-top:auto; padding-top:6px; color:#8be7da; font-size:.8rem; font-weight:700; }
+@media (prefers-reduced-motion:reduce) { .portfolio-card,.portfolio-visual img,.portfolio-visual iframe { transition:none; } .portfolio-shimmer { animation:none; } }
