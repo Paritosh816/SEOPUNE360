@@ -820,7 +820,7 @@ function AutomotivePortfolio() {
       <div className="portfolio-modal-note" role="status">{delayed && loading ? 'This site may restrict embedded previews or be taking longer to load. Open it directly below.' : 'Some sites restrict embedded previews. If the preview is blank, open the site directly.'} <a href={selected.url} target="_blank" rel="noopener noreferrer">Open site ↗</a></div>
       <div className="portfolio-frame-stage"><div className={'portfolio-frame-shell ' + (viewport === 'mobile' ? 'is-mobile' : '')}>
         {loading && !delayed && <div className="portfolio-loading" role="status"><span className="portfolio-spinner" />Loading preview…</div>}
-        <iframe title={selected.name + ' website preview'} src={selected.url} loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-popups" onLoad={() => setLoading(false)} onError={() => { setLoading(false); setDelayed(true); }} />
+        <iframe title={selected.name + ' website preview'} src={selected.url} loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-popups" onLoad={() => setLoading(false)} onError={() => { setLoading(true); setDelayed(true); }} />
       </div></div>
     </dialog>}
   </>;
