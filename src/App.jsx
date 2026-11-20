@@ -348,8 +348,8 @@ function ClientSelector({ activeIndustry, setActiveIndustry }) {
     <div className="client-heading"><p className="eyebrow">The businesses behind our work</p><h2>Distinctive brands.<br /><span>Different paths to growth.</span></h2><p>Explore each client, the services behind the project, and the work in context.</p></div>
     <div className="client-browser">
       <div className="industry-list" role="tablist" aria-label="Filter clients by industry">{industries.map((industry) => <button className={'industry-tab' + (activeIndustry === industry.id ? ' active' : '')} key={industry.id} role="tab" id={'industry-' + industry.id.replaceAll(' ', '-')} aria-selected={activeIndustry === industry.id} aria-controls="industry-panel" onClick={() => setActiveIndustry(industry.id)}>{industry.label}<span><ArrowIcon /></span></button>)}</div>
-      <div className="industry-results" id="industry-panel" role="tabpanel" aria-labelledby={'industry-' + activeIndustry.replaceAll(' ', '-')} key={activeIndustry}>
-        <div className="client-box-grid">{matching.map((client) => <PortfolioCard key={client.id} item={client} />)}</div>
+      <div className="industry-results" id="industry-panel" role="tabpanel" aria-labelledby={'industry-' + activeIndustry.replaceAll(' ', '-')}>
+        <div className="client-box-grid">{clients.map((client) => <PortfolioCard key={client.id} item={client} hidden={!matching.includes(client)} priority={matching.indexOf(client) >= 0 && matching.indexOf(client) < 3} />)}</div>
         <div className="industry-footer"><span aria-live="polite">{matching.length} {matching.length === 1 ? 'client' : 'clients'}</span><a href="/portfolio/">Browse by service ↗</a></div>
       </div>
     </div>
@@ -392,7 +392,7 @@ function ServiceIllustration({ type }) {
 function BrandingPortfolio() {
   return <section className="section branding-portfolio" aria-labelledby="branding-work-title"><div className="container">
     <div className="branding-portfolio-heading"><p className="eyebrow">Selected brand work</p><h2 id="branding-work-title">Identity work, made <span>for real businesses.</span></h2><p>A selection of logo and brand identity artwork supplied for SEOPune360 client projects.</p></div>
-    <div className="branding-work-grid">{brandingProjects.map(project => <PortfolioCard key={project.id} item={project} imageOnly />)}</div>
+    <div className="branding-work-grid">{brandingProjects.map((project, index) => <PortfolioCard key={project.id} item={project} imageOnly priority={index < 3} />)}</div>
     <div className="branding-work-cta"><p>Building a brand or refreshing the one you have?</p><a className="button" href="/contact/">Talk about your brand <ArrowIcon /></a></div>
   </div></section>;
 }
@@ -434,9 +434,9 @@ function CaseStudies({ activeCase, setActiveCase }) {
         <div className="section-title-row"><div><p className="eyebrow">Recent work with businesses</p><h2>Real businesses.<br /><span>Clearer digital growth.</span></h2></div><p className="section-intro">Select a client to view its project scope and reported results where available.</p></div>
         <div className="case-layout">
           <div className="case-tabs" role="tablist" aria-label="Client case studies">
-            {caseStudies.map((item) => <button className={'case-tab' + (activeCase === item.id ? ' active' : '')} key={item.id} role="tab" id={'case-tab-' + item.id} aria-selected={activeCase === item.id} aria-controls="selected-case" onClick={() => setActiveCase(item.id)}><span>{item.label}</span><small>{item.category}</small><ArrowIcon /></button>)}
+            {caseStudies.map((item) => <button className={'case-tab' + (activeCase === item.id ? ' active' : '')} key={item.id} role="tab" id={'case-tab-' + item.id} aria-selected={activeCase === item.id} aria-controls={'selected-case-' + item.id} onClick={() => setActiveCase(item.id)}><span>{item.label}</span><small>{item.category}</small><ArrowIcon /></button>)}
           </div>
-          <div id="selected-case" role="tabpanel" aria-labelledby={'case-tab-' + current.id} key={current.id}><PortfolioCard item={current} /></div>
+          <div>{caseStudies.map((item) => <div id={'selected-case-' + item.id} role="tabpanel" aria-labelledby={'case-tab-' + item.id} hidden={item.id !== current.id} key={item.id}><PortfolioCard item={item} priority={item.id === current.id} hidden={item.id !== current.id} /></div>)}</div>
         </div>
       </div>
     </section>
@@ -561,7 +561,7 @@ function ServiceClientPortfolio({ service }) {
   if (!projects.length) return null;
   return <section className="section website-projects"><div className="container">
     <div className="section-title-row"><div><p className="eyebrow">{service.title}</p><h2>Client work.<br /><span>Across different industries.</span></h2></div><p className="section-intro">Explore the clients and project scopes for this service.</p></div>
-    <div className="case-explorer-grid">{projects.map((project) => <PortfolioCard key={project.id} item={project} />)}</div>
+    <div className="case-explorer-grid">{projects.map((project, index) => <PortfolioCard key={project.id} item={project} priority={index < 3} />)}</div>
   </div></section>;
 }
 
@@ -576,7 +576,7 @@ function CaseStudyExplorer() {
     <div className="case-filter-list" role="group" aria-label="Filter clients by service">{serviceFilters.map((label) => <button className={'case-filter' + (activeServiceFilter === label ? ' active' : '')} key={label} type="button" aria-pressed={activeServiceFilter === label} onClick={() => setActiveServiceFilter(label)}>{label}</button>)}</div>
     <div className="case-filter-list" role="group" aria-label="Filter case studies by sector">{categories.map((category) => <button className={'case-filter' + (activeCategory === category ? ' active' : '')} key={category} type="button" aria-pressed={activeCategory === category} onClick={() => setActiveCategory(category)}>{category}</button>)}</div>
     <p className="case-result-count" aria-live="polite">{visibleStudies.length} {visibleStudies.length === 1 ? 'client' : 'clients'} shown</p>
-    <div className="case-explorer-grid">{visibleStudies.length === 0 && <p className="content-note">No clients match this service and industry combination. Try another filter.</p>}{visibleStudies.map((item) => <PortfolioCard key={item.id} item={item} />)}</div>
+    <div className="case-explorer-grid">{visibleStudies.length === 0 && <p className="content-note">No clients match this service and industry combination. Try another filter.</p>}{caseStudies.map((item) => <PortfolioCard key={item.id} item={item} hidden={!visibleStudies.includes(item)} priority={visibleStudies.indexOf(item) >= 0 && visibleStudies.indexOf(item) < 3} />)}</div>
     <p className="content-note">Select a client to explore its project scope.</p>
   </div></section>;
 }
@@ -723,67 +723,81 @@ const automotiveClients = [
   { name: 'Shaw Tata, Indore', industry: 'Automotive', summary: 'A digital destination for Tata car buyers in Indore.', url: 'https://shawtatacarsindore.com/', previewImage: null },
 ];
 
-function PortfolioCard({ item, imageOnly = false }) {
+function PortfolioCard({ item, imageOnly = false, priority = false, hidden = false }) {
   const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(() => priority && !hidden);
   const [width, setWidth] = useState(320);
-  const [mode, setMode] = useState('waiting');
-  const [loaded, setLoaded] = useState(false);
-  const [fallback, setFallback] = useState(false);
-  const [screenshotAttempt, setScreenshotAttempt] = useState(0);
-  const screenshotTimer = useRef(null);
+  const [frameStatus, setFrameStatus] = useState('pending');
+  const [showProgress, setShowProgress] = useState(false);
   const url = imageOnly ? null : (item.url || item.website || item.landing);
   const gallery = imageOnly ? item.artworks || [] : projectGallery(item);
-  const image = imageOnly ? gallery[0]?.src : (item.previewImage || gallery[0]?.src);
+  const image = !url ? gallery[0]?.src : null;
   const destination = url || image || (item.id ? '/case-studies/' + item.id + '/' : null);
   const external = Boolean(url || image);
-  const domain = url ? new URL(url).hostname.replace(/^www\\./, '') : '';
+  const domain = url ? new URL(url).hostname.replace(/^www\./, '') : '';
+
   useEffect(() => {
     const element = ref.current;
     if (!element) return undefined;
     const observer = new IntersectionObserver(entries => {
       if (entries.some(entry => entry.isIntersecting)) { setVisible(true); observer.disconnect(); }
-    }, { rootMargin: '160px' });
+    }, { rootMargin: '1000px 0px' });
     observer.observe(element);
-    const resize = new ResizeObserver(entries => { if (entries[0]) setWidth(entries[0].contentRect.width); });
+    const resize = new ResizeObserver(entries => {
+      const measured = entries[0]?.contentRect.width;
+      if (measured > 0) setWidth(measured);
+    });
     resize.observe(element);
     return () => { observer.disconnect(); resize.disconnect(); };
   }, []);
-  useEffect(() => () => window.clearTimeout(screenshotTimer.current), []);
+  useEffect(() => {
+    if (priority && !hidden) setVisible(true);
+  }, [priority, hidden]);
+  useEffect(() => {
+    if (!url || !priority || hidden) return;
+    const origin = new URL(url).origin;
+    const exists = Array.from(document.querySelectorAll('link[rel="preconnect"]')).some(link => link.href === origin + '/');
+    if (!exists) {
+      const link = document.createElement('link');
+      link.rel = 'preconnect';
+      link.href = origin;
+      link.crossOrigin = 'anonymous';
+      document.head.appendChild(link);
+    }
+  }, [url, priority, hidden]);
   useEffect(() => {
     if (!visible || !url) return undefined;
     const controller = new AbortController();
-    const timer = window.setTimeout(() => controller.abort(), 5000);
-    setMode('checking');
+    const timeout = window.setTimeout(() => controller.abort(), 5000);
     fetch('https://seopune360-audit-module.vercel.app/api/frame-check?url=' + encodeURIComponent(url), { signal: controller.signal })
       .then(response => response.ok ? response.json() : Promise.reject())
-      .then(data => setMode(data.status === 'allowed' ? 'frame' : 'screenshot'))
-      .catch(() => { if (ref.current) setMode('screenshot'); })
-      .finally(() => window.clearTimeout(timer));
-    return () => { window.clearTimeout(timer); controller.abort(); };
+      .then(data => setFrameStatus(data.status === 'blocked' ? 'blocked' : data.status === 'allowed' ? 'allowed' : 'unknown'))
+      .catch(() => { if (ref.current) setFrameStatus('unknown'); })
+      .finally(() => window.clearTimeout(timeout));
+    return () => { window.clearTimeout(timeout); controller.abort(); };
   }, [visible, url]);
   useEffect(() => {
-    if (mode !== 'frame' || loaded) return undefined;
-    const timer = window.setTimeout(() => { setMode('screenshot'); setLoaded(false); }, 10000);
+    if (!visible || !url || frameStatus === 'blocked') return undefined;
+    setShowProgress(true);
+    const timer = window.setTimeout(() => setShowProgress(false), 1200);
     return () => window.clearTimeout(timer);
-  }, [mode, loaded]);
-  const screenshot = url ? 'https://s0.wp.com/mshots/v1/' + encodeURIComponent(url) + '?w=1280&attempt=' + screenshotAttempt : image;
-  const src = fallback ? image : screenshot;
-  return <a ref={ref} className="portfolio-card" href={destination || '#'} {...(external ? { target:'_blank', rel:'noopener noreferrer' } : {})} aria-label={item.name + (external ? ' — open in a new tab' : ' — view project')}>
+  }, [visible, url, frameStatus === 'blocked']);
+
+  return <a ref={ref} hidden={hidden} className="portfolio-card" href={destination || '#'} {...(external ? { target:'_blank', rel:'noopener noreferrer' } : {})} aria-label={item.name + (external ? ' — open in a new tab' : ' — view project')}>
     {url && <span className="portfolio-bar" aria-hidden="true"><span className="portfolio-dots"><i /><i /><i /></span><span className="portfolio-domain">{domain}</span><span className="portfolio-open">Open ↗</span></span>}
-    <span className={'portfolio-visual' + (loaded ? ' is-loaded' : '')}>
-      {visible && url && mode === 'frame' && <iframe title="" aria-hidden="true" tabIndex="-1" src={url} loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms" onLoad={() => setLoaded(true)} style={{ width: '1280px', height: '800px', transform: 'scale(' + (width / 1280) + ')' }} />}
-      {visible && ((url && mode === 'screenshot') || (!url && image)) && src && <img src={src} alt="" loading="lazy" decoding="async" onLoad={(event) => { if (url && !fallback && event.currentTarget.naturalWidth < 600) { if (screenshotAttempt < 4) screenshotTimer.current = window.setTimeout(() => setScreenshotAttempt(attempt => attempt + 1), 4000); else if (image) setFallback(true); else { setMode('unavailable'); setLoaded(true); } } else setLoaded(true); }} onError={() => { if (!fallback && image && image !== src) { setFallback(true); setLoaded(false); } else { setMode('unavailable'); setLoaded(true); } }} />}
+    <span className="portfolio-visual">
+      {visible && url && frameStatus !== 'blocked' && <iframe title="" aria-hidden="true" tabIndex="-1" src={url} {...(priority ? { fetchPriority:'high' } : { loading:'lazy' })} sandbox="allow-scripts allow-same-origin allow-forms" onLoad={() => setShowProgress(false)} onError={() => { setFrameStatus('unknown'); setShowProgress(false); }} style={{ width:'1280px', height:'800px', transform:'scale(' + (width / 1280) + ')' }} />}
+      {showProgress && frameStatus !== 'blocked' && <span className="portfolio-progress" aria-hidden="true" />}
+      {frameStatus === 'blocked' && <span className="portfolio-unavailable">This website does not allow embedded previews. Open the card to visit.</span>}
+      {visible && !url && image && <img src={image} alt="" loading={priority ? 'eager' : 'lazy'} decoding="async" />}
       {visible && !url && !image && <span className="portfolio-no-image"><ClientLogo client={item} /></span>}
-      {mode === 'unavailable' && <span className="portfolio-unavailable">Preview unavailable</span>}
-      {!loaded && (url || image) && <span className="portfolio-shimmer" aria-hidden="true" />}
     </span>
     <span className="portfolio-card-copy"><span className="portfolio-tag">{item.industry || item.type || item.category || 'Client project'}</span><strong>{item.name}</strong><span className="portfolio-summary">{item.summary || item.description || item.copy}</span><span className="portfolio-card-open" aria-hidden="true">Open ↗</span></span>
   </a>;
 }
 
 function AutomotivePortfolio() {
-  return <div className="automotive-grid">{automotiveClients.map(item => <PortfolioCard key={item.name} item={item} />)}</div>;
+  return <div className="automotive-grid">{automotiveClients.map((item, index) => <PortfolioCard key={item.name} item={item} priority={index < 3} />)}</div>;
 }
 
 function PageContent({ path }) {
@@ -857,7 +871,7 @@ function PageContent({ path }) {
     if (page === 'services') return <a className="content-card" href={servicePaths[item.id]} key={item.id}><span className="card-number">{item.number} / 06</span><h2>{item.title}</h2><p>{item.summary}</p><span className="text-link">Explore service <ArrowIcon /></span></a>;
     if (page === 'industries' && !industry) return <a className="content-card" href={industryPath(item.id)} key={item.id}><span className="card-number">SECTOR</span><h2>{item.label}</h2><p>Explore the client work and digital growth needs represented in this sector.</p><span className="text-link">Explore industry <ArrowIcon /></span></a>;
     if (page === 'case-studies') return <a className="content-card" href={'/case-studies/' + item.id + '/'} key={item.id}><span className="card-number">{item.category}</span><h2>{item.label}</h2><p>{item.copy}</p><span className="text-link">Read client story <ArrowIcon /></span></a>;
-    return <PortfolioCard key={item.id || item.name} item={item} />;
+    return <PortfolioCard key={item.id || item.name} item={item} priority={items.indexOf(item) < 3} />;
   };
   const titleParts = head[1].split(' ');
   return <><InsideHero kicker={head[0]} title={titleParts.slice(0, Math.max(1, titleParts.length - 1)).join(' ')} accent={titleParts.length > 1 ? titleParts.slice(-1).join(' ') + (head[2] ? ' ' + head[2] : '') : head[2]} copy={head[3]} />{((page === 'case-studies' && !caseStudy) || page === 'portfolio') ? <CaseStudyExplorer /> : items.length > 0 && <section className="section"><ContentCards items={items} render={renderCard} />{page === 'industries' && !industry && <p className="container content-note">A published client case study is not currently listed for every sector.</p>}{industry && items.length === 0 && <div className="container empty-state"><h2>No published client case study for this category yet.</h2><p>We can still discuss the search and website needs of your business.</p><a className="button" href="/contact/">Talk with us <ArrowIcon /></a></div>}</section>}{body}</>;
