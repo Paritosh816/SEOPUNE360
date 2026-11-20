@@ -837,6 +837,16 @@ function PageContent({ path }) {
     body = <ClientProjectPage client={caseStudy} />;
   } else if (page === 'case-studies') items = caseStudies;
   else if (page === 'portfolio' || page === 'products') items = clients;
+  else if (industry && industry.id === 'Automobile') {
+    head = ['Automotive lead generation', 'More local enquiries', 'for your dealership.', 'We help car dealerships and service centres reach more local customers through SEO, dedicated websites, landing pages and strong paid promotions. Our focus is on phone calls and enquiries for your team.'];
+    body = <><section className="section"><div className="container"><p className="eyebrow">Our automotive experience</p><h2>Automotive businesses <span>we have worked with.</span></h2><p>Experience supporting dealerships and automotive service businesses across Pune, Thane and Indore.</p><div className="content-grid">{['Garve Hyundai', 'Garve Honda Service', 'Hallmark Honda', 'Garnet Škoda', 'Shaw Toyota', 'Shaw Tata', 'Shaw Tata, Indore'].map((name) => <article className="content-card" key={name}><span className="card-number">AUTOMOTIVE</span><h2>{name}</h2></article>)}</div></div></section>
+      <section className="section"><div className="container"><p className="eyebrow">How we help</p><h2>Helping customers <span>find and contact you.</span></h2><div className="content-grid">
+        <article className="content-card"><h2>SEO</h2><p>Help local customers find your dealership or service centre when they search online.</p></article>
+        <article className="content-card"><h2>Dedicated websites and landing pages</h2><p>Show customers what you offer and make it easy to call or request a callback.</p></article>
+        <article className="content-card"><h2>Strong paid promotions</h2><p>Reach more people looking for cars and automotive services in your area.</p></article>
+        <article className="content-card"><h2>Calls and enquiries</h2><p>Give your team more opportunities to speak with potential customers through phone calls and form enquiries.</p></article>
+      </div></div></section><section className="section"><div className="container detail-layout"><div><p className="eyebrow">Let’s talk</p><h2>Ready to grow <span>your dealership?</span></h2><p>Tell us about your business and the customers you want to reach.</p><a className="button" href="tel:+918483837969">Call +91 8483837969</a></div><div><p><a href="mailto:seopune360@gmail.com">seopune360@gmail.com</a></p><a className="text-link" href="/contact/">Contact our team <ArrowIcon /></a></div></div></section></>;
+  }
   else if (industry) {
     head = [industry.label + ' digital growth', 'Digital experiences', 'for ' + industry.label + '.', 'Explore the client work currently published for this sector, and the services that can support its next stage.'];
     items = clients.filter((client) => client.industries.includes(industry.label));
