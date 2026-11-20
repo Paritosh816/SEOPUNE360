@@ -29,8 +29,6 @@ const websiteProjects = [
 const clientProjects = [
   ...websiteProjects.map((project) => ({ ...project, industries: [project.industry], serviceTypes: ['Website Development'], serviceIds: ['development'] })),
   { id: 'kj-group', name: 'KJ Group', industries: ['Real Estate'], serviceTypes: ['Branding'], serviceIds: ['branding'], tone: 'case-realestate', description: 'Branding for KJ Group, with a visual identity presented across logo variations and branded applications.', scope: ['Branding', 'Visual identity', 'Brand applications'] },
-  { id: 'crevolution', name: 'Crevolution LLP', industries: ['Real Estate'], serviceTypes: ['Branding'], serviceIds: ['branding'], tone: 'case-architecture', description: 'Branding for Crevolution LLP, supporting a consistent identity for its architecture and interiors business.', scope: ['Branding'] },
-  { id: 'rivan-travels', name: 'Rivan Travels', industries: ['Hospitality'], serviceTypes: ['Branding', 'Logo'], serviceIds: ['branding'], tone: 'case-travel', description: 'Branding and logo work for Rivan Travels, giving its travel services a recognisable visual identity.', scope: ['Branding', 'Logo'] },
   { id: 'lusso-marco', name: 'Lusso Marco', industries: ['D2C / Lifestyle'], serviceTypes: ['Growth Marketing', 'Digital Campaigns'], serviceIds: ['growth', 'leads'], tone: 'case-fragrance', description: 'Growth marketing and digital campaigns for Lusso Marco, connecting brand discovery with product consideration and online sales activity.', scope: ['Growth Marketing', 'Digital Campaigns', 'Google Ads', 'Meta Ads'] },
   { id: 'shaw-toyota', name: 'Shaw Toyota', industries: ['Automobile'], serviceTypes: ['PPC Lead Generation'], serviceIds: ['leads'], tone: 'case-toyota', description: 'PPC lead generation for Shaw Toyota, focused on reaching prospective vehicle buyers and encouraging dealership enquiries.', scope: ['PPC Lead Generation'] },
   { id: 'shaw-tata', name: 'Shaw Tata', industries: ['Automobile'], serviceTypes: ['PPC Lead Generation'], serviceIds: ['leads'], tone: 'case-automobile', description: 'PPC lead generation for Shaw Tata, supporting vehicle discovery and enquiries from prospective customers.', scope: ['PPC Lead Generation'] },
@@ -39,7 +37,6 @@ const clientProjects = [
   { id: 'era-infratech', name: 'ERA Infratech', industries: ['Real Estate'], serviceTypes: ['Branding'], serviceIds: ['branding'], tone: 'case-realestate', description: 'Branding for ERA Infratech, with logo variations and a visual identity presentation.', scope: ['Branding', 'Visual identity'] },
   { id: 'fpt', name: 'FPT Powertrain Technologies', industries: ['Manufacturing Industry'], serviceTypes: ['Branding'], serviceIds: ['branding'], serviceNote: 'India Office', tone: 'case-construction', description: 'Branding work for the India office of FPT Powertrain Technologies, presented through the supplied logo artwork.', scope: ['Branding — India Office'] },
   { id: 'koriv-studio', name: 'Koriv Studio', industries: ['Real Estate', 'Infratech'], serviceTypes: ['Logo'], serviceIds: ['branding'], tone: 'case-architecture', description: 'Logo work for Koriv Studio, presented through its identity artwork and branded mockups.', scope: ['Logo'] },
-  { id: 'the-jolly-box', name: 'The Jolly Box', industries: ['Hospitality'], serviceTypes: ['Branding'], serviceIds: ['branding'], tone: 'case-hospitality', description: 'Branding for The Jolly Box, featuring its gift-inspired logo and visual identity.', scope: ['Branding'] },
 ];
 
 const industries = [
@@ -104,13 +101,6 @@ const brandingProjects = [
     description: 'A logo system and branded mockup artwork for Koriv Studio.',
     artworks: [
       { src: '/images/business-branding/ks-brand-identity.jpg', alt: 'Koriv Studio logo and visual identity presentation', label: 'Identity presentation' },
-    ],
-  },
-  {
-    id: 'the-jolly-box', name: 'The Jolly Box', category: 'Logo artwork',
-    description: 'The Jolly Box logo artwork, featuring its gift-inspired mark.',
-    artworks: [
-      { src: '/images/business-branding/the-jolly-box-logo.jpg', alt: 'The Jolly Box gift-inspired logo', label: 'Logo artwork' },
     ],
   },
 ].map((project) => {
