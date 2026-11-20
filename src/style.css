@@ -432,7 +432,6 @@ a.content-card:hover { transform:translateY(-4px); border-color:rgba(51,225,208,
 }
 .client-wordmark:hover { transform: translateY(-4px); color: #158d7b; }
 .logo-kj { font-family: Georgia,serif; font-size: 1.55rem; letter-spacing: -.07em; }
-.logo-crevolution { font-size: 1.03rem; letter-spacing: .03em; }
 .logo-rivan { color: #177e77; font-family: Georgia,serif; font-style: italic; }
 .logo-tata { letter-spacing: .08em; }
 .logo-toyota { color: #a33035; letter-spacing: .12em; }
