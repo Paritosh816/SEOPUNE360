@@ -730,6 +730,8 @@ function PortfolioCard({ item, imageOnly = false }) {
   const [mode, setMode] = useState('waiting');
   const [loaded, setLoaded] = useState(false);
   const [fallback, setFallback] = useState(false);
+  const [screenshotAttempt, setScreenshotAttempt] = useState(0);
+  const screenshotTimer = useRef(null);
   const url = imageOnly ? null : (item.url || item.website || item.landing);
   const gallery = imageOnly ? item.artworks || [] : projectGallery(item);
   const image = imageOnly ? gallery[0]?.src : (item.previewImage || gallery[0]?.src);
@@ -747,6 +749,7 @@ function PortfolioCard({ item, imageOnly = false }) {
     resize.observe(element);
     return () => { observer.disconnect(); resize.disconnect(); };
   }, []);
+  useEffect(() => () => window.clearTimeout(screenshotTimer.current), []);
   useEffect(() => {
     if (!visible || !url) return undefined;
     const controller = new AbortController();
@@ -764,13 +767,13 @@ function PortfolioCard({ item, imageOnly = false }) {
     const timer = window.setTimeout(() => { setMode('screenshot'); setLoaded(false); }, 10000);
     return () => window.clearTimeout(timer);
   }, [mode, loaded]);
-  const screenshot = url ? 'https://s0.wp.com/mshots/v1/' + encodeURIComponent(url) + '?w=1280' : image;
+  const screenshot = url ? 'https://s0.wp.com/mshots/v1/' + encodeURIComponent(url) + '?w=1280&attempt=' + screenshotAttempt : image;
   const src = fallback ? image : screenshot;
   return <a ref={ref} className="portfolio-card" href={destination || '#'} {...(external ? { target:'_blank', rel:'noopener noreferrer' } : {})} aria-label={item.name + (external ? ' — open in a new tab' : ' — view project')}>
     {url && <span className="portfolio-bar" aria-hidden="true"><span className="portfolio-dots"><i /><i /><i /></span><span className="portfolio-domain">{domain}</span><span className="portfolio-open">Open ↗</span></span>}
     <span className={'portfolio-visual' + (loaded ? ' is-loaded' : '')}>
       {visible && url && mode === 'frame' && <iframe title="" aria-hidden="true" tabIndex="-1" src={url} loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms" onLoad={() => setLoaded(true)} style={{ width: '1280px', height: '800px', transform: 'scale(' + (width / 1280) + ')' }} />}
-      {visible && ((url && mode === 'screenshot') || (!url && image)) && src && <img src={src} alt="" loading="lazy" decoding="async" onLoad={() => setLoaded(true)} onError={() => { if (!fallback && image && image !== src) { setFallback(true); setLoaded(false); } else { setMode('unavailable'); setLoaded(true); } }} />}
+      {visible && ((url && mode === 'screenshot') || (!url && image)) && src && <img src={src} alt="" loading="lazy" decoding="async" onLoad={(event) => { if (url && !fallback && event.currentTarget.naturalWidth < 600) { if (screenshotAttempt < 4) screenshotTimer.current = window.setTimeout(() => setScreenshotAttempt(attempt => attempt + 1), 4000); else if (image) setFallback(true); else { setMode('unavailable'); setLoaded(true); } } else setLoaded(true); }} onError={() => { if (!fallback && image && image !== src) { setFallback(true); setLoaded(false); } else { setMode('unavailable'); setLoaded(true); } }} />}
       {visible && !url && !image && <span className="portfolio-no-image"><ClientLogo client={item} /></span>}
       {mode === 'unavailable' && <span className="portfolio-unavailable">Preview unavailable</span>}
       {!loaded && (url || image) && <span className="portfolio-shimmer" aria-hidden="true" />}
