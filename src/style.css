@@ -1562,3 +1562,11 @@ a.content-card:hover { transform:translateY(-4px); border-color:rgba(51,225,208,
 .portfolio-progress { position:absolute; top:0; left:0; height:2px; width:40%; z-index:1; pointer-events:none; background:#78e5d5; animation:portfolio-progress 1.2s ease-out forwards; }
 @keyframes portfolio-progress { from { transform:translateX(-100%); } to { transform:translateX(250%); } }
 @media (prefers-reduced-motion:reduce) { .portfolio-progress { animation:none; width:100%; } }
+
+/* Official social profile */
+.footer-social { display:flex; gap:10px; margin-top:20px; }
+.footer-social a { display:inline-flex; width:42px; height:42px; align-items:center; justify-content:center; color:var(--muted-strong); border:1px solid var(--line); border-radius:9px; transition:color .2s ease,border-color .2s ease; }
+.footer-social a:hover,.footer-social a:focus-visible { color:var(--aqua); border-color:var(--aqua); }
+.agency-linkedin { display:flex; align-items:center; gap:9px; width:max-content; margin-top:20px; color:var(--muted-strong); font-size:.9rem; font-weight:600; }
+.agency-linkedin:hover,.agency-linkedin:focus-visible { color:var(--aqua); }
+.contact-direct-icon svg { flex:none; width:20px; height:20px; }
