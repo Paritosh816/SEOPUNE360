@@ -758,6 +758,74 @@ function ContactPage() {
   </section></div>;
 }
 
+const automotiveClients = [
+  { name: 'Garve Hyundai', industry: 'Automotive', summary: 'A dedicated online presence for Hyundai car buyers.', url: 'https://www.garvehyundaipune.com/wadgaon-sales', previewImage: null },
+  { name: 'Garve Honda Service', industry: 'Automotive service', summary: 'An online destination for Honda service enquiries.', url: 'https://www.garvehondapune.com/pimpricolony-pimpri-chinchwad', previewImage: null },
+  { name: 'Hallmark Honda', industry: 'Automotive', summary: 'A digital presence for customers exploring Honda cars.', url: 'https://www.hallmarkhondamumbai.com/', previewImage: null },
+  { name: 'Garnet Škoda', industry: 'Automotive', summary: 'A digital destination for customers exploring Škoda cars.', url: 'https://www.garnetskodamumbai.com/', previewImage: null },
+  { name: 'Shaw Toyota', industry: 'Automotive', summary: 'A dedicated online presence for Toyota car buyers.', url: 'https://www.shawtoyotapune.com/', previewImage: null },
+  { name: 'Shaw Tata', industry: 'Automotive', summary: 'A digital destination for Tata car buyers in Pune.', url: 'https://www.shawcars.in/', previewImage: null },
+  { name: 'Shaw Tata, Indore', industry: 'Automotive', summary: 'A digital destination for Tata car buyers in Indore.', url: 'https://shawtatacarsindore.com/', previewImage: null },
+];
+
+function PreviewThumbnail({ client, onPreview }) {
+  const [failed, setFailed] = useState(false);
+  const domain = new URL(client.url).hostname.replace(/^www\\./, '');
+  return <button className="portfolio-browser" type="button" onClick={onPreview} aria-label={'Live preview of ' + client.name}>
+    <span className="portfolio-browser-bar" aria-hidden="true"><span className="portfolio-browser-dots"><i /><i /><i /></span><span className="portfolio-browser-domain">{domain}</span></span>
+    <span className="portfolio-browser-screen">
+      {client.previewImage && !failed ? <img src={client.previewImage} alt="" loading="lazy" decoding="async" onError={() => setFailed(true)} /> : <span className="portfolio-placeholder" aria-hidden="true"><span className="portfolio-placeholder-mark">S<span>360</span></span><span>{client.name}</span><small>WEBSITE PREVIEW</small></span>}
+    </span>
+  </button>;
+}
+
+function AutomotivePortfolio() {
+  const [selected, setSelected] = useState(null);
+  const [viewport, setViewport] = useState('desktop');
+  const [loading, setLoading] = useState(true);
+  const [delayed, setDelayed] = useState(false);
+  const dialogRef = useRef(null);
+  const triggerRef = useRef(null);
+  const openPreview = (client, event) => {
+    triggerRef.current = event.currentTarget;
+    setViewport('desktop');
+    setLoading(true);
+    setDelayed(false);
+    setSelected(client);
+  };
+  const closePreview = () => setSelected(null);
+  useEffect(() => {
+    if (!selected) return undefined;
+    const dialog = dialogRef.current;
+    dialog.showModal();
+    const timer = window.setTimeout(() => setDelayed(true), 4000);
+    return () => {
+      window.clearTimeout(timer);
+      if (dialog.open) dialog.close();
+      triggerRef.current?.focus();
+    };
+  }, [selected]);
+
+  return <>
+    <div className="automotive-grid">{automotiveClients.map((client) => <article className="automotive-card" key={client.name}>
+      <PreviewThumbnail client={client} onPreview={(event) => openPreview(client, event)} />
+      <div className="automotive-card-body"><span className="automotive-pill">{client.industry}</span><h3>{client.name}</h3><p>{client.summary}</p>
+        <div className="automotive-actions"><button className="automotive-preview-button" type="button" onClick={(event) => openPreview(client, event)}>Live Preview</button><a className="automotive-visit-button" href={client.url} target="_blank" rel="noopener noreferrer" aria-label={'Visit ' + client.name + ' website (opens in a new tab)'}>Visit Site <span aria-hidden="true">↗</span></a></div>
+      </div>
+    </article>)}</div>
+    {selected && <dialog ref={dialogRef} className="portfolio-dialog" aria-labelledby="portfolio-dialog-title" onCancel={(event) => { event.preventDefault(); closePreview(); }} onClick={(event) => { if (event.target === event.currentTarget) closePreview(); }}>
+      <div className="portfolio-modal-header"><div className="portfolio-modal-title"><span className="automotive-pill">LIVE PREVIEW</span><h2 id="portfolio-dialog-title">{selected.name}</h2></div>
+        <div className="portfolio-modal-controls"><div className="portfolio-viewport" role="group" aria-label="Preview size"><button type="button" aria-pressed={viewport === 'desktop'} onClick={() => setViewport('desktop')}>Desktop</button><button type="button" aria-pressed={viewport === 'mobile'} onClick={() => setViewport('mobile')}>Mobile</button></div><a href={selected.url} target="_blank" rel="noopener noreferrer">Open in New Tab ↗</a><button className="portfolio-close" type="button" onClick={closePreview} aria-label="Close preview">×</button></div>
+      </div>
+      <div className="portfolio-modal-note" role="status">{delayed && loading ? 'This site may restrict embedded previews or be taking longer to load. Open it directly below.' : 'Some sites restrict embedded previews. If the preview is blank, open the site directly.'} <a href={selected.url} target="_blank" rel="noopener noreferrer">Open site ↗</a></div>
+      <div className="portfolio-frame-stage"><div className={'portfolio-frame-shell ' + (viewport === 'mobile' ? 'is-mobile' : '')}>
+        {loading && !delayed && <div className="portfolio-loading" role="status"><span className="portfolio-spinner" />Loading preview…</div>}
+        <iframe title={selected.name + ' website preview'} src={selected.url} loading="lazy" sandbox="allow-scripts allow-same-origin allow-forms allow-popups" onLoad={() => setLoading(false)} onError={() => { setLoading(true); setDelayed(true); }} />
+      </div></div>
+    </dialog>}
+  </>;
+}
+
 function PageContent({ path }) {
   const parts = path.split('/').filter(Boolean);
   const page = parts[0] || '';
@@ -780,15 +848,7 @@ function PageContent({ path }) {
   else if (industry && industry.id === 'Automobile') {
     head = ['Automotive lead generation', 'More local enquiries', 'for your dealership.', 'We help car dealerships and service centres attract local customers through SEO, dedicated websites, landing pages and strong paid promotions.'];
     body = <><section className="section"><div className="container detail-layout"><div><p className="eyebrow">More conversations with customers</p><h2>Turn local searches into <span>calls and enquiries.</span></h2><p>From being found online to making it easy for customers to contact your team, we help put your dealership in front of the right people.</p><a className="button" href="/contact/?source=automotive#enquiry">Get in touch</a></div><div><p>Looking to grow sales enquiries or service bookings? Let’s discuss your dealership and the customers you want to reach.</p><a className="text-link" href="tel:+918483837969">Call +91 8483837969 <ArrowIcon /></a></div></div></section>
-      <section className="section"><div className="container"><p className="eyebrow">Our automotive experience</p><h2>Automotive businesses <span>we have worked with.</span></h2><p>Explore the automotive websites in our portfolio, from dealerships to service centres across Pune, Thane and Indore.</p><div className="content-card-grid">{[
-        { name: 'Garve Hyundai', url: 'https://www.garvehyundaipune.com/wadgaon-sales' },
-        { name: 'Garve Honda Service', url: 'https://www.garvehondapune.com/pimpricolony-pimpri-chinchwad' },
-        { name: 'Hallmark Honda', url: 'https://www.hallmarkhondamumbai.com/' },
-        { name: 'Garnet Škoda', url: 'https://www.garnetskodamumbai.com/' },
-        { name: 'Shaw Toyota', url: 'https://www.shawtoyotapune.com/' },
-        { name: 'Shaw Tata', url: 'https://www.shawcars.in/' },
-        { name: 'Shaw Tata, Indore', url: 'https://shawtatacarsindore.com/' },
-      ].map(({ name, url }) => <article className="content-card" key={name}><span className="card-number">AUTOMOTIVE</span><h2>{name}</h2><a className="text-link" href={url} target="_blank" rel="noopener noreferrer" aria-label={'Visit ' + name + ' website (opens in a new tab)'}>Visit website <ArrowIcon /></a></article>)}</div></div></section>
+      <section className="section"><div className="container"><p className="eyebrow">Our automotive experience</p><h2>Automotive businesses <span>we have worked with.</span></h2><p>Explore the automotive websites in our portfolio, from dealerships to service centres across Pune, Thane and Indore.</p><AutomotivePortfolio /></div></section>
       <section className="section"><div className="container"><p className="eyebrow">How we help</p><h2>What we can offer <span>your dealership.</span></h2><div className="content-card-grid">
         <article className="content-card"><h2>SEO</h2><p>Help local customers find your dealership when they search for cars, showrooms and service centres online.</p></article>
         <article className="content-card"><h2>Google Business Profile</h2><p>Manage and improve your profile so customers can find your business on Google Search and Maps and contact your team.</p></article>
