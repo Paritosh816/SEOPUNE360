@@ -32,11 +32,6 @@ export const projectDetails = {
     overview: 'The KJ Group branding portfolio brings together the identity for Kishor Jamdar’s real-estate business. An architectural monogram anchors the mark, while deep blue and orange give the identity a distinctive contrast across its different applications.',
     focus: [ ['A distinctive monogram', 'The building-inspired symbol connects the initials with the real-estate category.'], ['Consistent colour treatments', 'Light, orange and dark-blue variations show how the identity can remain recognisable on different backgrounds.'], ['Brand applications', 'The supplied project artwork shows the identity across stationery and presentation mockups.'] ],
   },
-  crevolution: {
-    headline: 'A consistent identity for a property-focused business.',
-    overview: 'The Crevolution LLP engagement is classified as branding within real estate. The project story focuses on how a clear, consistent business identity supports recognition across the places where prospective clients encounter the company.',
-    focus: [ ['Brand recognition', 'A recognisable identity helps connect individual communications back to the same business.'], ['A coherent presentation', 'Consistency in typography, colour and visual hierarchy makes business information easier to follow.'], ['Service clarity', 'The portfolio scope is branding, with an emphasis on presenting the business clearly to its intended audience.'] ],
-  },
   'lusso-marco': {
     logo: logos + 'lusso-marco.svg', website: 'https://lussomarco.com/',
     landing: 'https://lussomarco.com/products/noxious', campaign: 'commerce',
@@ -92,11 +87,5 @@ export const projectDetails = {
     headline: 'A detailed mark with a warm, crafted character.',
     overview: 'Koriv Studio’s logo project pairs an intricate circular emblem with a restrained wordmark. Gold and brown give the identity a warm character, while the supplied presentation explores how the mark appears across printed and environmental mockups.',
     focus: [ ['Symbol and wordmark', 'The detailed emblem contrasts with simple lettering to create a balanced lockup.'], ['A restrained palette', 'Warm metallic and earth-toned colours carry through the identity presentation.'], ['Applications in context', 'The project board shows the logo on stationery, mugs and a reception-wall mockup.'] ],
-  },
-  'the-jolly-box': {
-    logo: brand + 'the-jolly-box-logo.jpg',
-    headline: 'An identity built around the joy of giving.',
-    overview: 'The Jolly Box branding artwork uses a gift-inspired symbol and a bold red wordmark. The box and ribbon form one recognisable mark, connecting the brand name with a visual cue that is simple to understand at a glance.',
-    focus: [ ['An immediately readable idea', 'A gift-box motif gives the identity a direct connection to the brand name.'], ['Bold colour and shape', 'The red mark and substantial lettering create a clear visual presence on white.'], ['A coherent lockup', 'The symbol and name work together as a compact identity for consistent presentation.'] ],
   },
 };
