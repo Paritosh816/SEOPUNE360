@@ -457,10 +457,7 @@ function CaseStudies({ activeCase, setActiveCase }) {
           <div className="case-tabs" role="tablist" aria-label="Client case studies">
             {caseStudies.map((item) => <button className={'case-tab' + (activeCase === item.id ? ' active' : '')} key={item.id} role="tab" id={'case-tab-' + item.id} aria-selected={activeCase === item.id} aria-controls="selected-case" onClick={() => setActiveCase(item.id)}><span>{item.label}</span><small>{item.category}</small><ArrowIcon /></button>)}
           </div>
-          <article className={'case-detail ' + current.tone} id="selected-case" role="tabpanel" aria-labelledby={'case-tab-' + current.id} key={current.id}>
-            <ProjectCover client={current} />
-            <div className="case-copy"><p className="eyebrow">{current.category}</p><h3>{current.label}</h3><p>{current.copy}</p><p className="eyebrow case-insight-label">{current.metrics.length ? 'Reported outcomes' : current.service || 'Growth marketing scope'}</p><ul className="case-metrics">{(current.metrics.length ? current.metrics : current.scope).map((item) => <li key={item}><span>{current.metrics.length ? '✦' : '↗'}</span>{item}</li>)}</ul><a className="text-link" href={'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('Ask about the ' + current.label + ' project')}>Ask about this project <ArrowIcon /></a></div>
-          </article>
+          <div id="selected-case" role="tabpanel" aria-labelledby={'case-tab-' + current.id} key={current.id}><PortfolioCard item={current} /></div>
         </div>
       </div>
     </section>
