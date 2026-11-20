@@ -390,32 +390,11 @@ function ServiceIllustration({ type }) {
 }
 
 function BrandingPortfolio() {
-  return (
-    <section className="section branding-portfolio" aria-labelledby="branding-work-title">
-      <div className="container">
-        <div className="branding-portfolio-heading">
-          <p className="eyebrow">Selected brand work</p>
-          <h2 id="branding-work-title">Identity work, made <span>for real businesses.</span></h2>
-          <p>A selection of logo and brand identity artwork supplied for SEOPune360 client projects.</p>
-        </div>
-        <div className="branding-work-grid">
-          {brandingProjects.map((project) => <PortfolioCard key={project.id} item={project} imageOnly />)}
-              </div>
-              <div className="branding-work-copy">
-                <p className="eyebrow">{project.industry} · {project.category}</p>
-                <h3>{project.name}</h3>
-                <p>{project.description}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-        <div className="branding-work-cta">
-          <p>Building a brand or refreshing the one you have?</p>
-          <a className="button" href="/contact/">Talk about your brand <ArrowIcon /></a>
-        </div>
-      </div>
-    </section>
-  );
+  return <section className="section branding-portfolio" aria-labelledby="branding-work-title"><div className="container">
+    <div className="branding-portfolio-heading"><p className="eyebrow">Selected brand work</p><h2 id="branding-work-title">Identity work, made <span>for real businesses.</span></h2><p>A selection of logo and brand identity artwork supplied for SEOPune360 client projects.</p></div>
+    <div className="branding-work-grid">{brandingProjects.map(project => <PortfolioCard key={project.id} item={project} imageOnly />)}</div>
+    <div className="branding-work-cta"><p>Building a brand or refreshing the one you have?</p><a className="button" href="/contact/">Talk about your brand <ArrowIcon /></a></div>
+  </div></section>;
 }
 
 function Services({ activeService, setActiveService }) {
