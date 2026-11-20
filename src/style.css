@@ -1581,3 +1581,26 @@ a.content-card:hover { transform:translateY(-4px); border-color:rgba(51,225,208,
 @media (max-width:900px) { .automotive-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 @media (max-width:600px) { .automotive-grid { grid-template-columns:1fr; } .portfolio-dialog { width:100vw; height:100dvh; border:0; border-radius:0; } .portfolio-modal-header { position:sticky; top:0; z-index:2; align-items:flex-start; padding:12px; } .portfolio-modal-title h2 { font-size:1rem; } .portfolio-modal-controls { gap:6px; } .portfolio-modal-controls a { font-size:.75rem; } .portfolio-modal-note { padding:8px 12px; } .portfolio-frame-stage { height:calc(100% - 150px); } }
 @media (prefers-reduced-motion:reduce) { .automotive-card,.portfolio-browser-screen img,.portfolio-frame-shell { transition:none; } .portfolio-spinner { animation-duration:2s; } }
+
+
+/* Shared portfolio cards */
+.portfolio-card { display:flex; min-width:0; height:100%; flex-direction:column; overflow:hidden; border:1px solid rgba(185,222,216,.18); border-radius:15px; background:#102430; color:#effaf7; text-decoration:none; box-shadow:0 14px 32px rgba(0,0,0,.13); transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease; }
+.portfolio-card:hover,.portfolio-card:focus-visible { transform:translateY(-4px); border-color:rgba(93,224,207,.65); box-shadow:0 20px 40px rgba(0,0,0,.25); }
+.portfolio-card:focus-visible { outline:3px solid #82f8e6; outline-offset:3px; }
+.portfolio-bar { display:flex; align-items:center; gap:10px; height:34px; padding:0 12px; background:#203b47; flex:none; }
+.portfolio-dots { display:flex; flex:none; gap:4px; } .portfolio-dots i { width:7px; height:7px; border-radius:50%; background:#80bb97; } .portfolio-dots i:first-child { background:#e78379; } .portfolio-dots i:nth-child(2) { background:#dfbd73; }
+.portfolio-domain { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#c3d3d2; font-size:.75rem; }
+.portfolio-open { margin-left:auto; white-space:nowrap; color:#9be9dc; font-size:.75rem; }
+.portfolio-visual { display:block; position:relative; aspect-ratio:16/10; width:100%; overflow:hidden; background:#173440; }
+.portfolio-visual iframe { position:absolute; top:0; left:0; border:0; transform-origin:top left; pointer-events:none; opacity:0; transition:opacity .3s ease; }
+.portfolio-visual img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:top; opacity:0; transition:opacity .3s ease; }
+.portfolio-visual.is-loaded img,.portfolio-visual.is-loaded iframe { opacity:1; }
+.portfolio-shimmer { position:absolute; inset:0; background:linear-gradient(100deg,#173440 25%,#294d56 50%,#173440 75%); background-size:200% 100%; animation:portfolio-shimmer 1.6s linear infinite; pointer-events:none; }
+@keyframes portfolio-shimmer { to { background-position:-200% 0; } }
+.portfolio-unavailable,.portfolio-no-image { position:absolute; inset:0; display:flex; justify-content:center; align-items:center; padding:18px; text-align:center; color:#c1d8d3; }
+.portfolio-card-copy { display:flex; flex:1; min-width:0; flex-direction:column; align-items:flex-start; gap:10px; padding:20px; }
+.portfolio-tag { display:inline-block; padding:4px 9px; border:1px solid rgba(103,226,208,.3); border-radius:999px; color:#9be9dc; font-size:.72rem; font-weight:700; }
+.portfolio-card-copy strong { font-size:1.25rem; line-height:1.25; color:#f3faf9; }
+.portfolio-summary { color:#b9cecf; font-size:.9rem; line-height:1.45; }
+.portfolio-card-open { margin-top:auto; padding-top:6px; color:#8be7da; font-size:.8rem; font-weight:700; }
+@media (prefers-reduced-motion:reduce) { .portfolio-card,.portfolio-visual img,.portfolio-visual iframe { transition:none; } .portfolio-shimmer { animation:none; } }
