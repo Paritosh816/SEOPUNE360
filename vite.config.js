@@ -15,7 +15,7 @@ const routes = [
   ['/case-studies/ananya-rishtey/', 'Ananya Rishtey Website Development', 'Explore a matrimony website with visual storytelling, animated product previews, and vendor registration pages.'],
   ['/case-studies/intellidant/', 'IntelliDant Website Development', 'Explore a dental software website with product presentation, plan comparisons, and clinic registration pages.'],
   ['/case-studies/adi-dev/', 'A.D.I DEV Website Development', 'Explore an Australian B2B construction support website with service, enquiry, and careers journeys.'],
-  ...['kj-group', 'crevolution', 'rivan-travels', 'shaw-tata', 'shaw-toyota', 'krishna-clinic', 'hotel-shivtara', 'era-infratech', 'fpt', 'koriv-studio', 'the-jolly-box'].map((id) => [`/case-studies/${id}/`, `${id.replaceAll('-', ' ')} client story`, 'Explore the SEOPune360 client project and its service scope.']),
+  ...['kj-group', 'shaw-tata', 'shaw-toyota', 'krishna-clinic', 'hotel-shivtara', 'era-infratech', 'fpt', 'koriv-studio'].map((id) => [`/case-studies/${id}/`, `${id.replaceAll('-', ' ')} client story`, 'Explore the SEOPune360 client project and its service scope.']),
   ['/case-studies/lusso-marco/', 'Lusso Marco Growth Marketing Case Study', 'Explore growth marketing and digital campaign work for Lusso Marco.'],
   ['/portfolio/', 'Client Portfolio', 'Browse businesses represented in the current SEOPune360 client portfolio.'],
   ['/products/', 'Products & Platforms', 'Explore client products and platform journeys represented in SEOPune360 published work.'],
