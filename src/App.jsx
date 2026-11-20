@@ -2,6 +2,8 @@ import { useEffect, useState, useRef } from 'react';
 import { projectDetails } from './projectDetails';
 import ServiceDeliverables, { serviceIntro } from './ServiceDeliverables';
 const CONTACT_EMAIL = 'seopune360@gmail.com';
+const LINKEDIN_URL = 'https://www.linkedin.com/company/seopune-360/';
+function LinkedInIcon() { return <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false" fill="currentColor"><path d="M20.45 2H3.55A1.55 1.55 0 0 0 2 3.55v16.9C2 21.3 2.7 22 3.55 22h16.9c.85 0 1.55-.7 1.55-1.55V3.55C22 2.7 21.3 2 20.45 2ZM8.08 18.75H5.1V9.2h2.98v9.55ZM6.59 7.89a1.73 1.73 0 1 1 0-3.46 1.73 1.73 0 0 1 0 3.46Zm12.16 10.86h-2.98V14.1c0-1.11-.02-2.55-1.56-2.55-1.56 0-1.8 1.22-1.8 2.47v4.73H9.43V9.2h2.86v1.3h.04a3.14 3.14 0 0 1 2.83-1.55c3.03 0 3.59 2 3.59 4.59v5.21Z" /></svg>; }
 const SHOWREEL_PATH = '/media/seopune360-showreel-short.mp4';
 
 const websiteProjects = [
@@ -455,7 +457,7 @@ function WhyUs() {
   ];
   return (
     <section className="why-section section" id="about">
-      <div className="container why-layout"><div className="why-copy"><p className="eyebrow">Why SEOPune360</p><h2>More than a website.<br /><span>A partner in your growth.</span></h2><p>Good digital work starts with understanding your business. We bring search, web, and growth thinking together to help people find you, trust you, and take the next step.</p><a className="button button-outline" href={'mailto:' + CONTACT_EMAIL + '?subject=Let%E2%80%99s%20talk%20about%20growth'}>Let’s talk about your goals <ArrowIcon /></a></div><div className="why-points">{points.map(([title, body], index) => <article className="why-point" key={title}><span>0{index + 1}</span><div><h3>{title}</h3><p>{body}</p></div><i><ArrowIcon /></i></article>)}</div></div>
+      <div className="container why-layout"><div className="why-copy"><p className="eyebrow">Why SEOPune360</p><h2>More than a website.<br /><span>A partner in your growth.</span></h2><p>Good digital work starts with understanding your business. We bring search, web, and growth thinking together to help people find you, trust you, and take the next step.</p><a className="button button-outline" href={'mailto:' + CONTACT_EMAIL + '?subject=Let%E2%80%99s%20talk%20about%20growth'}>Let’s talk about your goals <ArrowIcon /></a><a className="agency-linkedin" href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer"><LinkedInIcon /> Connect on LinkedIn</a></div><div className="why-points">{points.map(([title, body], index) => <article className="why-point" key={title}><span>0{index + 1}</span><div><h3>{title}</h3><p>{body}</p></div><i><ArrowIcon /></i></article>)}</div></div>
     </section>
   );
 }
@@ -477,7 +479,7 @@ function Footer({ onCookieSettings, onLegal }) {
   return (
     <footer className="site-footer" id="footer">
       <div className="footer-cta"><div className="container footer-cta-inner"><div><p className="eyebrow">Your next growth chapter starts here</p><h2>Let’s make your online presence work harder.</h2></div><a className="button footer-button" href="/contact/">Book a Call <ArrowIcon /></a></div></div>
-      <div className="container footer-main"><div className="footer-brand-col"><Brand footer /><p>SEO, websites, and growth support for businesses ready to move forward.</p><a className="footer-email" href={'mailto:' + CONTACT_EMAIL}>{CONTACT_EMAIL} <ArrowIcon /></a></div>
+      <div className="container footer-main"><div className="footer-brand-col"><Brand footer /><p>SEO, websites, and growth support for businesses ready to move forward.</p><a className="footer-email" href={'mailto:' + CONTACT_EMAIL}>{CONTACT_EMAIL} <ArrowIcon /></a><div className="footer-social"><a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" aria-label="SEOPUNE360 on LinkedIn"><LinkedInIcon /></a></div></div>
         <div className="footer-column"><h3>Services</h3>{services.map((service) => <a href={servicePaths[service.id]} key={service.id}>{service.title}</a>)}</div>
         <div className="footer-column"><h3>Explore</h3><a href="/#showreel-story">Client Showreel</a><a href="/case-studies/">Case Studies</a><a href="/growth-plan/">Build my growth plan</a><a href="/portfolio/">Client Portfolio</a><a href="/products/">Products &amp; Platforms</a><a href="/industries/">Industries</a><a href="/process/">How We Work</a><a href="/about/">About Us</a><a href="/sitemap/">Sitemap</a></div>
         <div className="footer-column footer-contact"><h3>Get in touch</h3><p>Tell us what you’re working toward. We’ll help you find the next step.</p><a className="footer-email" href={'mailto:' + CONTACT_EMAIL}>{CONTACT_EMAIL} <ArrowIcon /></a><a href="tel:+918483837969">Call +91 84838 37969</a><a href="https://wa.me/918483837969" target="_blank" rel="noopener noreferrer">WhatsApp enquiry ↗</a><a className="footer-audit-link" href="/contact/">Request a website audit <ArrowIcon /></a></div>
@@ -671,6 +673,7 @@ function ContactPage() {
           <a href="tel:+918483837969"><span className="contact-direct-icon">↗</span><span><small>Call us</small><b>+91 84838 37969</b></span><ArrowIcon /></a>
           <a href="https://wa.me/918483837969" target="_blank" rel="noopener noreferrer"><span className="contact-direct-icon">↗</span><span><small>Message us</small><b>WhatsApp</b></span><ArrowIcon /></a>
           <a href={'mailto:' + CONTACT_EMAIL}><span className="contact-direct-icon">@</span><span><small>Email us</small><b>{CONTACT_EMAIL}</b></span><ArrowIcon /></a>
+          <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer"><span className="contact-direct-icon"><LinkedInIcon /></span><span><small>Follow our work</small><b>Connect on LinkedIn</b></span><ArrowIcon /></a>
         </div>
       </div>
       <div className="contact-form-card" id="enquiry">
