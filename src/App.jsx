@@ -681,12 +681,11 @@ function ContactPage() {
   const [sent, setSent] = useState(false);
   const [formError, setFormError] = useState('');
   const [formStartedAt] = useState(() => Date.now());
+  const [automotive] = useState(() => new URLSearchParams(window.location.search).get('source') === 'automotive');
   const [planContext] = useState(() => {
     if (new URLSearchParams(window.location.search).get('growth-plan') !== '1') return null;
-    try {
-      const context = JSON.parse(window.sessionStorage.getItem('seopune360-growth-plan') || 'null');
-      return context;
-    } catch { return null; }
+    try { return JSON.parse(window.sessionStorage.getItem('seopune360-growth-plan') || 'null'); }
+    catch { return null; }
   });
 
   async function handleContactSubmit(event) {
@@ -694,8 +693,8 @@ function ContactPage() {
     const form = event.currentTarget;
     const payload = Object.fromEntries(new FormData(form).entries());
     if (payload._honey) return;
-    payload.message = (payload.message || '') + '\n\nFollow-up preference: ' + (payload.optional_call === 'Yes' ? 'Email reply with an optional call.' : 'Email reply; no call requested.');
-    delete payload.optional_call;
+    payload.message = payload.message.trim() || (automotive ? 'Interested in automotive lead generation.' : 'Please contact me about my enquiry.');
+    if (automotive) payload.message = 'Automotive portfolio enquiry. ' + payload.message;
     setSubmitting(true);
     setFormError('');
     try {
@@ -705,9 +704,7 @@ function ContactPage() {
         body: JSON.stringify(payload),
       });
       const result = await response.json();
-      if (!response.ok || result.success !== true) {
-        throw new Error(result.error || 'We could not send your enquiry right now.');
-      }
+      if (!response.ok || result.success !== true) throw new Error(result.error || 'We could not send your enquiry right now.');
       setSent(true);
       form.reset();
     } catch (error) {
@@ -719,103 +716,46 @@ function ContactPage() {
     }
   }
 
-  const tickerClients = [...clients, ...clients];
-  const steps = [
-    ['01', 'Share the context', 'Tell us about your business, website, and what you want to improve.'],
-    ['02', 'Set the direction', 'We’ll clarify your goals and the service areas that may fit.'],
-    ['03', 'Review opportunities', 'We’ll discuss the first priorities and what a useful plan could include.'],
-    ['04', 'Choose the next step', 'You’ll leave with a clear follow-up and a route forward.'],
-  ];
-  const faqs = [
-    ['What should I include in my enquiry?', 'A short note about your business, website, and the result you want is enough to get started.'],
-    ['Which service should I choose?', 'Choose the closest fit, or select “Not sure yet.” We can help identify the right starting point together.'],
-    ['What happens after I submit?', 'Your enquiry is sent to the SEOPune360 team. We’ll review the details and reply by email.'],
-  ];
-
-  return <div className="contact-page">
-    <section className="contact-hero">
-      <div className="container contact-hero-grid">
-        <div className="contact-intro">
-          <p className="eyebrow">Let’s talk growth</p>
-          <h1>Let’s build a <span>stronger path to growth.</span></h1>
-          <p className="contact-lead">Bring us the question, challenge, or next big idea on your mind. We’ll help you find a practical place to start.</p>
-          <div className="contact-promise"><span className="contact-promise-mark">↗</span><div><b>A useful first conversation</b><small>Clear questions, thoughtful recommendations, and next steps shaped around your business.</small></div></div>
-          <div className="contact-direct"><a href="tel:+918483837969"><span className="contact-direct-icon">↗</span><span><small>Call our team</small><b>+91 84838 37969</b></span><ArrowIcon /></a><a href="https://wa.me/918483837969" target="_blank" rel="noopener noreferrer"><span className="contact-direct-icon">↗</span><span><small>Start a conversation</small><b>WhatsApp enquiry</b></span><ArrowIcon /></a>
-            <a href={'mailto:' + CONTACT_EMAIL}><span className="contact-direct-icon">@</span><span><small>Email our team</small><b>{CONTACT_EMAIL}</b></span><ArrowIcon /></a>
-            <div><span className="contact-direct-icon">⌖</span><span><small>Based in</small><b>Pune, Maharashtra, India</b></span></div>
+  return <div className="contact-page"><section className="contact-hero">
+    <div className="container contact-hero-grid">
+      <div className="contact-intro">
+        <p className="eyebrow">Let’s talk</p>
+        <h1>Ready for <span>more enquiries?</span></h1>
+        <p className="contact-lead">Tell us a little about your business and we’ll help you find the right next step.</p>
+        <div className="contact-direct">
+          <a href="tel:+918483837969"><span className="contact-direct-icon">↗</span><span><small>Call us</small><b>+91 84838 37969</b></span><ArrowIcon /></a>
+          <a href="https://wa.me/918483837969" target="_blank" rel="noopener noreferrer"><span className="contact-direct-icon">↗</span><span><small>Message us</small><b>WhatsApp</b></span><ArrowIcon /></a>
+          <a href={'mailto:' + CONTACT_EMAIL}><span className="contact-direct-icon">@</span><span><small>Email us</small><b>{CONTACT_EMAIL}</b></span><ArrowIcon /></a>
+        </div>
+      </div>
+      <div className="contact-form-card" id="enquiry">
+        <div className="contact-form-heading"><p className="eyebrow">Send an enquiry</p><h2>Let’s get started.</h2><p>Share your details and we’ll get back to you.</p></div>
+        <form className="contact-form" onSubmit={handleContactSubmit}>
+          <input type="text" name="_honey" className="contact-honey" tabIndex="-1" autoComplete="off" aria-hidden="true" />
+          <input type="hidden" name="_started_at" value={formStartedAt} />
+          <input type="hidden" name="_subject" value="New SEOPune360 website enquiry" />
+          {planContext?.website && <input type="hidden" name="website" value={planContext.website} />}
+          <div className="contact-form-grid">
+            <label>Full name<input name="name" type="text" placeholder="Your name" autoComplete="name" required /></label>
+            <label>Phone number <span className="contact-optional">Optional</span><input name="phone" type="tel" placeholder="+91" autoComplete="tel" /></label>
+            <label className="contact-form-wide">Email address<input name="email" type="email" placeholder="you@company.com" autoComplete="email" required /></label>
+            <label className="contact-form-wide">What can we help with?
+              <select name="service" defaultValue={planContext?.service || (automotive ? 'Lead Generation' : 'Not sure yet')} required>
+                <option value="Not sure yet">Not sure yet</option>
+                {services.map((service) => <option key={service.id} value={service.title}>{service.title}</option>)}
+              </select>
+            </label>
+            <label className="contact-form-wide">Anything else? <span className="contact-optional">Optional</span><textarea name="message" rows="3" placeholder="Tell us about your business or goals" defaultValue={planContext?.message || ''} /></label>
           </div>
-        </div>
-
-        <div className="contact-form-card" id="enquiry">
-          <div className="contact-form-heading"><p className="eyebrow">Start a conversation</p><h2>Tell us about your project.</h2><p>Share a few details and we’ll get back to you by email.</p></div>
-          <form className="contact-form" onSubmit={handleContactSubmit}>
-            <input type="text" name="_honey" className="contact-honey" tabIndex="-1" autoComplete="off" aria-hidden="true" />
-            <input type="hidden" name="_started_at" value={formStartedAt} />
-            <input type="hidden" name="_subject" value="New SEOPune360 website enquiry" />
-            <input type="hidden" name="_captcha" value="false" />
-            <div className="contact-form-grid">
-              <label>Full name<input name="name" type="text" placeholder="Your name" autoComplete="name" required /></label>
-              <label>Business name<input name="company" type="text" placeholder="Your business" autoComplete="organization" /></label>
-              <label>Email address<input name="email" type="email" placeholder="you@company.com" autoComplete="email" required /></label>
-              <label>Phone number <span className="contact-optional">Optional</span><input name="phone" type="tel" placeholder="+91" autoComplete="tel" /></label>
-              <label className="contact-form-wide">Website URL <span className="contact-optional">Optional</span><input name="website" type="url" placeholder="https://yourwebsite.com" defaultValue={planContext?.website || ''} /></label>
-              <label className="contact-form-wide">What can we help with?
-                <select name="service" defaultValue={planContext?.service || ''} required>
-                  <option value="" disabled>Select a service</option>
-                  {services.map((service) => <option key={service.id} value={service.title}>{service.title}</option>)}
-                  <option value="Not sure yet">Not sure yet</option>
-                </select>
-              </label>
-              <label className="contact-form-wide">A little about your goals<textarea name="message" rows="4" placeholder="What would you like to improve or achieve?" defaultValue={planContext?.message || ''} required /></label>
-              <label className="contact-call-option contact-form-wide"><input type="checkbox" name="optional_call" value="Yes" /><span>I’m open to an optional follow-up call. Email reply is fine either way.</span></label>
-            </div>
-            <button className="button contact-submit" type="submit" disabled={submitting}>{submitting ? 'Sending…' : 'Send my enquiry'} <ArrowIcon /></button>
-            <p className="contact-form-privacy">By submitting, you agree that SEOPune360 may contact you about this enquiry. Your details are sent to our team by email.</p>
-            {sent && <p className="contact-form-status" role="status">Thanks for reaching out. Your message has been sent to the SEOPune360 team.</p>}
-            {formError && <p className="contact-form-error" role="alert">{formError}</p>}
-          </form>
-        </div>
+          <button className="button contact-submit" type="submit" disabled={submitting}>{submitting ? 'Sending…' : 'Send my enquiry'} <ArrowIcon /></button>
+          <p className="contact-form-privacy">By submitting, you agree that SEOPune360 may contact you about your enquiry.</p>
+          {sent && <p className="contact-form-status" role="status">Thank you. Your enquiry has been sent to the SEOPune360 team.</p>}
+          {formError && <p className="contact-form-error" role="alert">{formError}</p>}
+        </form>
       </div>
-      <div className="contact-hero-glow" aria-hidden="true" />
-    </section>
-
-    <section className="contact-clients">
-      <div className="container"><p className="eyebrow">Client work across industries</p><h2>Built around the way <span>businesses grow.</span></h2></div>
-      <div className="contact-marquee" aria-label="SEOPune360 portfolio clients">
-        <div className="contact-marquee-track">
-          {tickerClients.map((client, index) => <span className="contact-client-name" key={client.name + '-' + index}>{client.name}<i aria-hidden="true">✳</i></span>)}
-        </div>
-      </div>
-      <div className="container contact-work-note"><p>Client names shown are from the published SEOPune360 portfolio.</p><a className="text-link" href="/case-studies/">Explore client stories <ArrowIcon /></a></div>
-    </section>
-
-    <section className="section contact-results">
-      <div className="container">
-        <div className="contact-section-heading"><p className="eyebrow">Published client work</p><h2>Real businesses. <span>Clear project scope.</span></h2><p>Explore the work described in our client portfolio, from brand identity to dealership enquiry campaigns.</p></div>
-        <div className="contact-result-grid">
-          <a className="contact-result-card" href="/case-studies/kj-group/"><span>KJ Group · Real estate</span><b>Brand identity</b><small>Logo variations and branded applications</small><i>Explore project <ArrowIcon /></i></a>
-          <a className="contact-result-card" href="/case-studies/rivan-travels/"><span>Rivan Travels · Travel</span><b>Branding & logo</b><small>A recognizable identity for travel services</small><i>Explore project <ArrowIcon /></i></a>
-          <a className="contact-result-card" href="/case-studies/shaw-toyota/"><span>Shaw Toyota · Automotive</span><b>PPC enquiries</b><small>Lead generation for prospective vehicle buyers</small><i>Explore project <ArrowIcon /></i></a>
-        </div>
-      </div>
-    </section>
-
-    <section className="section contact-process">
-      <div className="container">
-        <div className="contact-section-heading"><p className="eyebrow">What happens next</p><h2>A clear path from <span>first hello to next steps.</span></h2><p>We’ll use the first conversation to understand your needs and make the next step useful.</p></div>
-        <div className="contact-steps">{steps.map(([number, title, copy]) => <article className="contact-step" key={number}><span>{number}</span><h3>{title}</h3><p>{copy}</p></article>)}</div>
-      </div>
-    </section>
-
-    <section className="section contact-faq">
-      <div className="container contact-faq-layout">
-        <div className="contact-faq-heading"><p className="eyebrow">Before you reach out</p><h2>A few helpful <span>answers.</span></h2><p>Still have a question? Send it through the form and we’ll take it from there.</p><a className="text-link" href="#enquiry">Ask us directly <ArrowIcon /></a></div>
-        <div className="contact-faq-list">{faqs.map(([question, answer], index) => <details className="contact-faq-item" key={question} open={index === 0}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div>
-      </div>
-    </section>
-
-    <section className="contact-bottom-cta"><div className="container contact-bottom-inner"><div><p className="eyebrow">Ready when you are</p><h2>Let’s make your next move <span>count.</span></h2></div><a className="button" href="#enquiry">Tell us about your project <ArrowIcon /></a></div></section>
-  </div>;
+    </div>
+    <div className="contact-hero-glow" aria-hidden="true" />
+  </section></div>;
 }
 
 function PageContent({ path }) {
@@ -837,6 +777,27 @@ function PageContent({ path }) {
     body = <ClientProjectPage client={caseStudy} />;
   } else if (page === 'case-studies') items = caseStudies;
   else if (page === 'portfolio' || page === 'products') items = clients;
+  else if (industry && industry.id === 'Automobile') {
+    head = ['Automotive lead generation', 'More local enquiries', 'for your dealership.', 'We help car dealerships and service centres attract local customers through SEO, dedicated websites, landing pages and strong paid promotions.'];
+    body = <><section className="section"><div className="container detail-layout"><div><p className="eyebrow">More conversations with customers</p><h2>Turn local searches into <span>calls and enquiries.</span></h2><p>From being found online to making it easy for customers to contact your team, we help put your dealership in front of the right people.</p><a className="button" href="/contact/?source=automotive#enquiry">Get in touch</a></div><div><p>Looking to grow sales enquiries or service bookings? Let’s discuss your dealership and the customers you want to reach.</p><a className="text-link" href="tel:+918483837969">Call +91 8483837969 <ArrowIcon /></a></div></div></section>
+      <section className="section"><div className="container"><p className="eyebrow">Our automotive experience</p><h2>Automotive businesses <span>we have worked with.</span></h2><p>Explore the automotive websites in our portfolio, from dealerships to service centres across Pune, Thane and Indore.</p><div className="content-card-grid">{[
+        { name: 'Garve Hyundai', url: 'https://www.garvehyundaipune.com/wadgaon-sales' },
+        { name: 'Garve Honda Service', url: 'https://www.garvehondapune.com/pimpricolony-pimpri-chinchwad' },
+        { name: 'Hallmark Honda', url: 'https://www.hallmarkhondamumbai.com/' },
+        { name: 'Garnet Škoda', url: 'https://www.garnetskodamumbai.com/' },
+        { name: 'Shaw Toyota', url: 'https://www.shawtoyotapune.com/' },
+        { name: 'Shaw Tata', url: 'https://www.shawcars.in/' },
+        { name: 'Shaw Tata, Indore', url: 'https://shawtatacarsindore.com/' },
+      ].map(({ name, url }) => <article className="content-card" key={name}><span className="card-number">AUTOMOTIVE</span><h2>{name}</h2><a className="text-link" href={url} target="_blank" rel="noopener noreferrer" aria-label={'Visit ' + name + ' website (opens in a new tab)'}>Visit website <ArrowIcon /></a></article>)}</div></div></section>
+      <section className="section"><div className="container"><p className="eyebrow">How we help</p><h2>What we can offer <span>your dealership.</span></h2><div className="content-card-grid">
+        <article className="content-card"><h2>SEO</h2><p>Help local customers find your dealership when they search for cars, showrooms and service centres online.</p></article>
+        <article className="content-card"><h2>Google Business Profile</h2><p>Manage and improve your profile so customers can find your business on Google Search and Maps and contact your team.</p></article>
+        <article className="content-card"><h2>Dedicated websites and landing pages</h2><p>Make it easy for customers to explore your offering, call your team or submit an enquiry.</p></article>
+        <article className="content-card"><h2>GEO visibility</h2><p>Help more potential customers discover your dealership through relevant searches.</p></article>
+        <article className="content-card"><h2>Paid advertising</h2><p>Promote a model, offer or location to reach more interested customers when you need additional enquiries.</p></article>
+        <article className="content-card"><h2>Calls and enquiries</h2><p>Give your sales and service teams more opportunities to speak with potential customers by phone or through website enquiries.</p></article>
+      </div></div></section><section className="section"><div className="container detail-layout"><div><p className="eyebrow">Let’s talk</p><h2>Ready to grow <span>your dealership?</span></h2><p>Tell us about your business and the customers you want to reach.</p><a className="button" href="https://wa.me/918483837969" target="_blank" rel="noopener noreferrer">Talk to us on WhatsApp</a></div><div><p><a href="tel:+918483837969">+91 8483837969</a></p><p><a href="mailto:seopune360@gmail.com">seopune360@gmail.com</a></p><a className="text-link" href="/contact/">Contact our team <ArrowIcon /></a></div></div></section></>;
+  }
   else if (industry) {
     head = [industry.label + ' digital growth', 'Digital experiences', 'for ' + industry.label + '.', 'Explore the client work currently published for this sector, and the services that can support its next stage.'];
     items = clients.filter((client) => client.industries.includes(industry.label));
