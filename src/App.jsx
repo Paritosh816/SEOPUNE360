@@ -839,7 +839,15 @@ function PageContent({ path }) {
   else if (page === 'portfolio' || page === 'products') items = clients;
   else if (industry && industry.id === 'Automobile') {
     head = ['Automotive lead generation', 'More local enquiries', 'for your dealership.', 'We help car dealerships and service centres reach more local customers through SEO, dedicated websites, landing pages and strong paid promotions. Our focus is on phone calls and enquiries for your team.'];
-    body = <><section className="section"><div className="container"><p className="eyebrow">Our automotive experience</p><h2>Automotive businesses <span>we have worked with.</span></h2><p>Experience supporting dealerships and automotive service businesses across Pune, Thane and Indore.</p><div className="content-card-grid">{['Garve Hyundai', 'Garve Honda Service', 'Hallmark Honda', 'Garnet Škoda', 'Shaw Toyota', 'Shaw Tata', 'Shaw Tata, Indore'].map((name) => <article className="content-card" key={name}><span className="card-number">AUTOMOTIVE</span><h2>{name}</h2></article>)}</div></div></section>
+    body = <><section className="section"><div className="container"><p className="eyebrow">Our automotive experience</p><h2>Automotive businesses <span>we have worked with.</span></h2><p>Experience supporting dealerships and automotive service businesses across Pune, Thane and Indore.</p><div className="content-card-grid">{[
+        { name: 'Garve Hyundai', url: 'https://www.garvehyundaipune.com/wadgaon-sales' },
+        { name: 'Garve Honda Service' },
+        { name: 'Hallmark Honda', url: 'https://www.hallmarkhondamumbai.com/' },
+        { name: 'Garnet Škoda', url: 'https://www.garnetskodamumbai.com/' },
+        { name: 'Shaw Toyota', url: 'https://www.shawtoyotapune.com/' },
+        { name: 'Shaw Tata', url: 'https://www.shawcars.in/' },
+        { name: 'Shaw Tata, Indore', url: 'https://shawtatacarsindore.com/' },
+      ].map(({ name, url }) => <article className="content-card" key={name}><span className="card-number">AUTOMOTIVE</span><h2>{name}</h2>{url && <a className="text-link" href={url} target="_blank" rel="noopener noreferrer" aria-label={'Visit ' + name + ' website (opens in a new tab)'}>Visit website <ArrowIcon /></a>}</article>)}</div></div></section>
       <section className="section"><div className="container"><p className="eyebrow">How we help</p><h2>Helping customers <span>find and contact you.</span></h2><div className="content-card-grid">
         <article className="content-card"><h2>SEO</h2><p>Help local customers find your dealership or service centre when they search online.</p></article>
         <article className="content-card"><h2>Dedicated websites and landing pages</h2><p>Show customers what you offer and make it easy to call or request a callback.</p></article>
