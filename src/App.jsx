@@ -1,8 +1,10 @@
 import { automotiveProjects } from './automotiveProjects.js';
-import { useCallback, useEffect, useState, useRef } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useState, useRef } from 'react';
 import { projectDetails } from './projectDetails';
 import ServiceDeliverables, { serviceIntro } from './ServiceDeliverables';
 import ServiceRequirementFlow from './ServiceRequirementFlow';
+import { showcasePath } from './automotiveShowcase.js';
+const AutomotiveShowcase = lazy(() => import('./AutomotiveShowcase.jsx'));
 const CONTACT_EMAIL = 'seopune360@gmail.com';
 const LINKEDIN_URL = 'https://www.linkedin.com/company/seopune-360/';
 function LinkedInIcon() { return <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false" fill="currentColor"><path d="M20.45 2H3.55A1.55 1.55 0 0 0 2 3.55v16.9C2 21.3 2.7 22 3.55 22h16.9c.85 0 1.55-.7 1.55-1.55V3.55C22 2.7 21.3 2 20.45 2ZM8.08 18.75H5.1V9.2h2.98v9.55ZM6.59 7.89a1.73 1.73 0 1 1 0-3.46 1.73 1.73 0 0 1 0 3.46Zm12.16 10.86h-2.98V14.1c0-1.11-.02-2.55-1.56-2.55-1.56 0-1.8 1.22-1.8 2.47v4.73H9.43V9.2h2.86v1.3h.04a3.14 3.14 0 0 1 2.83-1.55c3.03 0 3.59 2 3.59 4.59v5.21Z" /></svg>; }
@@ -995,11 +997,15 @@ function App() {
     opener.current?.focus({ preventScroll: true });
   }, []);
   const pageService = services.find((service) => servicePaths[service.id] === path);
-  const startPageRequirements = (trigger) => startRequirements(trigger, pageService?.id);
+  const isShowcase = path.startsWith(showcasePath);
+  const startPageRequirements = (trigger) => startRequirements(trigger, isShowcase ? 'leads' : pageService?.id, isShowcase ? 'Automobile' : undefined);
+  const page = isShowcase
+    ? <Suspense fallback={<p className="container" role="status">Loading automotive showcase…</p>}><AutomotiveShowcase path={path} onStart={startRequirements} /></Suspense>
+    : <PageContent path={path} onStart={startRequirements} />;
 
   return <div className="page-shell">
     <Header onStart={startPageRequirements} />
-    <main>{path === '/' ? <><Hero onPlayShowreel={() => setShowreelOpen(true)} onStart={startRequirements} /><ClientSelector activeIndustry={activeIndustry} setActiveIndustry={setActiveIndustry} /><Services activeService={activeService} setActiveService={setActiveService} onStart={startRequirements} /><CaseStudies activeCase={activeCase} setActiveCase={setActiveCase} /><Process /><WhyUs /><AuditSection /></> : <PageContent path={path} onStart={startRequirements} />}</main>
+    <main>{path === '/' ? <><Hero onPlayShowreel={() => setShowreelOpen(true)} onStart={startRequirements} /><ClientSelector activeIndustry={activeIndustry} setActiveIndustry={setActiveIndustry} /><Services activeService={activeService} setActiveService={setActiveService} onStart={startRequirements} /><CaseStudies activeCase={activeCase} setActiveCase={setActiveCase} /><Process /><WhyUs /><AuditSection /></> : page}</main>
     <Footer onCookieSettings={() => setCookieOpen(true)} onLegal={setLegalTitle} onStart={startPageRequirements} />
     {cookieNoticeOpen && <CookieNotice onAccept={() => { applyCookiePreferences({ analytics: true, marketing: true, functional: true }); setCookieNoticeOpen(false); }} onReject={() => { applyCookiePreferences({ analytics: false, marketing: false, functional: false }); setCookieNoticeOpen(false); }} onSettings={() => setCookieOpen(true)} />}
     {showreelOpen && <ShowreelModal onClose={() => setShowreelOpen(false)} />}

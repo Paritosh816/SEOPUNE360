@@ -1,4 +1,5 @@
 import { automotiveProjects } from './src/automotiveProjects.js';
+import { showcaseDealerships, showcasePath } from './src/automotiveShowcase.js';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
@@ -34,6 +35,11 @@ const routes = [
   ['/sitemap/', 'SEOPune360 Sitemap', 'Browse all SEOPune360 pages, services, client stories, and industries.'],
 ];
 
+const showcaseRoutes = [
+  [showcasePath, 'Automotive Client Showcase', 'Explore selected SEOPune360 dealership projects.', true],
+  ...showcaseDealerships.map(({ id, name, headline }) => [showcasePath + id + '/', name + ' Dealership Showcase', headline, true]),
+];
+
 function staticRoutePages() {
   return {
     name: 'seopune360-static-route-pages',
@@ -41,7 +47,7 @@ function staticRoutePages() {
     async writeBundle(outputOptions) {
       const outputDirectory = outputOptions.dir || 'dist';
       const html = await readFile(join(outputDirectory, 'index.html'), 'utf8');
-      for (const [path, title, description] of routes) {
+      for (const [path, title, description, noindex] of [...routes, ...showcaseRoutes]) {
         const canonical = `https://seopune360.com${path}`;
         const escapedTitle = title.replaceAll('&', '&amp;');
         const escapedDescription = description.replaceAll('&', '&amp;');
@@ -50,7 +56,7 @@ function staticRoutePages() {
           .replace(/(<meta\s+name="description"\s+content=")[^"]*("\s*\/>)/, `$1${escapedDescription}$2`)
           .replace(/(<meta\s+property="og:title"\s+content=")[^"]*("\s*\/>)/, `$1${escapedTitle} | SEOPune360$2`)
           .replace(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${canonical}" />`)
-          .replace('</head>', `<link rel="canonical" href="${canonical}" />\n  </head>`);
+          .replace('</head>', `<link rel="canonical" href="${canonical}" />\n    ${noindex ? '<meta name="robots" content="noindex, nofollow" />\n  ' : ''}</head>`);
         const outputPath = join(outputDirectory, path.slice(1), 'index.html');
         await mkdir(dirname(outputPath), { recursive: true });
         await writeFile(outputPath, page, 'utf8');

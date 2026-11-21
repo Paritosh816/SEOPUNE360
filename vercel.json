@@ -1,6 +1,12 @@
 {
   "headers": [
     {
+      "source": "/automotive-showcase/:path*",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" }
+      ]
+    },
+    {
       "source": "/internal/:path*",
       "headers": [
         {
