@@ -1569,6 +1569,7 @@ a.content-card:hover { transform:translateY(-4px); border-color:rgba(51,225,208,
 .portfolio-card, .project-related-grid > .portfolio-card { padding:0; box-shadow:none; transition:transform .18s ease; }
 .portfolio-card:hover, .portfolio-card:focus-visible { border-color:#5de0cf; box-shadow:none; }
 .portfolio-visual > img { box-sizing:border-box; padding:12px; object-fit:contain; object-position:center; pointer-events:none; transform:none; filter:none; animation:none; transition:none; }
+.portfolio-visual > img.portfolio-homepage-capture { padding:0; object-fit:cover; object-position:top; }
 .portfolio-service { color:#b9cecf; font-size:.9rem; line-height:1.4; }
 .project-figure-artwork[data-revealed="true"] { animation:branding-artwork-reveal .38s ease-out; }
 @keyframes branding-artwork-reveal {
