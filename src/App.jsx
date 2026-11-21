@@ -86,7 +86,7 @@ const brandingProjects = [
     id: 'fpt', name: 'FPT Powertrain Technologies', category: 'Logo artwork',
     description: 'FPT Powertrain Technologies logo artwork supplied for the portfolio.',
     artworks: [
-      { src: '/images/business-branding/fpt.jpeg', alt: 'FPT Powertrain Technologies logo on a red background', label: 'Logo artwork' },
+      { src: projectDetails.fpt.logo, alt: 'FPT Powertrain Technologies logo on a red background', label: 'Logo artwork' },
     ],
   },
   {
@@ -272,7 +272,7 @@ function ShowreelModal({ onClose }) {
       <div className="showreel-backdrop-glow" aria-hidden="true" />
       <section className="showreel-dialog" role="dialog" aria-modal="true" aria-labelledby="showreel-title">
         <div className="dialog-heading"><div><p className="eyebrow">SEOPune360 showreel</p><h2 id="showreel-title">Client work, in motion.</h2></div><button className="icon-button" aria-label="Close video" onClick={onClose}>×</button></div>
-        {!failed ? <video className="showreel-video" poster="/images/showreel/fpt-branding.png" controls autoPlay muted playsInline onError={() => setFailed(true)}><source src={SHOWREEL_PATH} type="video/mp4" />Your browser does not support this video.</video> :
+        {!failed ? <video className="showreel-video" poster={projectDetails.fpt.logo} controls autoPlay muted playsInline onError={() => setFailed(true)}><source src={SHOWREEL_PATH} type="video/mp4" />Your browser does not support this video.</video> :
           <div className="video-missing"><span className="missing-play">▶</span><h3>The showreel could not load</h3><p>Try refreshing the page or opening the video directly.</p><a className="button button-outline" href={SHOWREEL_PATH}>Open the showreel <ArrowIcon /></a></div>}
         <div className="showreel-modal-footer"><a href="/case-studies/" onClick={onClose}>Explore client stories <ArrowIcon /></a></div>
       </section>
@@ -286,7 +286,7 @@ function ScrollShowreel({ onCinema }) {
   return <section className="hero-showreel" id="showreel-story" aria-label="Client showreel">
     <div className="reel-heading"><span>SEOPUNE360 / SELECTED WORK</span><span>Play the film ↓</span></div>
     <div className="reel-frame">
-      <video ref={videoRef} controls playsInline preload="metadata" poster="/images/showreel/fpt-branding.png" src={SHOWREEL_PATH} onError={() => setFailed(true)} />
+      <video ref={videoRef} controls playsInline preload="metadata" poster={projectDetails.fpt.logo} src={SHOWREEL_PATH} onError={() => setFailed(true)} />
       {failed && <a className="button" href={SHOWREEL_PATH}>Open the showreel <ArrowIcon /></a>}
     </div>
     <div className="reel-footer"><span>Brands. Websites. Customer journeys.</span><button className="text-link" onClick={() => { videoRef.current?.pause(); onCinema(); }}>Cinema view <ArrowIcon /></button></div>

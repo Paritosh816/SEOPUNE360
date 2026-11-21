@@ -6,7 +6,7 @@ Campaign landing pages supplied by the client: https://shawtoyotapune.com/new-ca
 
 Toyota and Tata enquiry screenshots show empty public forms. No form was submitted. Screenshots retain the state of public pages at capture time. They do not establish advertising outcomes or website authorship for PPC-only engagements.
 
-Original logos downloaded from the rendered official websites: Ananya Rishtey, IntelliDant, A.D.I DEV, Shaw Toyota, Shaw Tata, FPT (https://www.fptindustrial.com/en). Lusso Marco is its inline original SVG. Hotel Shivtara is a capture of the site's original header lockup.
+Original logos downloaded from the rendered official websites: Ananya Rishtey, IntelliDant, A.D.I DEV, Shaw Toyota, and Shaw Tata. Lusso Marco is its inline original SVG. Hotel Shivtara is a capture of the site's original header lockup.
 
 Existing client-supplied branding artwork reused: KJ Group (Kishor Jamdar), ERA Infratech, Koriv Studio, FPT India-office artwork. Logo panels display the original artwork using CSS framing; no replacement identities were generated.
 
