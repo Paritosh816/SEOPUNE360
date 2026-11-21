@@ -79,8 +79,8 @@ export const projectDetails = {
   fpt: {
     logo: brand + 'originals/FPT.jpeg', logoLayout: 'dark',
     headline: 'Branding support for the India office.',
-    overview: 'The FPT Powertrain Technologies portfolio entry is scoped to branding work for the India office. The supplied artwork showcases the FPT identity in a strong red-and-white presentation. The original brand mark is retained so the client remains recognisable within the portfolio.',
-    focus: [ ['India-office scope', 'This project is presented as local office branding support rather than a redesign of FPT’s worldwide identity.'], ['Original brand recognition', 'The FPT symbol and wordmark retain their original proportions and visual character.'], ['A focused artwork showcase', 'The supplied red-background composition provides a direct view of the branding artwork.'] ],
+    overview: 'This project showcases branding work for the FPT Powertrain Technologies India office. The gallery includes the brand identity manual, logo and colour guidelines, and Original Reman campaign artwork.',
+    focus: [ ['India-office scope', 'Branding support for the FPT Powertrain Technologies India office.'], ['Brand guidelines', 'The artwork documents logo variations, clear space, colours and use on different backgrounds.'], ['Original Reman campaign', 'The supplied campaign boards show the FPT identity alongside engine illustrations and photography.'] ],
   },
   'freshia': { logo: brand + 'freshia-01.jpg', logoLayout: 'sheet' },
   'gaurav-vishwasrao': { logo: brand + 'gaurav-vishwasrao-01.jpg', logoLayout: 'sheet' },

@@ -38,7 +38,7 @@ const clientProjects = [
   { id: 'krishna-clinic', name: 'Krishna Classical Homoeopathy Clinic', industries: ['Healthcare'], serviceTypes: ['Social Media / Growth Marketing', 'Website Development'], serviceIds: ['growth', 'development'], tone: 'case-healthcare', description: 'Social media, growth marketing and website development for Krishna Classical Homoeopathy Clinic, connecting a clear website presence with ongoing communication and patient enquiries.', scope: ['Social Media / Growth Marketing', 'Website Development'] },
   { id: 'hotel-shivtara', name: 'Hotel Shivtara', industries: ['Hospitality'], serviceTypes: ['Website Development'], serviceIds: ['development'], tone: 'case-hospitality', description: 'Website development for Hotel Shivtara, presenting the hotel and key information for guests planning their stay.', scope: ['Website Development'] },
   { id: 'era-infratech', name: 'ERA Infratech', industries: ['Real Estate'], serviceTypes: ['Branding'], serviceIds: ['branding'], tone: 'case-realestate', description: 'Branding for ERA Infratech, with logo variations, stationery and brand mockups.', scope: ['Branding', 'Visual identity'] },
-  { id: 'fpt', name: 'FPT Powertrain Technologies', industries: ['Manufacturing Industry'], serviceTypes: ['Branding'], serviceIds: ['branding'], serviceNote: 'India Office', tone: 'case-construction', description: 'Branding work for the India office of FPT Powertrain Technologies, presented through the supplied logo artwork.', scope: ['Branding — India Office'] },
+  { id: 'fpt', name: 'FPT Powertrain Technologies', industries: ['Manufacturing Industry'], serviceTypes: ['Branding'], serviceIds: ['branding'], serviceNote: 'India Office', tone: 'case-construction', description: 'Branding work for the India office of FPT Powertrain Technologies, shown through brand guidelines and campaign artwork.', scope: ['Branding — India Office'] },
   { id: 'koriv-studio', name: 'Koriv Studio', industries: ['Real Estate', 'Infratech'], serviceTypes: ['Branding'], serviceIds: ['branding'], tone: 'case-architecture', description: 'Logo work for Koriv Studio, presented through its identity artwork and branded mockups.', scope: ['Logo'] },
   { id: 'freshia', name: 'Freshia', industries: ['D2C / Lifestyle'], serviceTypes: ['Branding'], serviceIds: ['branding'], tone: 'case-fragrance', description: 'Branding artwork for Freshia, presented across three supplied design boards.', scope: ['Branding', 'Brand identity'] },
   { id: 'gaurav-vishwasrao', name: 'Gaurav Vishwasrao', industries: ['Real Estate'], serviceTypes: ['Branding'], serviceIds: ['branding'], tone: 'case-architecture', description: 'Logo and branding artwork for Gaurav Vishwasrao Architects, shown across three supplied design boards.', scope: ['Branding', 'Logo design'] },
@@ -102,10 +102,30 @@ const brandingProjects = [
     ],
   },
   {
-    id: 'fpt', name: 'FPT Powertrain Technologies', category: 'Logo artwork',
-    description: 'FPT Powertrain Technologies logo artwork supplied for the portfolio.',
+    id: 'fpt', name: 'FPT Powertrain Technologies', category: 'Brand guidelines & campaign artwork',
+    description: 'Brand guidelines and Original Reman campaign artwork for the India office.',
     artworks: [
       { src: projectDetails.fpt.logo, fullSize: projectDetails.fpt.logo, width: 1600, height: 703, alt: 'FPT Powertrain Technologies logo on a red background', label: 'Logo artwork' },
+      ...[
+        ['Primary logo', 'FPT Powertrain Technologies red logo on white'],
+        ['Brand Identity Manual', 'Title page of the FPT Brand Identity Manual'],
+        ['Brand mark', 'FPT brand mark with accompanying identity guidance'],
+        ['Logo variants', 'Red and black FPT logo variants'],
+        ['Logo backgrounds', 'FPT logo treatments on white, red and black backgrounds'],
+        ['Logo clear space', 'Clear-space guide for the FPT brand mark'],
+        ['Colour palette', 'FPT red, black and grey brand colour swatches'],
+        ['Logo application', 'FPT logo application on coloured and photographic backgrounds'],
+        ['Original Reman illustration', 'Original Reman campaign artwork with an engine illustration on red'],
+        ['Original Reman engine', 'Original Reman campaign artwork with an engine photograph and the line You Gain the Same Quality'],
+        ['Original Reman sustainability', 'Original Reman artwork with a forest image and the line Sustainability Meets Performance'],
+      ].map(([label, alt], index) => {
+        const number = String(index + 1).padStart(2, '0');
+        return {
+          src: '/images/business-branding/fpt-' + number + '.jpg',
+          fullSize: originalBrandingPath + 'FPT-' + number + '.jpg',
+          width: 1600, height: 1048, alt, label,
+        };
+      }),
     ],
   },
   {
