@@ -37,7 +37,7 @@ const clientProjects = [
   { id: 'shaw-tata', name: 'Shaw Tata', industries: ['Automobile'], serviceTypes: ['PPC Lead Generation'], serviceIds: ['leads'], tone: 'case-automobile', description: 'PPC lead generation for Shaw Tata, supporting vehicle discovery and enquiries from prospective customers.', scope: ['PPC Lead Generation'] },
   { id: 'krishna-clinic', name: 'Krishna Classical Homoeopathy Clinic', industries: ['Healthcare'], serviceTypes: ['Social Media / Growth Marketing', 'Website Development'], serviceIds: ['growth', 'development'], tone: 'case-healthcare', description: 'Social media, growth marketing and website development for Krishna Classical Homoeopathy Clinic, connecting a clear website presence with ongoing communication and patient enquiries.', scope: ['Social Media / Growth Marketing', 'Website Development'] },
   { id: 'hotel-shivtara', name: 'Hotel Shivtara', industries: ['Hospitality'], serviceTypes: ['Website Development'], serviceIds: ['development'], tone: 'case-hospitality', description: 'Website development for Hotel Shivtara, presenting the hotel and key information for guests planning their stay.', scope: ['Website Development'] },
-  { id: 'era-infratech', name: 'ERA Infratech', industries: ['Real Estate'], serviceTypes: ['Branding'], serviceIds: ['branding'], tone: 'case-realestate', description: 'Branding for ERA Infratech, with logo variations and a visual identity presentation.', scope: ['Branding', 'Visual identity'] },
+  { id: 'era-infratech', name: 'ERA Infratech', industries: ['Real Estate'], serviceTypes: ['Branding'], serviceIds: ['branding'], tone: 'case-realestate', description: 'Branding for ERA Infratech, with logo variations, stationery and brand mockups.', scope: ['Branding', 'Visual identity'] },
   { id: 'fpt', name: 'FPT Powertrain Technologies', industries: ['Manufacturing Industry'], serviceTypes: ['Branding'], serviceIds: ['branding'], serviceNote: 'India Office', tone: 'case-construction', description: 'Branding work for the India office of FPT Powertrain Technologies, presented through the supplied logo artwork.', scope: ['Branding — India Office'] },
   { id: 'koriv-studio', name: 'Koriv Studio', industries: ['Real Estate', 'Infratech'], serviceTypes: ['Branding'], serviceIds: ['branding'], tone: 'case-architecture', description: 'Logo work for Koriv Studio, presented through its identity artwork and branded mockups.', scope: ['Logo'] },
   { id: 'freshia', name: 'Freshia', industries: ['D2C / Lifestyle'], serviceTypes: ['Branding'], serviceIds: ['branding'], tone: 'case-fragrance', description: 'Branding artwork for Freshia, presented across three supplied design boards.', scope: ['Branding', 'Brand identity'] },
@@ -93,10 +93,12 @@ const originalBrandingPath = '/images/business-branding/originals/';
 const brandingProjects = [
   {
     id: 'era-infratech', name: 'ERA Infratech', category: 'Logo exploration & identity',
-    description: 'Logo variations and a visual identity presentation for ERA Infratech.',
+    description: 'Logo variations, stationery and brand mockups for ERA Infratech.',
     artworks: [
-      { src: '/images/business-branding/era-infratech-logo-variations.jpg', fullSize: originalBrandingPath + encodeURIComponent('Era Infratech Logofolio-02.jpg'), width: 1050, height: 1050, alt: 'ERA Infratech logo shown in two color treatments', label: 'Logo variations' },
-      { src: '/images/business-branding/era-infratech-artboard.jpg', fullSize: originalBrandingPath + encodeURIComponent('Era Infratech Logofolio_Artboard 1.jpg'), width: 293, height: 1050, alt: 'ERA Infratech visual identity presentation', label: 'Identity presentation' },
+      { src: '/images/business-branding/era-infratech-02.jpg', fullSize: originalBrandingPath + encodeURIComponent('ERA Infratech 02 - Logo variations.jpg'), width: 1200, height: 786, alt: 'ERA Infratech logo on white, red and navy backgrounds', label: 'Logo variations' },
+      { src: '/images/business-branding/era-infratech-01.jpg', fullSize: originalBrandingPath + encodeURIComponent('ERA Infratech 01 - Business card.jpg'), width: 1200, height: 786, alt: 'Construction professional holding a red ERA Infratech business card', label: 'Business card mockup' },
+      { src: '/images/business-branding/era-infratech-03.jpg', fullSize: originalBrandingPath + encodeURIComponent('ERA Infratech 03 - Stationery.jpg'), width: 1200, height: 786, alt: 'ERA Infratech letterhead, envelopes and business cards', label: 'Stationery' },
+      { src: '/images/business-branding/era-infratech-04.jpg', fullSize: originalBrandingPath + encodeURIComponent('ERA Infratech 04 - Cityscape.jpg'), width: 1200, height: 786, alt: 'White ERA Infratech logo over an aerial cityscape', label: 'Cityscape mockup' },
     ],
   },
   {
