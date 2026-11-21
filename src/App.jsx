@@ -86,7 +86,7 @@ const brandingProjects = [
     id: 'fpt', name: 'FPT Powertrain Technologies', category: 'Logo artwork',
     description: 'FPT Powertrain Technologies logo artwork supplied for the portfolio.',
     artworks: [
-      { src: '/images/business-branding/fpt-powertrain-technologies.jpg', alt: 'FPT Powertrain Technologies logo on a red background', label: 'Logo artwork' },
+      { src: '/images/business-branding/fpt.jpeg', alt: 'FPT Powertrain Technologies logo on a red background', label: 'Logo artwork' },
     ],
   },
   {
@@ -363,7 +363,7 @@ function ClientProjectPage({ client }) {
     {gallery.length > 0 && <section className="project-gallery" aria-label={'Project visuals for ' + client.name}><div className="section-title-row"><div><p className="eyebrow">Work in context</p><h2>{client.campaign ? 'The landing experience.' : client.serviceIds.includes('branding') ? 'The identity, in detail.' : 'A closer look at the website.'}</h2></div></div>{gallery.map((item,index) => <figure className={'project-figure' + (client.serviceIds.includes('branding') ? ' project-figure-artwork' : '')} key={item.src}><div className="project-frame"><div className="project-frame-bar"><span><i /><i /><i /></span><b>{item.title}</b><span>{String(index + 1).padStart(2,'0')}</span></div><a href={item.src} target="_blank" rel="noopener noreferrer" aria-label={'View full-size ' + item.title}><img src={item.src} alt={item.caption} loading="lazy" decoding="async" /></a></div><figcaption><span>{item.caption}</span>{item.url && <a href={item.url} target="_blank" rel="noopener noreferrer">View source page ↗</a>}</figcaption></figure>)}</section>}
     {client.focus && <section className="project-focus"><p className="eyebrow">What matters in this project</p><h2>Clarity in <span>every detail.</span></h2><div className="project-focus-grid">{client.focus.map(([title,copy],index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{copy}</p></article>)}</div></section>}
     {client.campaign && <CampaignJourney client={client} />}
-    {related.length > 0 && <section className="project-related"><p className="eyebrow">Explore more work</p><h2>Related client projects.</h2><div className="project-related-grid">{related.map((item) => <PortfolioCard key={item.id} item={item} />)}</div></section>}
+    {related.length > 0 && <section className="project-related"><p className="eyebrow">Explore more work</p><h2>Related client projects.</h2><div className="project-related-grid">{related.map((item, index) => <PortfolioCard key={item.id} item={item} priority={index < 3} />)}</div></section>}
     <div className="project-end"><div><p className="eyebrow">Your next project</p><h2>Let’s create something <span>for your business.</span></h2></div><a className="button" href="/contact/">Discuss a project <ArrowIcon /></a><a className="text-link" href="/portfolio/">All client work <ArrowIcon /></a></div>
   </div></section>;
 }
@@ -716,15 +716,40 @@ const automotiveClients = [
   { name: 'Shaw Tata, Indore', industry: 'Automotive', summary: 'A digital destination for Tata car buyers in Indore.', url: 'https://shawtatacarsindore.com/', previewImage: null },
 ];
 
+const artworkOrder = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
+
+function PortfolioArtwork({ images, priority, onImageError }) {
+  const ref = useRef(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting));
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return <span className="portfolio-artwork" ref={ref} aria-hidden="true">
+    <span className="portfolio-artwork-stack" data-playing={inView}>
+      {images.map(({ src }, index) => <img key={src} src={src} alt="" tabIndex={-1}
+        loading={priority && index === 0 ? 'eager' : 'lazy'} decoding="async"
+        onError={() => onImageError(src)} />)}
+    </span>
+  </span>;
+}
+
 function PortfolioCard({ item, imageOnly = false, priority = false, hidden = false }) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(() => priority && !hidden);
   const [width, setWidth] = useState(320);
   const [frameStatus, setFrameStatus] = useState('pending');
   const [showProgress, setShowProgress] = useState(false);
-  const url = imageOnly ? null : (item.url || item.website || item.landing);
-  const gallery = imageOnly ? item.artworks || [] : projectGallery(item);
-  const image = !url ? gallery[0]?.src : null;
+  const [failedArtwork, setFailedArtwork] = useState([]);
+  const brandingArtwork = item.artworks || brandingProjects.find(project => project.id === item.id)?.artworks;
+  const url = imageOnly || brandingArtwork?.length ? null : (item.url || item.website || item.landing);
+  const gallery = [...(brandingArtwork || projectGallery(item))]
+    .sort((first, second) => artworkOrder.compare(first.src, second.src));
+  const availableArtwork = gallery.filter(({ src }) => !failedArtwork.includes(src));
+  const image = !url ? availableArtwork[0]?.src : null;
   const destination = url || image || (item.id ? '/case-studies/' + item.id + '/' : null);
   const external = Boolean(url || image);
   const domain = url ? new URL(url).hostname.replace(/^www\./, '') : '';
@@ -777,12 +802,12 @@ function PortfolioCard({ item, imageOnly = false, priority = false, hidden = fal
   }, [visible, url, frameStatus === 'blocked']);
 
   return <a ref={ref} hidden={hidden} className="portfolio-card" href={destination || '#'} {...(external ? { target:'_blank', rel:'noopener noreferrer' } : {})} aria-label={item.name + (external ? ' — open in a new tab' : ' — view project')}>
-    {url && <span className="portfolio-bar" aria-hidden="true"><span className="portfolio-dots"><i /><i /><i /></span><span className="portfolio-domain">{domain}</span><span className="portfolio-open">Open ↗</span></span>}
+    <span className="portfolio-bar" aria-hidden="true"><span className="portfolio-dots"><i /><i /><i /></span><span className="portfolio-domain">{domain || (image ? 'Brand artwork' : 'Client project')}</span><span className="portfolio-open">Open ↗</span></span>
     <span className="portfolio-visual">
       {visible && url && frameStatus !== 'blocked' && <iframe title="" aria-hidden="true" tabIndex="-1" src={url} {...(priority ? { fetchPriority:'high' } : { loading:'lazy' })} sandbox="allow-scripts allow-same-origin allow-forms" onLoad={() => setShowProgress(false)} onError={() => { setFrameStatus('unknown'); setShowProgress(false); }} style={{ width:'1280px', height:'800px', transform:'scale(' + (width / 1280) + ')' }} />}
       {showProgress && frameStatus !== 'blocked' && <span className="portfolio-progress" aria-hidden="true" />}
       {frameStatus === 'blocked' && <span className="portfolio-unavailable">This website does not allow embedded previews. Open the card to visit.</span>}
-      {visible && !url && image && <img src={image} alt="" loading={priority ? 'eager' : 'lazy'} decoding="async" />}
+      {visible && !url && image && <PortfolioArtwork images={availableArtwork} priority={priority} onImageError={src => setFailedArtwork(previous => [...previous, src])} />}
       {visible && !url && !image && <span className="portfolio-no-image"><ClientLogo client={item} /></span>}
     </span>
     <span className="portfolio-card-copy"><span className="portfolio-tag">{item.industry || item.type || item.category || 'Client project'}</span><strong>{item.name}</strong><span className="portfolio-summary">{item.summary || item.description || item.copy}</span><span className="portfolio-card-open" aria-hidden="true">Open ↗</span></span>
