@@ -8,7 +8,7 @@ Toyota and Tata enquiry screenshots show empty public forms. No form was submitt
 
 Original logos downloaded from the rendered official websites: Ananya Rishtey, IntelliDant, A.D.I DEV, Shaw Toyota, and Shaw Tata. Lusso Marco is its inline original SVG. Hotel Shivtara is a capture of the site's original header lockup.
 
-Existing client-supplied branding artwork reused: KJ Group (Kishor Jamdar), ERA Infratech, Koriv Studio, FPT India-office artwork. Logo panels display the original artwork using CSS framing; no replacement identities were generated.
+The Branding page and portfolio use artwork supplied in Business Branding Page Files. The client galleries link to all seven byte-identical originals in `public/images/business-branding/originals/`. Six optimized images in `public/images/business-branding/` serve as lighter previews. FPT uses the supplied landscape `FPT.jpeg` directly.
 
 Krishna Classical Homoeopathy Clinic: the user confirmed https://krishnaclassicalhomoeopathy.com/ on 15 November 2026. Its homepage was captured and its original header logo downloaded from https://krishnaclassicalhomoeopathy.com/assets/kch-logo-new.png. The project scope is Social Media / Growth Marketing + Website Development. Portfolio text describes the web and marketing work without making medical outcome claims.
 
