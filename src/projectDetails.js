@@ -6,7 +6,7 @@ const brand = '/images/business-branding/';
 // not screenshots of ad accounts or evidence of measured performance.
 export const projectDetails = {
   'ananya-rishtey': {
-    logo: logos + 'ananya-rishtey.png', website: 'https://www.ananyarishtey.com/',
+    logo: logos + 'ananya-rishtey.png', website: 'https://www.ananyarishtey.com/', portfolioEmbed: 'blocked',
     headline: 'A warmer introduction to finding a life partner.',
     overview: 'Ananya Rishtey introduces a matrimony app through a website built around a personal decision. Warm colours, expressive typography and animated phone previews give visitors an approachable introduction to the product before they explore its features and plans.',
     focus: [ ['Product storytelling', 'A clear sequence takes visitors from the promise of the app to how matching, compatibility and family involvement are presented.'], ['A visible next step', 'Launch messaging, plan comparisons and a dedicated vendor registration journey serve two different audiences without mixing their paths.'], ['A recognisable visual language', 'Floral details, a warm palette and product demonstrations create continuity throughout the website.'] ],
@@ -33,7 +33,7 @@ export const projectDetails = {
     focus: [ ['A distinctive monogram', 'The building-inspired symbol connects the initials with the real-estate category.'], ['Consistent colour treatments', 'Light, orange and dark-blue variations show how the identity can remain recognisable on different backgrounds.'], ['Brand applications', 'The supplied project artwork shows the identity across stationery and presentation mockups.'] ],
   },
   'lusso-marco': {
-    logo: logos + 'lusso-marco.svg', website: 'https://lussomarco.com/',
+    logo: logos + 'lusso-marco.svg', website: 'https://lussomarco.com/', portfolioEmbed: 'blocked',
     landing: 'https://lussomarco.com/products/noxious', campaign: 'commerce',
     headline: 'From fragrance discovery to product consideration.',
     overview: 'Lusso Marco’s scope combines growth marketing and digital campaigns. The Noxious product page is the supplied destination for this showcase: it brings product imagery, fragrance notes, volume and purchase information together so visitors can explore the product after encountering the brand.',
