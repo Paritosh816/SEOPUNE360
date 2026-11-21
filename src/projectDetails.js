@@ -77,7 +77,7 @@ export const projectDetails = {
     focus: [ ['A strong primary mark', 'The compact ERA lettering creates an immediately visible centre for the identity.'], ['Colour consistency', 'White, red and blue treatments show the mark across contrasting backgrounds.'], ['Identity presentation', 'The accompanying artboard brings the visual direction together in one project presentation.'] ],
   },
   fpt: {
-    logo: logos + 'fpt.png', logoLayout: 'dark', website: 'https://www.fptindustrial.com/en',
+    logo: brand + 'fpt.jpeg', logoLayout: 'dark',
     headline: 'Branding support for the India office.',
     overview: 'The FPT Powertrain Technologies portfolio entry is scoped to branding work for the India office. The supplied artwork showcases the FPT identity in a strong red-and-white presentation. The original brand mark is retained so the client remains recognisable within the portfolio.',
     focus: [ ['India-office scope', 'This project is presented as local office branding support rather than a redesign of FPT’s worldwide identity.'], ['Original brand recognition', 'The FPT symbol and wordmark retain their original proportions and visual character.'], ['A focused artwork showcase', 'The supplied red-background composition provides a direct view of the branding artwork.'] ],
