@@ -1,3 +1,4 @@
+import { automotiveProjects } from './automotiveProjects.js';
 import { useEffect, useState, useRef } from 'react';
 import { projectDetails } from './projectDetails';
 import ServiceDeliverables, { serviceIntro } from './ServiceDeliverables';
@@ -41,6 +42,18 @@ const clientProjects = [
   { id: 'koriv-studio', name: 'Koriv Studio', industries: ['Real Estate', 'Infratech'], serviceTypes: ['Logo'], serviceIds: ['branding'], tone: 'case-architecture', description: 'Logo work for Koriv Studio, presented through its identity artwork and branded mockups.', scope: ['Logo'] },
 ];
 
+for (const project of automotiveProjects) {
+  if (clientProjects.some(client => client.id === project.id)) continue;
+  clientProjects.push({
+    ...project,
+    industries: ['Automobile'],
+    serviceTypes: ['Automotive Marketing'],
+    serviceIds: ['leads'],
+    tone: 'case-automobile',
+    scope: ['Automotive marketing'],
+  });
+}
+
 const industries = [
   { id: 'All industries', label: 'All industries' },
   ...[...new Set(clientProjects.flatMap((project) => project.industries))].map((name) => ({ id: name, label: name })),
@@ -78,31 +91,31 @@ const brandingProjects = [
     id: 'era-infratech', name: 'ERA Infratech', category: 'Logo exploration & identity',
     description: 'Logo variations and a visual identity presentation for ERA Infratech.',
     artworks: [
-      { src: '/images/business-branding/era-infratech-logo-variations.jpg', alt: 'ERA Infratech logo shown in two color treatments', label: 'Logo variations' },
-      { src: '/images/business-branding/era-infratech-artboard.jpg', alt: 'ERA Infratech visual identity presentation', label: 'Identity presentation' },
+      { src: '/images/business-branding/era-infratech-logo-variations.jpg', width: 1050, height: 1050, alt: 'ERA Infratech logo shown in two color treatments', label: 'Logo variations' },
+      { src: '/images/business-branding/era-infratech-artboard.jpg', width: 293, height: 1050, alt: 'ERA Infratech visual identity presentation', label: 'Identity presentation' },
     ],
   },
   {
     id: 'fpt', name: 'FPT Powertrain Technologies', category: 'Logo artwork',
     description: 'FPT Powertrain Technologies logo artwork supplied for the portfolio.',
     artworks: [
-      { src: projectDetails.fpt.logo, alt: 'FPT Powertrain Technologies logo on a red background', label: 'Logo artwork' },
+      { src: projectDetails.fpt.logo, width: 1600, height: 703, alt: 'FPT Powertrain Technologies logo on a red background', label: 'Logo artwork' },
     ],
   },
   {
     id: 'kj-group', name: 'KJ Group', category: 'Brand identity & applications',
     description: 'A brand identity presentation with logo variations and application mockups.',
     artworks: [
-      { src: '/images/business-branding/kj-group-brand-applications.jpg', alt: 'KJ Group brand identity and stationery applications', label: 'Brand applications' },
-      { src: '/images/business-branding/kj-group-logo-variations.jpg', alt: 'KJ Group logo and color variations', label: 'Logo variations' },
-      { src: '/images/business-branding/kj-group-brand-mockups.jpg', alt: 'KJ Group brand mockup presentation', label: 'Brand mockups' },
+      { src: '/images/business-branding/kj-group-brand-applications.jpg', width: 823, height: 1050, alt: 'KJ Group brand identity and stationery applications', label: 'Brand applications' },
+      { src: '/images/business-branding/kj-group-logo-variations.jpg', width: 1050, height: 1050, alt: 'KJ Group logo and color variations', label: 'Logo variations' },
+      { src: '/images/business-branding/kj-group-brand-mockups.jpg', width: 214, height: 1050, alt: 'KJ Group brand mockup presentation', label: 'Brand mockups' },
     ],
   },
   {
     id: 'koriv-studio', name: 'Koriv Studio', category: 'Brand identity & applications',
     description: 'A logo system and branded mockup artwork for Koriv Studio.',
     artworks: [
-      { src: '/images/business-branding/ks-brand-identity.jpg', alt: 'Koriv Studio logo and visual identity presentation', label: 'Identity presentation' },
+      { src: '/images/business-branding/ks-brand-identity.jpg', width: 210, height: 1050, alt: 'Koriv Studio logo and visual identity presentation', label: 'Identity presentation' },
     ],
   },
 ].map((project) => {
@@ -324,7 +337,7 @@ function ClientLogo({ client }) {
 
 function projectGallery(client) {
   const artworks = brandingProjects.find((project) => project.id === client.id)?.artworks || [];
-  return client.gallery || artworks.map((artwork) => ({ src: artwork.src, title: artwork.label, caption: artwork.alt }));
+  return client.gallery || artworks.map((artwork) => ({ src: artwork.src, title: artwork.label, caption: artwork.alt, width: artwork.width, height: artwork.height }));
 }
 
 function ProjectCover({ client }) {
@@ -355,12 +368,18 @@ function CampaignJourney({ client }) {
 }
 
 function ClientProjectPage({ client }) {
-  const gallery = projectGallery(client);
+  const isBranding = client.serviceIds.includes('branding');
+  const [failedImages, setFailedImages] = useState([]);
+  const gallery = projectGallery(client).filter(item => !failedImages.includes(item.src));
+  if (isBranding) gallery.sort((first, second) => artworkOrder.compare(first.src, second.src));
   const related = clients.filter((item) => item.id !== client.id && item.serviceTypes.some((type) => client.serviceTypes.includes(type))).slice(0,3);
   return <section className="section project-story"><div className="container">
     <div className="project-summary"><ClientLogo client={client} /><div><p className="eyebrow">Project scope</p><h2>{client.headline || client.name}</h2><div className="project-tags">{client.serviceTypes.map((type) => <span key={type}>{type}</span>)}{client.serviceNote && <span>{client.serviceNote}</span>}</div></div></div>
     <div className="project-overview"><div><p className="eyebrow">The project</p><p className="project-lead">{client.overview || client.description}</p></div><aside><h3>At a glance</h3><dl><dt>Client</dt><dd>{client.name}</dd><dt>Industry</dt><dd>{client.type}</dd><dt>Services</dt><dd>{client.service}</dd></dl>{(client.landing || client.website) && <a className="text-link" href={client.landing || client.website} target="_blank" rel="noopener noreferrer">{client.landing ? 'Visit landing page' : 'Visit client website'} <ArrowIcon /></a>}</aside></div>
-    {gallery.length > 0 && <section className="project-gallery" aria-label={'Project visuals for ' + client.name}><div className="section-title-row"><div><p className="eyebrow">Work in context</p><h2>{client.campaign ? 'The landing experience.' : client.serviceIds.includes('branding') ? 'The identity, in detail.' : 'A closer look at the website.'}</h2></div></div>{gallery.map((item,index) => <figure className={'project-figure' + (client.serviceIds.includes('branding') ? ' project-figure-artwork' : '')} key={item.src}><div className="project-frame"><div className="project-frame-bar"><span><i /><i /><i /></span><b>{item.title}</b><span>{String(index + 1).padStart(2,'0')}</span></div><a href={item.src} target="_blank" rel="noopener noreferrer" aria-label={'View full-size ' + item.title}><img src={item.src} alt={item.caption} loading="lazy" decoding="async" /></a></div><figcaption><span>{item.caption}</span>{item.url && <a href={item.url} target="_blank" rel="noopener noreferrer">View source page ↗</a>}</figcaption></figure>)}</section>}
+    {gallery.length > 0 && <section className="project-gallery" aria-label={'Project visuals for ' + client.name}><div className="section-title-row"><div><p className="eyebrow">Work in context</p><h2>{client.campaign ? 'The landing experience.' : client.serviceIds.includes('branding') ? 'The identity, in detail.' : 'A closer look at the website.'}</h2></div></div>{gallery.map((item, index) => {
+      const Figure = isBranding ? BrandingGalleryFigure : 'figure';
+      return <Figure className="project-figure" key={item.src}><div className="project-frame"><div className="project-frame-bar"><span><i /><i /><i /></span><b>{item.title}</b><span>{String(index + 1).padStart(2,'0')}</span></div><a href={item.src} target="_blank" rel="noopener noreferrer" aria-label={'View full-size ' + item.title}><img src={item.src} alt={item.caption} width={item.width} height={item.height} loading="lazy" decoding="async" onError={() => setFailedImages(previous => [...previous, item.src])} /></a></div><figcaption><span>{item.caption}</span>{item.url && <a href={item.url} target="_blank" rel="noopener noreferrer">View source page ↗</a>}</figcaption></Figure>;
+    })}</section>}
     {client.focus && <section className="project-focus"><p className="eyebrow">What matters in this project</p><h2>Clarity in <span>every detail.</span></h2><div className="project-focus-grid">{client.focus.map(([title,copy],index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{copy}</p></article>)}</div></section>}
     {client.campaign && <CampaignJourney client={client} />}
     {related.length > 0 && <section className="project-related"><p className="eyebrow">Explore more work</p><h2>Related client projects.</h2><div className="project-related-grid">{related.map((item, index) => <PortfolioCard key={item.id} item={item} priority={index < 3} />)}</div></section>}
@@ -706,40 +725,26 @@ function ContactPage() {
   </section></div>;
 }
 
-const automotiveClients = [
-  { name: 'Garve Hyundai', industry: 'Automotive', summary: 'A dedicated online presence for Hyundai car buyers.', url: 'https://www.garvehyundaipune.com/wadgaon-sales', previewImage: null },
-  { name: 'Garve Honda Service', industry: 'Automotive service', summary: 'An online destination for Honda service enquiries.', url: 'https://www.garvehondapune.com/pimpricolony-pimpri-chinchwad', previewImage: null },
-  { name: 'Hallmark Honda', industry: 'Automotive', summary: 'A digital presence for customers exploring Honda cars.', url: 'https://www.hallmarkhondamumbai.com/', previewImage: null },
-  { name: 'Garnet Škoda', industry: 'Automotive', summary: 'A digital destination for customers exploring Škoda cars.', url: 'https://www.garnetskodamumbai.com/', previewImage: null },
-  { name: 'Shaw Toyota', industry: 'Automotive', summary: 'A dedicated online presence for Toyota car buyers.', url: 'https://www.shawtoyotapune.com/', previewImage: null },
-  { name: 'Shaw Tata', industry: 'Automotive', summary: 'A digital destination for Tata car buyers in Pune.', url: 'https://www.shawcars.in/', previewImage: null },
-  { name: 'Shaw Tata, Indore', industry: 'Automotive', summary: 'A digital destination for Tata car buyers in Indore.', url: 'https://shawtatacarsindore.com/', previewImage: null },
-];
-
 const artworkOrder = new Intl.Collator('en', { numeric: true, sensitivity: 'base' });
 
-function PortfolioArtwork({ images, priority, onImageError }) {
+function BrandingGalleryFigure({ children }) {
   const ref = useRef(null);
-  const [inView, setInView] = useState(false);
-
+  const [revealed, setRevealed] = useState(false);
   useEffect(() => {
-    const observer = new IntersectionObserver(([entry]) => setInView(entry.isIntersecting));
+    const observer = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) return;
+      setRevealed(true);
+      observer.disconnect();
+    });
     observer.observe(ref.current);
     return () => observer.disconnect();
   }, []);
-
-  return <span className="portfolio-artwork" ref={ref} aria-hidden="true">
-    <span className="portfolio-artwork-stack" data-playing={inView}>
-      {images.map(({ src }, index) => <img key={src} src={src} alt="" tabIndex={-1}
-        loading={priority && index === 0 ? 'eager' : 'lazy'} decoding="async"
-        onError={() => onImageError(src)} />)}
-    </span>
-  </span>;
+  return <figure ref={ref} className="project-figure project-figure-artwork" data-revealed={revealed}>{children}</figure>;
 }
 
 function PortfolioCard({ item, imageOnly = false, priority = false, hidden = false }) {
   const ref = useRef(null);
-  const [visible, setVisible] = useState(() => priority && !hidden);
+  const [visible, setVisible] = useState(false);
   const [width, setWidth] = useState(320);
   const [frameStatus, setFrameStatus] = useState('pending');
   const [showProgress, setShowProgress] = useState(false);
@@ -750,16 +755,14 @@ function PortfolioCard({ item, imageOnly = false, priority = false, hidden = fal
     .sort((first, second) => artworkOrder.compare(first.src, second.src));
   const availableArtwork = gallery.filter(({ src }) => !failedArtwork.includes(src));
   const image = !url ? availableArtwork[0]?.src : null;
-  const destination = url || image || (item.id ? '/case-studies/' + item.id + '/' : null);
-  const external = Boolean(url || image);
-  const domain = url ? new URL(url).hostname.replace(/^www\./, '') : '';
+  const destination = '/case-studies/' + item.id + '/';
 
   useEffect(() => {
     const element = ref.current;
-    if (!element) return undefined;
+    if (!element || !url) return undefined;
     const observer = new IntersectionObserver(entries => {
       if (entries.some(entry => entry.isIntersecting)) { setVisible(true); observer.disconnect(); }
-    }, { rootMargin: '1000px 0px' });
+    }, { rootMargin: '160px 0px' });
     observer.observe(element);
     const resize = new ResizeObserver(entries => {
       const measured = entries[0]?.contentRect.width;
@@ -767,12 +770,9 @@ function PortfolioCard({ item, imageOnly = false, priority = false, hidden = fal
     });
     resize.observe(element);
     return () => { observer.disconnect(); resize.disconnect(); };
-  }, []);
+  }, [url]);
   useEffect(() => {
-    if (priority && !hidden) setVisible(true);
-  }, [priority, hidden]);
-  useEffect(() => {
-    if (!url || !priority || hidden) return;
+    if (!url || !visible || !priority || hidden) return;
     const origin = new URL(url).origin;
     const exists = Array.from(document.querySelectorAll('link[rel="preconnect"]')).some(link => link.href === origin + '/');
     if (!exists) {
@@ -782,7 +782,7 @@ function PortfolioCard({ item, imageOnly = false, priority = false, hidden = fal
       link.crossOrigin = 'anonymous';
       document.head.appendChild(link);
     }
-  }, [url, priority, hidden]);
+  }, [url, visible, priority, hidden]);
   useEffect(() => {
     if (!visible || !url) return undefined;
     const controller = new AbortController();
@@ -801,21 +801,20 @@ function PortfolioCard({ item, imageOnly = false, priority = false, hidden = fal
     return () => window.clearTimeout(timer);
   }, [visible, url, frameStatus === 'blocked']);
 
-  return <a ref={ref} hidden={hidden} className="portfolio-card" href={destination || '#'} {...(external ? { target:'_blank', rel:'noopener noreferrer' } : {})} aria-label={item.name + (external ? ' — open in a new tab' : ' — view project')}>
-    <span className="portfolio-bar" aria-hidden="true"><span className="portfolio-dots"><i /><i /><i /></span><span className="portfolio-domain">{domain || (image ? 'Brand artwork' : 'Client project')}</span><span className="portfolio-open">Open ↗</span></span>
+  return <a ref={ref} hidden={hidden} className="portfolio-card" href={destination}>
+
     <span className="portfolio-visual">
       {visible && url && frameStatus !== 'blocked' && <iframe title="" aria-hidden="true" tabIndex="-1" src={url} {...(priority ? { fetchPriority:'high' } : { loading:'lazy' })} sandbox="allow-scripts allow-same-origin allow-forms" onLoad={() => setShowProgress(false)} onError={() => { setFrameStatus('unknown'); setShowProgress(false); }} style={{ width:'1280px', height:'800px', transform:'scale(' + (width / 1280) + ')' }} />}
       {showProgress && frameStatus !== 'blocked' && <span className="portfolio-progress" aria-hidden="true" />}
-      {frameStatus === 'blocked' && <span className="portfolio-unavailable">This website does not allow embedded previews. Open the card to visit.</span>}
-      {visible && !url && image && <PortfolioArtwork images={availableArtwork} priority={priority} onImageError={src => setFailedArtwork(previous => [...previous, src])} />}
-      {visible && !url && !image && <span className="portfolio-no-image"><ClientLogo client={item} /></span>}
+      {image && <img src={image} alt="" loading="lazy" decoding="async" onError={() => setFailedArtwork(previous => [...previous, image])} />}
+      {!url && !image && <span className="portfolio-no-image"><ClientLogo client={item} /></span>}
     </span>
-    <span className="portfolio-card-copy"><span className="portfolio-tag">{item.industry || item.type || item.category || 'Client project'}</span><strong>{item.name}</strong><span className="portfolio-summary">{item.summary || item.description || item.copy}</span><span className="portfolio-card-open" aria-hidden="true">Open ↗</span></span>
+    <span className="portfolio-card-copy"><strong>{item.name}</strong><span className="portfolio-service">{item.service || item.category || item.type}</span></span>
   </a>;
 }
 
 function AutomotivePortfolio() {
-  return <div className="automotive-grid">{automotiveClients.map((item, index) => <PortfolioCard key={item.name} item={item} priority={index < 3} />)}</div>;
+  return <div className="automotive-grid">{automotiveProjects.map(({ id }, index) => <PortfolioCard key={id} item={clients.find(client => client.id === id)} priority={index < 3} />)}</div>;
 }
 
 function PageContent({ path }) {
@@ -834,7 +833,7 @@ function PageContent({ path }) {
   } else if (page === 'services') items = services;
   else if (caseStudy) {
     head = [caseStudy.category, caseStudy.label, 'client story.', caseStudy.copy];
-    body = <ClientProjectPage client={caseStudy} />;
+    body = <ClientProjectPage key={caseStudy.id} client={caseStudy} />;
   } else if (page === 'case-studies') items = caseStudies;
   else if (page === 'portfolio' || page === 'products') items = clients;
   else if (industry && industry.id === 'Automobile') {
