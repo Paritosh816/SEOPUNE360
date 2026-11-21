@@ -119,7 +119,10 @@ const brandingProjects = [
     id: 'koriv-studio', name: 'Koriv Studio', category: 'Brand identity & applications',
     description: 'A logo system and branded mockup artwork for Koriv Studio.',
     artworks: [
-      { src: '/images/business-branding/ks-brand-identity.jpg', fullSize: originalBrandingPath + encodeURIComponent('KS Logo.jpg'), width: 210, height: 1050, alt: 'Koriv Studio logo and visual identity presentation', label: 'Identity presentation' },
+      { src: '/images/business-branding/koriv-studio-02.jpg', fullSize: originalBrandingPath + encodeURIComponent('Koriv Studio 02 - Stacked logo.jpg'), width: 1200, height: 786, alt: 'Koriv Studio’s circular emblem above the stacked wordmark', label: 'Stacked logo' },
+      { src: '/images/business-branding/koriv-studio-01.jpg', fullSize: originalBrandingPath + encodeURIComponent('Koriv Studio 01 - Colour palette.jpg'), width: 1200, height: 786, alt: 'Koriv Studio’s brown and orange colour swatches', label: 'Colour palette' },
+      { src: '/images/business-branding/koriv-studio-03.jpg', fullSize: originalBrandingPath + encodeURIComponent('Koriv Studio 03 - Horizontal logo.jpg'), width: 1200, height: 786, alt: 'Koriv Studio’s circular emblem beside the wordmark', label: 'Horizontal logo' },
+      { src: '/images/business-branding/koriv-studio-04.jpg', fullSize: originalBrandingPath + encodeURIComponent('Koriv Studio 04 - Brand mockups.jpg'), width: 1200, height: 786, alt: 'Koriv Studio identity on an envelope, mugs, notebook and embossed card', label: 'Brand mockups' },
     ],
   },
   {

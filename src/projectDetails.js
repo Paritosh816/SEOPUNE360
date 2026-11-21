@@ -86,9 +86,9 @@ export const projectDetails = {
   'gaurav-vishwasrao': { logo: brand + 'gaurav-vishwasrao-01.jpg', logoLayout: 'sheet' },
   'jijai-milk': { logo: brand + 'jijai-milk-01.jpg', logoLayout: 'sheet' },
   'koriv-studio': {
-    logo: brand + 'ks-brand-identity.jpg', logoLayout: 'tall',
+    logo: brand + 'koriv-studio-02.jpg', logoLayout: 'sheet',
     headline: 'A detailed mark with a warm, crafted character.',
-    overview: 'Koriv Studio’s logo project pairs an intricate circular emblem with a restrained wordmark. Gold and brown give the identity a warm character, while the supplied presentation explores how the mark appears across printed and environmental mockups.',
-    focus: [ ['Symbol and wordmark', 'The detailed emblem contrasts with simple lettering to create a balanced lockup.'], ['A restrained palette', 'Warm metallic and earth-toned colours carry through the identity presentation.'], ['Applications in context', 'The project board shows the logo on stationery, mugs and a reception-wall mockup.'] ],
+    overview: 'Koriv Studio’s logo pairs an intricate circular emblem with a restrained wordmark. The stacked and horizontal arrangements use a warm orange and brown palette that carries through the stationery and mug mockups.',
+    focus: [ ['Symbol and wordmark', 'The detailed emblem contrasts with simple lettering in both logo arrangements.'], ['A restrained palette', 'The orange and brown colour swatches document the palette for digital and print use.'], ['Applications in context', 'The mockups show the logo on an envelope, mugs, a notebook and an embossed card.'] ],
   },
 };
