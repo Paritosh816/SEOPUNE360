@@ -830,7 +830,7 @@ function PageContent({ path }) {
   let body = null;
   if (service) {
     head = ['Our services', service.title, 'for business growth.', service.summary];
-    body = <><section className="section"><div className="container detail-layout"><div><p className="eyebrow">What’s included</p><h2>Focused work, <span>built around your goals.</span></h2><p>{serviceIntro(service.id) || service.summary}</p><a className="button" href="/contact/">Discuss this service <ArrowIcon /></a></div><ul className="detail-points">{service.items.map((item) => <li key={item}><span>↗</span>{item}</li>)}</ul></div></section><ServiceDeliverables id={service.id} />{service.id === 'branding' && <BrandingPortfolio />}<ServiceClientPortfolio service={service} /></>;
+    body = <><section className="section"><div className="container detail-layout"><div><p className="eyebrow">What’s included</p><h2>Focused work, <span>built around your goals.</span></h2><p>{serviceIntro(service.id) || service.summary}</p><a className="button" href="/contact/">Discuss this service <ArrowIcon /></a></div><ul className="detail-points">{service.items.map((item) => <li key={item}><span>↗</span>{item}</li>)}</ul></div></section><ServiceDeliverables id={service.id} />{service.id === 'branding' ? <BrandingPortfolio /> : <ServiceClientPortfolio service={service} />}</>;
   } else if (page === 'services') items = services;
   else if (caseStudy) {
     head = [caseStudy.category, caseStudy.label, 'client story.', caseStudy.copy];
