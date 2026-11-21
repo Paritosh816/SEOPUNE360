@@ -37,6 +37,17 @@ const dealershipStories = {
       ['Enquiry', 'Make the offer request and outlet selection part of the same journey.'],
     ],
   },
+  'garnet-skoda': {
+    market: 'Mumbai & Navi Mumbai · Škoda sales',
+    cover: photos + 'garnet-skoda-feature.jpg',
+    headline: 'Give Škoda buyers a direct route from model research to the showroom.',
+    challenge: 'Buyers comparing models need to find the right vehicle and reach a showroom without losing their place in the buying journey.',
+    execution: [
+      ['Brand', 'Present Škoda vehicles and the Garnet dealership within a consistent experience.'],
+      ['Website', 'Organise the dealership website around the model range so buyers can compare options.'],
+      ['Enquiry', 'Connect model browsing with showroom contact and test-drive enquiries.'],
+    ],
+  },
   'garve-hyundai': {
     market: 'Wadgaon, Pune · Hyundai sales',
     cover: photos + 'garve-hyundai-showcase.jpg',

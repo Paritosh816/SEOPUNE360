@@ -1,9 +1,11 @@
 import { automotiveProjects } from './src/automotiveProjects.js';
 import { showcaseDealerships, showcasePath } from './src/automotiveShowcase.js';
-import { defineConfig } from 'vite';
+import { createServer, defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { createElement } from 'react';
+import { renderToString } from 'react-dom/server';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
-import { dirname, join } from 'node:path';
+import { dirname, join, resolve } from 'node:path';
 
 const routes = [
   ['/services/', 'Digital Growth Services', 'Explore SEO, AI search, lead generation, business branding, and website development from SEOPune360.'],
@@ -36,9 +38,45 @@ const routes = [
 ];
 
 const showcaseRoutes = [
-  [showcasePath, 'Automotive Client Showcase', 'Explore selected SEOPune360 dealership projects.', true],
-  ...showcaseDealerships.map(({ id, name, headline }) => [showcasePath + id + '/', name + ' Dealership Showcase', headline, true]),
+  [showcasePath, 'Automotive Client Showcase', 'Explore selected SEOPune360 dealership projects.'],
+  ...showcaseDealerships.map(({ id, name, headline }) => [showcasePath + id + '/', name + ' Dealership Showcase', headline]),
 ];
+
+async function writeShowcasePages(outputDirectory) {
+  const template = await readFile(join(outputDirectory, 'automotive-showcase', 'index.html'), 'utf8');
+  const mount = '<div id="root"></div>';
+  if (!template.includes(mount)) throw new Error('Missing automotive showcase mount in the built HTML.');
+
+  const escapeHtml = (value) => value.replaceAll('&', '&amp;').replaceAll('"', '&quot;')
+    .replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+  const renderer = await createServer({
+    configFile: false,
+    plugins: [react()],
+    server: { middlewareMode: true, hmr: false, watch: null, ws: false },
+  });
+  try {
+    const { default: AutomotiveShowcase } = await renderer.ssrLoadModule('/src/AutomotiveShowcase.jsx');
+    for (const [path, title, description] of showcaseRoutes) {
+      const canonical = `https://seopune360.com${path}`;
+      const pageTitle = escapeHtml(title) + ' | SEOPune360';
+      const pageDescription = escapeHtml(description);
+      const content = renderToString(createElement(AutomotiveShowcase, { path }));
+      const page = template
+        .replace(/<title>[^<]*<\/title>/, () => `<title>${pageTitle}</title>`)
+        .replace(/<meta name="description" content="[^"]*"\s*\/>/, () => `<meta name="description" content="${pageDescription}" />`)
+        .replace(/<meta property="og:title" content="[^"]*"\s*\/>/, () => `<meta property="og:title" content="${pageTitle}" />`)
+        .replace(/<meta property="og:description" content="[^"]*"\s*\/>/, () => `<meta property="og:description" content="${pageDescription}" />`)
+        .replace(/<meta property="og:url" content="[^"]*"\s*\/>/, () => `<meta property="og:url" content="${canonical}" />`)
+        .replace('</head>', () => `  <link rel="canonical" href="${canonical}" />\n  </head>`)
+        .replace(mount, () => `<div id="root" data-showcase-path="${path}">${content}</div>`);
+      const outputPath = join(outputDirectory, path.slice(1), 'index.html');
+      await mkdir(dirname(outputPath), { recursive: true });
+      await writeFile(outputPath, page, 'utf8');
+    }
+  } finally {
+    await renderer.close();
+  }
+}
 
 function staticRoutePages() {
   return {
@@ -47,7 +85,7 @@ function staticRoutePages() {
     async writeBundle(outputOptions) {
       const outputDirectory = outputOptions.dir || 'dist';
       const html = await readFile(join(outputDirectory, 'index.html'), 'utf8');
-      for (const [path, title, description, noindex] of [...routes, ...showcaseRoutes]) {
+      for (const [path, title, description] of routes) {
         const canonical = `https://seopune360.com${path}`;
         const escapedTitle = title.replaceAll('&', '&amp;');
         const escapedDescription = description.replaceAll('&', '&amp;');
@@ -56,11 +94,12 @@ function staticRoutePages() {
           .replace(/(<meta\s+name="description"\s+content=")[^"]*("\s*\/>)/, `$1${escapedDescription}$2`)
           .replace(/(<meta\s+property="og:title"\s+content=")[^"]*("\s*\/>)/, `$1${escapedTitle} | SEOPune360$2`)
           .replace(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${canonical}" />`)
-          .replace('</head>', `<link rel="canonical" href="${canonical}" />\n    ${noindex ? '<meta name="robots" content="noindex, nofollow" />\n  ' : ''}</head>`);
+          .replace('</head>', `<link rel="canonical" href="${canonical}" />\n  </head>`);
         const outputPath = join(outputDirectory, path.slice(1), 'index.html');
         await mkdir(dirname(outputPath), { recursive: true });
         await writeFile(outputPath, page, 'utf8');
       }
+      await writeShowcasePages(outputDirectory);
 
       const industryRedirects = {
         matrimony: 'matrimonial', 'healthcare-technology': 'healthcare', 'construction-support': 'real-estate',
@@ -106,6 +145,14 @@ function staticRoutePages() {
 
 export default defineConfig({
   plugins: [react(), staticRoutePages()],
+  build: {
+    rollupOptions: {
+      input: {
+        main: resolve('index.html'),
+        showcase: resolve('automotive-showcase/index.html'),
+      },
+    },
+  },
 });
 
 
