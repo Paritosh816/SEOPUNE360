@@ -5,6 +5,7 @@ import ServiceDeliverables, { serviceIntro } from './ServiceDeliverables';
 import ServiceRequirementFlow from './ServiceRequirementFlow';
 import { showcasePath } from './automotiveShowcase.js';
 const AutomotiveShowcase = lazy(() => import('./AutomotiveShowcase.jsx'));
+const FeaturedDealerships = lazy(() => import('./FeaturedDealerships.jsx'));
 const CONTACT_EMAIL = 'seopune360@gmail.com';
 const LINKEDIN_URL = 'https://www.linkedin.com/company/seopune-360/';
 function LinkedInIcon() { return <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false" fill="currentColor"><path d="M20.45 2H3.55A1.55 1.55 0 0 0 2 3.55v16.9C2 21.3 2.7 22 3.55 22h16.9c.85 0 1.55-.7 1.55-1.55V3.55C22 2.7 21.3 2 20.45 2ZM8.08 18.75H5.1V9.2h2.98v9.55ZM6.59 7.89a1.73 1.73 0 1 1 0-3.46 1.73 1.73 0 0 1 0 3.46Zm12.16 10.86h-2.98V14.1c0-1.11-.02-2.55-1.56-2.55-1.56 0-1.8 1.22-1.8 2.47v4.73H9.43V9.2h2.86v1.3h.04a3.14 3.14 0 0 1 2.83-1.55c3.03 0 3.59 2 3.59 4.59v5.21Z" /></svg>; }
@@ -560,11 +561,11 @@ function AuditSection() {
   );
 }
 
-function Footer({ onCookieSettings, onLegal, onStart }) {
+function Footer({ onCookieSettings, onLegal, onStart, showProjectBanner = true }) {
   const year = new Date().getFullYear();
   return (
     <footer className="site-footer" id="footer">
-      <div className="footer-cta"><div className="container footer-cta-inner"><div><p className="eyebrow">Your next growth chapter starts here</p><h2>Let’s make your online presence work harder.</h2></div><RequirementButton className="button footer-button" onStart={onStart}>Start a project <ArrowIcon /></RequirementButton></div></div>
+      {showProjectBanner && <div className="footer-cta"><div className="container footer-cta-inner"><div><p className="eyebrow">Your next growth chapter starts here</p><h2>Let’s make your online presence work harder.</h2></div><RequirementButton className="button footer-button" onStart={onStart}>Start a project <ArrowIcon /></RequirementButton></div></div>}
       <div className="container footer-main"><div className="footer-brand-col"><Brand footer /><p>SEO, websites, and growth support for businesses ready to move forward.</p><a className="footer-email" href={'mailto:' + CONTACT_EMAIL}>{CONTACT_EMAIL} <ArrowIcon /></a><div className="footer-social"><a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" aria-label="SEOPUNE360 on LinkedIn"><LinkedInIcon /></a></div></div>
         <div className="footer-column"><h3>Services</h3>{services.map((service) => <a href={servicePaths[service.id]} key={service.id}>{service.title}</a>)}</div>
         <div className="footer-column"><h3>Explore</h3><a href="/#showreel-story">Client Showreel</a><a href="/case-studies/">Case Studies</a><a href="/growth-plan/">Build my growth plan</a><a href="/portfolio/">Client Portfolio</a><a href="/products/">Products &amp; Platforms</a><a href="/industries/">Industries</a><a href="/process/">How We Work</a><a href="/about/">About Us</a><a href="/sitemap/">Sitemap</a></div>
@@ -971,7 +972,9 @@ function PageContent({ path, onStart }) {
     return <PortfolioCard key={item.id || item.name} item={item} priority={items.indexOf(item) < 3} />;
   };
   const titleParts = head[1].split(' ');
-  return <><InsideHero kicker={head[0]} title={titleParts.slice(0, Math.max(1, titleParts.length - 1)).join(' ')} accent={titleParts.length > 1 ? titleParts.slice(-1).join(' ') + (head[2] ? ' ' + head[2] : '') : head[2]} copy={head[3]} />{((page === 'case-studies' && !caseStudy) || page === 'portfolio') ? <CaseStudyExplorer /> : items.length > 0 && <section className="section"><ContentCards items={items} render={renderCard} />{page === 'industries' && !industry && <p className="container content-note">A published client case study is not currently listed for every sector.</p>}{industry && items.length === 0 && <div className="container empty-state"><h2>No published client case study for this category yet.</h2><p>We can still discuss the search and website needs of your business.</p><a className="button" href="/contact/">Talk with us <ArrowIcon /></a></div>}</section>}{body}</>;
+  return <><InsideHero kicker={head[0]} title={titleParts.slice(0, Math.max(1, titleParts.length - 1)).join(' ')} accent={titleParts.length > 1 ? titleParts.slice(-1).join(' ') + (head[2] ? ' ' + head[2] : '') : head[2]} copy={head[3]} />
+    {page === 'portfolio' && <Suspense fallback={null}><FeaturedDealerships /></Suspense>}
+    {((page === 'case-studies' && !caseStudy) || page === 'portfolio') ? <CaseStudyExplorer /> : items.length > 0 && <section className="section"><ContentCards items={items} render={renderCard} />{page === 'industries' && !industry && <p className="container content-note">A published client case study is not currently listed for every sector.</p>}{industry && items.length === 0 && <div className="container empty-state"><h2>No published client case study for this category yet.</h2><p>We can still discuss the search and website needs of your business.</p><a className="button" href="/contact/">Talk with us <ArrowIcon /></a></div>}</section>}{body}</>;
 }
 
 function App() {
@@ -997,16 +1000,16 @@ function App() {
     opener.current?.focus({ preventScroll: true });
   }, []);
   const pageService = services.find((service) => servicePaths[service.id] === path);
-  const isShowcase = path.startsWith(showcasePath);
-  const startPageRequirements = (trigger) => startRequirements(trigger, isShowcase ? 'leads' : pageService?.id, isShowcase ? 'Automobile' : undefined);
-  const page = isShowcase
-    ? <Suspense fallback={<p className="container" role="status">Loading automotive showcase…</p>}><AutomotiveShowcase path={path} onStart={startRequirements} /></Suspense>
-    : <PageContent path={path} onStart={startRequirements} />;
+  const startPageRequirements = (trigger) => startRequirements(trigger, pageService?.id);
+  if (path.startsWith(showcasePath)) {
+    return <Suspense fallback={<p className="container" role="status">Loading automotive showcase…</p>}><AutomotiveShowcase path={path} brand={<Brand />} /></Suspense>;
+  }
+  const showProjectBanner = path !== '/portfolio/' && !(path.startsWith('/case-studies/') && path !== '/case-studies/');
 
   return <div className="page-shell">
     <Header onStart={startPageRequirements} />
-    <main>{path === '/' ? <><Hero onPlayShowreel={() => setShowreelOpen(true)} onStart={startRequirements} /><ClientSelector activeIndustry={activeIndustry} setActiveIndustry={setActiveIndustry} /><Services activeService={activeService} setActiveService={setActiveService} onStart={startRequirements} /><CaseStudies activeCase={activeCase} setActiveCase={setActiveCase} /><Process /><WhyUs /><AuditSection /></> : page}</main>
-    <Footer onCookieSettings={() => setCookieOpen(true)} onLegal={setLegalTitle} onStart={startPageRequirements} />
+    <main>{path === '/' ? <><Hero onPlayShowreel={() => setShowreelOpen(true)} onStart={startRequirements} /><ClientSelector activeIndustry={activeIndustry} setActiveIndustry={setActiveIndustry} /><Services activeService={activeService} setActiveService={setActiveService} onStart={startRequirements} /><CaseStudies activeCase={activeCase} setActiveCase={setActiveCase} /><Process /><WhyUs /><AuditSection /></> : <PageContent path={path} onStart={startRequirements} />}</main>
+    <Footer onCookieSettings={() => setCookieOpen(true)} onLegal={setLegalTitle} onStart={startPageRequirements} showProjectBanner={showProjectBanner} />
     {cookieNoticeOpen && <CookieNotice onAccept={() => { applyCookiePreferences({ analytics: true, marketing: true, functional: true }); setCookieNoticeOpen(false); }} onReject={() => { applyCookiePreferences({ analytics: false, marketing: false, functional: false }); setCookieNoticeOpen(false); }} onSettings={() => setCookieOpen(true)} />}
     {showreelOpen && <ShowreelModal onClose={() => setShowreelOpen(false)} />}
     {cookieOpen && <CookieDialog onClose={() => setCookieOpen(false)} onSaved={() => setCookieNoticeOpen(false)} />}
