@@ -39,7 +39,10 @@ const clientProjects = [
   { id: 'hotel-shivtara', name: 'Hotel Shivtara', industries: ['Hospitality'], serviceTypes: ['Website Development'], serviceIds: ['development'], tone: 'case-hospitality', description: 'Website development for Hotel Shivtara, presenting the hotel and key information for guests planning their stay.', scope: ['Website Development'] },
   { id: 'era-infratech', name: 'ERA Infratech', industries: ['Real Estate'], serviceTypes: ['Branding'], serviceIds: ['branding'], tone: 'case-realestate', description: 'Branding for ERA Infratech, with logo variations and a visual identity presentation.', scope: ['Branding', 'Visual identity'] },
   { id: 'fpt', name: 'FPT Powertrain Technologies', industries: ['Manufacturing Industry'], serviceTypes: ['Branding'], serviceIds: ['branding'], serviceNote: 'India Office', tone: 'case-construction', description: 'Branding work for the India office of FPT Powertrain Technologies, presented through the supplied logo artwork.', scope: ['Branding — India Office'] },
-  { id: 'koriv-studio', name: 'Koriv Studio', industries: ['Real Estate', 'Infratech'], serviceTypes: ['Logo'], serviceIds: ['branding'], tone: 'case-architecture', description: 'Logo work for Koriv Studio, presented through its identity artwork and branded mockups.', scope: ['Logo'] },
+  { id: 'koriv-studio', name: 'Koriv Studio', industries: ['Real Estate', 'Infratech'], serviceTypes: ['Branding'], serviceIds: ['branding'], tone: 'case-architecture', description: 'Logo work for Koriv Studio, presented through its identity artwork and branded mockups.', scope: ['Logo'] },
+  { id: 'freshia', name: 'Freshia', industries: ['D2C / Lifestyle'], serviceTypes: ['Branding'], serviceIds: ['branding'], tone: 'case-fragrance', description: 'Branding artwork for Freshia, presented across three supplied design boards.', scope: ['Branding', 'Brand identity'] },
+  { id: 'gaurav-vishwasrao', name: 'Gaurav Vishwasrao', industries: ['Real Estate'], serviceTypes: ['Branding'], serviceIds: ['branding'], tone: 'case-architecture', description: 'Logo and branding artwork for Gaurav Vishwasrao Architects, shown across three supplied design boards.', scope: ['Branding', 'Logo design'] },
+  { id: 'jijai-milk', name: 'Jijai Milk', industries: ['D2C / Lifestyle'], serviceTypes: ['Branding'], serviceIds: ['branding'], tone: 'case-fragrance', description: 'Branding and packaging artwork for Jijai Milk, presented across two supplied pack designs.', scope: ['Branding', 'Packaging design'] },
 ];
 
 for (const project of automotiveProjects) {
@@ -117,6 +120,29 @@ const brandingProjects = [
     description: 'A logo system and branded mockup artwork for Koriv Studio.',
     artworks: [
       { src: '/images/business-branding/ks-brand-identity.jpg', fullSize: originalBrandingPath + encodeURIComponent('KS Logo.jpg'), width: 210, height: 1050, alt: 'Koriv Studio logo and visual identity presentation', label: 'Identity presentation' },
+    ],
+  },
+  {
+    id: 'freshia',
+    artworks: [
+      { src: '/images/business-branding/freshia-01.jpg', fullSize: originalBrandingPath + encodeURIComponent('Freshia Branding-01.jpg'), width: 1200, height: 786, alt: 'Freshia branding board 01', label: 'Branding board 01' },
+      { src: '/images/business-branding/freshia-02.jpg', fullSize: originalBrandingPath + encodeURIComponent('Freshia Branding-02.jpg'), width: 1200, height: 786, alt: 'Freshia branding board 02', label: 'Branding board 02' },
+      { src: '/images/business-branding/freshia-03.jpg', fullSize: originalBrandingPath + encodeURIComponent('Freshia Branding-03.jpg'), width: 1200, height: 786, alt: 'Freshia branding board 03', label: 'Branding board 03' },
+    ],
+  },
+  {
+    id: 'gaurav-vishwasrao',
+    artworks: [
+      { src: '/images/business-branding/gaurav-vishwasrao-01.jpg', fullSize: originalBrandingPath + encodeURIComponent('Gaurav Vishwasrao Architects Logo copy-01.jpg'), width: 1200, height: 786, alt: 'Gaurav Vishwasrao Architects logo board 01', label: 'Logo board 01' },
+      { src: '/images/business-branding/gaurav-vishwasrao-02.jpg', fullSize: originalBrandingPath + encodeURIComponent('Gaurav Vishwasrao Architects Logo copy-02.jpg'), width: 1200, height: 786, alt: 'Gaurav Vishwasrao Architects logo board 02', label: 'Logo board 02' },
+      { src: '/images/business-branding/gaurav-vishwasrao-03.jpg', fullSize: originalBrandingPath + encodeURIComponent('Gaurav Vishwasrao Architects Logo copy-03.jpg'), width: 1200, height: 786, alt: 'Gaurav Vishwasrao Architects logo board 03', label: 'Logo board 03' },
+    ],
+  },
+  {
+    id: 'jijai-milk',
+    artworks: [
+      { src: '/images/business-branding/jijai-milk-01.jpg', fullSize: originalBrandingPath + encodeURIComponent('Jijai Milk Package-01.jpg'), width: 1200, height: 786, alt: 'Jijai Milk packaging design 01', label: 'Packaging design 01' },
+      { src: '/images/business-branding/jijai-milk-02.jpg', fullSize: originalBrandingPath + encodeURIComponent('Jijai Milk Package-02.jpg'), width: 1200, height: 786, alt: 'Jijai Milk packaging design 02', label: 'Packaging design 02' },
     ],
   },
 ].map((project) => {
