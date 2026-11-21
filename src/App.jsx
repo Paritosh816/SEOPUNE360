@@ -86,36 +86,37 @@ const auditItems = [
   ['Conversion journey', 'Calls to action and enquiry paths'],
 ];
 
+const originalBrandingPath = '/images/business-branding/originals/';
 const brandingProjects = [
   {
     id: 'era-infratech', name: 'ERA Infratech', category: 'Logo exploration & identity',
     description: 'Logo variations and a visual identity presentation for ERA Infratech.',
     artworks: [
-      { src: '/images/business-branding/era-infratech-logo-variations.jpg', width: 1050, height: 1050, alt: 'ERA Infratech logo shown in two color treatments', label: 'Logo variations' },
-      { src: '/images/business-branding/era-infratech-artboard.jpg', width: 293, height: 1050, alt: 'ERA Infratech visual identity presentation', label: 'Identity presentation' },
+      { src: '/images/business-branding/era-infratech-logo-variations.jpg', fullSize: originalBrandingPath + encodeURIComponent('Era Infratech Logofolio-02.jpg'), width: 1050, height: 1050, alt: 'ERA Infratech logo shown in two color treatments', label: 'Logo variations' },
+      { src: '/images/business-branding/era-infratech-artboard.jpg', fullSize: originalBrandingPath + encodeURIComponent('Era Infratech Logofolio_Artboard 1.jpg'), width: 293, height: 1050, alt: 'ERA Infratech visual identity presentation', label: 'Identity presentation' },
     ],
   },
   {
     id: 'fpt', name: 'FPT Powertrain Technologies', category: 'Logo artwork',
     description: 'FPT Powertrain Technologies logo artwork supplied for the portfolio.',
     artworks: [
-      { src: projectDetails.fpt.logo, width: 1600, height: 703, alt: 'FPT Powertrain Technologies logo on a red background', label: 'Logo artwork' },
+      { src: projectDetails.fpt.logo, fullSize: projectDetails.fpt.logo, width: 1600, height: 703, alt: 'FPT Powertrain Technologies logo on a red background', label: 'Logo artwork' },
     ],
   },
   {
     id: 'kj-group', name: 'KJ Group', category: 'Brand identity & applications',
     description: 'A brand identity presentation with logo variations and application mockups.',
     artworks: [
-      { src: '/images/business-branding/kj-group-brand-applications.jpg', width: 823, height: 1050, alt: 'KJ Group brand identity and stationery applications', label: 'Brand applications' },
-      { src: '/images/business-branding/kj-group-logo-variations.jpg', width: 1050, height: 1050, alt: 'KJ Group logo and color variations', label: 'Logo variations' },
-      { src: '/images/business-branding/kj-group-brand-mockups.jpg', width: 214, height: 1050, alt: 'KJ Group brand mockup presentation', label: 'Brand mockups' },
+      { src: '/images/business-branding/kj-group-brand-applications.jpg', fullSize: originalBrandingPath + encodeURIComponent('KJ Group Branding.jpg'), width: 823, height: 1050, alt: 'KJ Group brand identity and stationery applications', label: 'Brand applications' },
+      { src: '/images/business-branding/kj-group-logo-variations.jpg', fullSize: originalBrandingPath + encodeURIComponent('KJ Group Logo.jpg'), width: 1050, height: 1050, alt: 'KJ Group logo and color variations', label: 'Logo variations' },
+      { src: '/images/business-branding/kj-group-brand-mockups.jpg', fullSize: originalBrandingPath + encodeURIComponent('KJ Group Mockup New.jpg'), width: 214, height: 1050, alt: 'KJ Group brand mockup presentation', label: 'Brand mockups' },
     ],
   },
   {
     id: 'koriv-studio', name: 'Koriv Studio', category: 'Brand identity & applications',
     description: 'A logo system and branded mockup artwork for Koriv Studio.',
     artworks: [
-      { src: '/images/business-branding/ks-brand-identity.jpg', width: 210, height: 1050, alt: 'Koriv Studio logo and visual identity presentation', label: 'Identity presentation' },
+      { src: '/images/business-branding/ks-brand-identity.jpg', fullSize: originalBrandingPath + encodeURIComponent('KS Logo.jpg'), width: 210, height: 1050, alt: 'Koriv Studio logo and visual identity presentation', label: 'Identity presentation' },
     ],
   },
 ].map((project) => {
@@ -337,7 +338,7 @@ function ClientLogo({ client }) {
 
 function projectGallery(client) {
   const artworks = brandingProjects.find((project) => project.id === client.id)?.artworks || [];
-  return client.gallery || artworks.map((artwork) => ({ src: artwork.src, title: artwork.label, caption: artwork.alt, width: artwork.width, height: artwork.height }));
+  return client.gallery || artworks.map((artwork) => ({ src: artwork.src, fullSize: artwork.fullSize, title: artwork.label, caption: artwork.alt, width: artwork.width, height: artwork.height }));
 }
 
 function ProjectCover({ client }) {
@@ -371,14 +372,14 @@ function ClientProjectPage({ client }) {
   const isBranding = client.serviceIds.includes('branding');
   const [failedImages, setFailedImages] = useState([]);
   const gallery = projectGallery(client).filter(item => !failedImages.includes(item.src));
-  if (isBranding) gallery.sort((first, second) => artworkOrder.compare(first.src, second.src));
+  if (isBranding) gallery.sort((first, second) => artworkOrder.compare(decodeURIComponent(first.fullSize || first.src), decodeURIComponent(second.fullSize || second.src)));
   const related = clients.filter((item) => item.id !== client.id && item.serviceTypes.some((type) => client.serviceTypes.includes(type))).slice(0,3);
   return <section className="section project-story"><div className="container">
     <div className="project-summary"><ClientLogo client={client} /><div><p className="eyebrow">Project scope</p><h2>{client.headline || client.name}</h2><div className="project-tags">{client.serviceTypes.map((type) => <span key={type}>{type}</span>)}{client.serviceNote && <span>{client.serviceNote}</span>}</div></div></div>
     <div className="project-overview"><div><p className="eyebrow">The project</p><p className="project-lead">{client.overview || client.description}</p></div><aside><h3>At a glance</h3><dl><dt>Client</dt><dd>{client.name}</dd><dt>Industry</dt><dd>{client.type}</dd><dt>Services</dt><dd>{client.service}</dd></dl>{(client.landing || client.website) && <a className="text-link" href={client.landing || client.website} target="_blank" rel="noopener noreferrer">{client.landing ? 'Visit landing page' : 'Visit client website'} <ArrowIcon /></a>}</aside></div>
     {gallery.length > 0 && <section className="project-gallery" aria-label={'Project visuals for ' + client.name}><div className="section-title-row"><div><p className="eyebrow">Work in context</p><h2>{client.campaign ? 'The landing experience.' : client.serviceIds.includes('branding') ? 'The identity, in detail.' : 'A closer look at the website.'}</h2></div></div>{gallery.map((item, index) => {
       const Figure = isBranding ? BrandingGalleryFigure : 'figure';
-      return <Figure className="project-figure" key={item.src}><div className="project-frame"><div className="project-frame-bar"><span><i /><i /><i /></span><b>{item.title}</b><span>{String(index + 1).padStart(2,'0')}</span></div><a href={item.src} target="_blank" rel="noopener noreferrer" aria-label={'View full-size ' + item.title}><img src={item.src} alt={item.caption} width={item.width} height={item.height} loading="lazy" decoding="async" onError={() => setFailedImages(previous => [...previous, item.src])} /></a></div><figcaption><span>{item.caption}</span>{item.url && <a href={item.url} target="_blank" rel="noopener noreferrer">View source page ↗</a>}</figcaption></Figure>;
+      return <Figure className="project-figure" key={item.src}><div className="project-frame"><div className="project-frame-bar"><span><i /><i /><i /></span><b>{item.title}</b><span>{String(index + 1).padStart(2,'0')}</span></div><a href={item.fullSize || item.src} target="_blank" rel="noopener noreferrer" aria-label={'View full-size ' + item.title}><img src={item.src} alt={item.caption} width={item.width} height={item.height} loading="lazy" decoding="async" onError={() => setFailedImages(previous => [...previous, item.src])} /></a></div><figcaption><span>{item.caption}</span>{item.url && <a href={item.url} target="_blank" rel="noopener noreferrer">View source page ↗</a>}</figcaption></Figure>;
     })}</section>}
     {client.focus && <section className="project-focus"><p className="eyebrow">What matters in this project</p><h2>Clarity in <span>every detail.</span></h2><div className="project-focus-grid">{client.focus.map(([title,copy],index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{copy}</p></article>)}</div></section>}
     {client.campaign && <CampaignJourney client={client} />}
@@ -751,8 +752,7 @@ function PortfolioCard({ item, imageOnly = false, priority = false, hidden = fal
   const [failedArtwork, setFailedArtwork] = useState([]);
   const brandingArtwork = item.artworks || brandingProjects.find(project => project.id === item.id)?.artworks;
   const url = imageOnly || brandingArtwork?.length ? null : (item.url || item.website || item.landing);
-  const gallery = [...(brandingArtwork || projectGallery(item))]
-    .sort((first, second) => artworkOrder.compare(first.src, second.src));
+  const gallery = brandingArtwork || projectGallery(item);
   const availableArtwork = gallery.filter(({ src }) => !failedArtwork.includes(src));
   const image = !url ? availableArtwork[0]?.src : null;
   const destination = '/case-studies/' + item.id + '/';
