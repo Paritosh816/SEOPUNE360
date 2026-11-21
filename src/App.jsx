@@ -821,7 +821,8 @@ function PortfolioCard({ item, imageOnly = false, priority = false, hidden = fal
   const livePreview = Boolean(url && item.portfolioEmbed !== 'blocked');
   const gallery = brandingArtwork || projectGallery(item);
   const availableArtwork = gallery.filter(({ src }) => !failedArtwork.includes(src));
-  const image = !url ? availableArtwork[0]?.src : null;
+  const preview = fallback && item.portfolioPreview && !failedArtwork.includes(item.portfolioPreview) ? item.portfolioPreview : null;
+  const image = preview || (!url ? availableArtwork[0]?.src : null);
   const destination = fallback ? url : '/case-studies/' + item.id + '/';
 
   useEffect(() => {
@@ -879,11 +880,11 @@ function PortfolioCard({ item, imageOnly = false, priority = false, hidden = fal
     <span className="portfolio-visual">
       {visible && livePreview && !fallback && <iframe title="" aria-hidden="true" tabIndex="-1" src={url} {...(priority ? { fetchPriority:'high' } : { loading:'lazy' })} sandbox="allow-scripts allow-same-origin allow-forms" onLoad={() => { setFrameLoad('loaded'); setShowProgress(false); }} onError={() => { setFrameLoad('failed'); setShowProgress(false); }} style={{ width:'1280px', height:'800px', transform:'scale(' + (width / 1280) + ')' }} />}
       {showProgress && !fallback && <span className="portfolio-progress" aria-hidden="true" />}
-      {fallback && <span className="portfolio-live-fallback">
+      {fallback && !preview && <span className="portfolio-live-fallback">
         <strong>{new URL(url).hostname.replace(/^www\./, '')}</strong>
         <span>Live site · Open this card <span aria-hidden="true">↗</span></span>
       </span>}
-      {image && <img src={image} alt="" loading="lazy" decoding="async" onError={() => setFailedArtwork(previous => [...previous, image])} />}
+      {image && <img className={preview ? 'portfolio-homepage-capture' : undefined} src={image} alt="" loading="lazy" decoding="async" onError={() => setFailedArtwork(previous => [...previous, image])} />}
       {!url && !image && <span className="portfolio-no-image"><ClientLogo client={item} /></span>}
     </span>
     <span className="portfolio-card-copy"><strong>{item.name}</strong><span className="portfolio-service">{item.service || item.category || item.type}</span></span>
