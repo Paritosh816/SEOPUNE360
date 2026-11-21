@@ -132,8 +132,8 @@ const brandingProjects = [
     id: 'kj-group', name: 'KJ Group', category: 'Brand identity & applications',
     description: 'A brand identity presentation with logo variations and application mockups.',
     artworks: [
-      { src: '/images/business-branding/kj-group-brand-applications.jpg', fullSize: originalBrandingPath + encodeURIComponent('KJ Group Branding.jpg'), width: 823, height: 1050, alt: 'KJ Group brand identity and stationery applications', label: 'Brand applications' },
       { src: '/images/business-branding/kj-group-logo-variations.jpg', fullSize: originalBrandingPath + encodeURIComponent('KJ Group Logo.jpg'), width: 1050, height: 1050, alt: 'KJ Group logo and color variations', label: 'Logo variations' },
+      { src: '/images/business-branding/kj-group-brand-applications.jpg', fullSize: originalBrandingPath + encodeURIComponent('KJ Group Branding.jpg'), width: 823, height: 1050, alt: 'KJ Group brand identity and stationery applications', label: 'Brand applications' },
       { src: '/images/business-branding/kj-group-brand-mockups.jpg', fullSize: originalBrandingPath + encodeURIComponent('KJ Group Mockup New.jpg'), width: 214, height: 1050, alt: 'KJ Group brand mockup presentation', label: 'Brand mockups' },
     ],
   },
