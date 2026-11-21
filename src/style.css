@@ -1485,6 +1485,9 @@ a.content-card:hover { transform:translateY(-4px); border-color:rgba(51,225,208,
 .delivery-stages svg { width:17px; flex-shrink:0; }
 .inside-hero { padding-block:clamp(55px,8vw,110px); }
 .inside-hero h1 { max-width:1050px; overflow-wrap:break-word; }
+.inside-hero-compact { padding-block: clamp(24px, 4vw, 54px); }
+.inside-hero-compact h1 { margin-block: 8px; font-size: clamp(2.35rem, 5.5vw, 4.65rem); }
+.inside-hero-compact .inside-hero-inner > p:not(.eyebrow) { margin-bottom: 0; }
 .detail-layout > *, .project-overview > *, .service-band > *, .footer-main > * { min-width:0; }
 .service-showcase,.project-summary,.project-overview { align-items:start; }
 @media(hover:hover) {

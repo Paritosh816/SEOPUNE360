@@ -627,8 +627,8 @@ function LegalDialog({ title, onClose }) {
   return <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) onClose(); }}><section className="legal-dialog" role="dialog" aria-modal="true" aria-labelledby="legal-title"><div className="dialog-heading"><div><p className="eyebrow">SEOPune360</p><h2 id="legal-title">{title}</h2></div><button className="icon-button" aria-label="Close" onClick={onClose}>×</button></div><p>The {title.toLowerCase()} link is ready, but approved policy wording has not been supplied for this website yet. Add your final business-approved policy text here before publishing.</p><a className="text-link" href={'mailto:' + CONTACT_EMAIL + '?subject=' + encodeURIComponent('Request SEOPune360 ' + title)}>Request the current policy <ArrowIcon /></a></section></div>;
 }
 
-function InsideHero({ kicker, title, accent, copy }) {
-  return <section className="inside-hero"><div className="container inside-hero-inner"><p className="eyebrow">{kicker}</p><h1>{title} <span>{accent}</span></h1><p>{copy}</p><a className="button" href="/contact/">Let’s talk <ArrowIcon /></a></div></section>;
+function InsideHero({ kicker, title, accent, copy, compact = false }) {
+  return <section className={compact ? 'inside-hero inside-hero-compact' : 'inside-hero'}><div className="container inside-hero-inner"><p className="eyebrow">{kicker}</p><h1>{title} <span>{accent}</span></h1><p>{copy}</p>{!compact && <a className="button" href="/contact/">Let’s talk <ArrowIcon /></a>}</div></section>;
 }
 
 function ContentCards({ items, render }) {
@@ -972,7 +972,7 @@ function PageContent({ path, onStart }) {
     return <PortfolioCard key={item.id || item.name} item={item} priority={items.indexOf(item) < 3} />;
   };
   const titleParts = head[1].split(' ');
-  return <><InsideHero kicker={head[0]} title={titleParts.slice(0, Math.max(1, titleParts.length - 1)).join(' ')} accent={titleParts.length > 1 ? titleParts.slice(-1).join(' ') + (head[2] ? ' ' + head[2] : '') : head[2]} copy={head[3]} />
+  return <><InsideHero kicker={head[0]} title={titleParts.slice(0, Math.max(1, titleParts.length - 1)).join(' ')} accent={titleParts.length > 1 ? titleParts.slice(-1).join(' ') + (head[2] ? ' ' + head[2] : '') : head[2]} copy={head[3]} compact={page === 'portfolio'} />
     {page === 'portfolio' && <Suspense fallback={null}><FeaturedDealerships /></Suspense>}
     {((page === 'case-studies' && !caseStudy) || page === 'portfolio') ? <CaseStudyExplorer /> : items.length > 0 && <section className="section"><ContentCards items={items} render={renderCard} />{page === 'industries' && !industry && <p className="container content-note">A published client case study is not currently listed for every sector.</p>}{industry && items.length === 0 && <div className="container empty-state"><h2>No published client case study for this category yet.</h2><p>We can still discuss the search and website needs of your business.</p><a className="button" href="/contact/">Talk with us <ArrowIcon /></a></div>}</section>}{body}</>;
 }
