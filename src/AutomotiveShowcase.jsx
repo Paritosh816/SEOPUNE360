@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import Brand from './Brand.jsx';
 import { showcaseDealerships, showcasePath } from './automotiveShowcase.js';
 import { dealershipProof } from './dealershipProof.js';
 import './automotive-showcase.css';
@@ -26,30 +27,11 @@ function Reveal({ children }) {
 }
 
 function MetricStrip({ items }) {
-  const ref = useRef(null);
-  const [progress, setProgress] = useState(() => !('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 1 : 0);
-  useEffect(() => {
-    if (!items.length || !('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    let frame;
-    const observer = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) return;
-      observer.disconnect();
-      const start = performance.now();
-      function tick(now) {
-        const position = Math.min((now - start) / 750, 1);
-        setProgress(1 - (1 - position) ** 3);
-        if (position < 1) frame = requestAnimationFrame(tick);
-      }
-      frame = requestAnimationFrame(tick);
-    }, { threshold: 0.35 });
-    observer.observe(ref.current);
-    return () => { observer.disconnect(); cancelAnimationFrame(frame); };
-  }, [items]);
   if (!items.length) return null;
-  return <dl className="auto-metrics" ref={ref}>{items.map(({ label, value, context }) => (
+  return <dl className="auto-metrics">{items.map(({ label, value, context }) => (
     <div key={label}>
       <dt>{label}</dt>
-      <dd><span aria-hidden="true">{format.format(Math.round(value * progress * 100) / 100)}</span><span className="sr-only">{format.format(value)}</span></dd>
+      <dd>{format.format(value)}</dd>
       {context && <dd className="auto-metric-context">{context}</dd>}
     </div>
   ))}</dl>;
@@ -64,7 +46,7 @@ function LiveSite({ dealer }) {
   return <a className="auto-link" href={dealer.website} target="_blank" rel="noopener noreferrer">View Live Site <span aria-hidden="true">↗</span></a>;
 }
 
-function ShowcaseIndex() {
+function ShowcaseIndex({ interactive }) {
   const [featuredId, setFeaturedId] = useState('shaw-toyota');
   const featured = showcaseDealerships.find((dealer) => dealer.id === featuredId);
   const proof = dealershipProof[featured.id];
@@ -78,15 +60,15 @@ function ShowcaseIndex() {
       </div>
       <div className="auto-spotlight">
         <div className="auto-spotlight-media"><Cover key={featured.id} dealer={featured} eager /></div>
-        <div className="auto-spotlight-copy" aria-live="polite">
+        <div className="auto-spotlight-copy" key={featured.id} aria-live="polite">
           <p className="eyebrow">Featured dealership</p>
           <h2>{featured.name}</h2>
           <p>{featured.market}</p>
           <div className="auto-link-row"><a className="auto-link" href={linkTo(featured)}>Explore project <span aria-hidden="true">↗</span></a><LiveSite dealer={featured} /></div>
         </div>
         <div className="auto-switches auto-feature-switch" role="group" aria-label="Featured dealership">
-          {showcaseDealerships.map((dealer) => <button type="button" key={dealer.id} aria-pressed={dealer.id === featuredId}
-            onClick={() => setFeaturedId(dealer.id)}>{dealer.name}</button>)}
+          {showcaseDealerships.map((dealer) => interactive ? <button type="button" key={dealer.id} aria-pressed={dealer.id === featuredId}
+            onClick={() => setFeaturedId(dealer.id)}>{dealer.name}</button> : <a href={linkTo(dealer)} key={dealer.id}>{dealer.name}</a>)}
         </div>
       </div>
     </section>
@@ -136,7 +118,26 @@ function ProofLightbox({ capture, onClose }) {
   </dialog>;
 }
 
-function DashboardProof({ proof, dealer }) {
+function DashboardPanel({ entry, onEnlarge }) {
+  return <>
+    <MetricStrip items={entry.metrics} />
+    {entry.note && <p className="auto-note">{entry.note}</p>}
+    {entry.captures.length > 0 && <div className="auto-captures">{entry.captures.map((capture) => <figure key={capture.src}>
+      <a href={capture.src} aria-haspopup={onEnlarge ? 'dialog' : undefined}
+        aria-label={(onEnlarge ? 'Enlarge ' : 'View ') + capture.title}
+        onClick={onEnlarge ? (event) => {
+          if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+          event.preventDefault();
+          onEnlarge(capture, event.currentTarget);
+        } : undefined}>
+        <img src={capture.src} alt="" width="1600" height="900" loading="lazy" decoding="async" />
+      </a>
+      <figcaption>{capture.title}</figcaption>
+    </figure>)}</div>}
+  </>;
+}
+
+function DashboardProof({ proof, dealer, interactive }) {
   const [month, setMonth] = useState(months[0]);
   const [platform, setPlatform] = useState(platforms[0]);
   const [selected, setSelected] = useState(null);
@@ -148,31 +149,33 @@ function DashboardProof({ proof, dealer }) {
   }
   return <section className="auto-proof" aria-labelledby="auto-proof-heading">
     <div className="auto-section-title"><p className="eyebrow">Paid acquisition proof</p><h2 id="auto-proof-heading">2-Month Performance Snapshot</h2><p>September and October dashboards for {dealer.name}. Account identifiers are masked. Campaign columns, dates and charts appear in their original layout.</p></div>
-    <div className="auto-proof-controls">
+    {interactive && <div className="auto-proof-controls">
       <div className="auto-switches" role="group" aria-label="Dashboard month">{months.map((item) => (
         <button type="button" key={item} aria-pressed={item === month} onClick={() => setMonth(item)}>{item}</button>
       ))}</div>
       <div className="auto-switches" role="group" aria-label="Dashboard platform">{platforms.map((item) => (
         <button type="button" key={item} aria-pressed={item === platform} onClick={() => setPlatform(item)}>{item}</button>
       ))}</div>
-    </div>
+    </div>}
     <div key={month + platform} className="auto-proof-content">
       <h3>{month} · {platform}</h3>
-      <MetricStrip items={entry.metrics} />
-      {entry.note && <p className="auto-note">{entry.note}</p>}
-      {entry.captures.length > 0 && <div className="auto-captures">{entry.captures.map((capture) => <figure key={capture.src}>
-        <button type="button" aria-haspopup="dialog" aria-label={'Enlarge ' + capture.title} onClick={(event) => {
-          opener.current = event.currentTarget;
-          setSelected(capture);
-        }}><img src={capture.src} alt="" width="1600" height="900" loading="lazy" decoding="async" /></button>
-        <figcaption>{capture.title}</figcaption>
-      </figure>)}</div>}
+      <DashboardPanel entry={entry} onEnlarge={interactive ? (capture, trigger) => {
+        opener.current = trigger;
+        setSelected(capture);
+      } : undefined} />
     </div>
+    {!interactive && months.flatMap((otherMonth) => platforms.map((otherPlatform) => {
+      if (otherMonth === month && otherPlatform === platform) return null;
+      return <details className="auto-proof-content auto-proof-fallback" key={otherMonth + otherPlatform}>
+        <summary>{otherMonth} · {otherPlatform}</summary>
+        <DashboardPanel entry={proof.months[otherMonth][otherPlatform]} />
+      </details>;
+    }))}
     {selected && <ProofLightbox capture={selected} onClose={close} />}
   </section>;
 }
 
-function DealershipDetail({ dealer }) {
+function DealershipDetail({ dealer, interactive }) {
   const proof = dealershipProof[dealer.id];
   return <>
     <section className="auto-hero auto-container auto-detail-hero">
@@ -196,22 +199,24 @@ function DealershipDetail({ dealer }) {
         ))}</div></Reveal>
       </section>
       {proof && <>
-        <DashboardProof dealer={dealer} proof={proof} />
+        <DashboardProof dealer={dealer} proof={proof} interactive={interactive} />
         <section className="auto-summary"><p className="eyebrow">Results summary</p><h2>What the dashboards report.</h2><p>{proof.note}</p></section>
       </>}
     </div>
   </>;
 }
 
-export default function AutomotiveShowcase({ path, brand }) {
-  const id = path.slice(showcasePath.length).replace(/\/$/, '');
+export default function AutomotiveShowcase({ path }) {
+  const [interactive, setInteractive] = useState(false);
+  useEffect(() => setInteractive(true), []);
+  const id = path.replace(/\/index\.html$/, '/').replace(/\/+$/, '').slice(showcasePath.length);
   const dealer = showcaseDealerships.find((item) => item.id === id);
   return <div className="auto-showcase">
     <header className="auto-pitch-header auto-container">
-      {brand}{id && <a className="auto-link" href={showcasePath}>← Back to Automotive Showcase</a>}
+      <Brand />{id && <a className="auto-link" href={showcasePath}>← Back to Automotive Showcase</a>}
     </header>
-    <main>{dealer ? <DealershipDetail dealer={dealer} /> : id
+    <main>{dealer ? <DealershipDetail dealer={dealer} interactive={interactive} /> : id
       ? <section className="auto-container auto-missing"><h1>Dealership not found</h1></section>
-      : <ShowcaseIndex />}</main>
+      : <ShowcaseIndex interactive={interactive} />}</main>
   </div>;
 }

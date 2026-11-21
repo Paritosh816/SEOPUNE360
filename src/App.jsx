@@ -3,6 +3,7 @@ import { lazy, Suspense, useCallback, useEffect, useState, useRef } from 'react'
 import { projectDetails } from './projectDetails';
 import ServiceDeliverables, { serviceIntro } from './ServiceDeliverables';
 import ServiceRequirementFlow from './ServiceRequirementFlow';
+import Brand from './Brand.jsx';
 import { showcasePath } from './automotiveShowcase.js';
 const AutomotiveShowcase = lazy(() => import('./AutomotiveShowcase.jsx'));
 const FeaturedDealerships = lazy(() => import('./FeaturedDealerships.jsx'));
@@ -188,30 +189,6 @@ const servicePaths = {
   growth: '/services/business-growth/',
 };
 const industryPath = (industry) => '/industries/' + industry.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '/';
-
-function Brand({ footer = false }) {
-  const logoFilter = footer ? 'brand-logo-key-footer' : 'brand-logo-key-header';
-  return (
-    <a className={'brand' + (footer ? ' brand-footer' : '')} href="/" aria-label="SEOPune360 home">
-      <svg className="brand-logo" viewBox="0 0 4238 677" aria-hidden="true">
-        <defs>
-          <clipPath id={logoFilter + '-image-clip'}>
-            <rect x="190" y="110" width="2970" height="460" />
-          </clipPath>
-          <filter id={logoFilter} colorInterpolationFilters="sRGB">
-            <feColorMatrix type="matrix" values="0 0 0 0 0.318
-              0 0 0 0 0.761
-              0 0 0 0 0.737
-              -0.634 -2.135 -0.215 0 2.983" />
-          </filter>
-        </defs>
-        <image href="/seopune360-logo.jpg" width="4238" height="677" clipPath={`url(#${logoFilter}-image-clip)`} filter={`url(#${logoFilter})`} />
-        <text className="brand-logo-addition" x="700" y="540">SEO</text>
-        <text className="brand-logo-addition" x="3190" y="540">360</text>
-      </svg>
-    </a>
-  );
-}
 
 function ArrowIcon() {
   return <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3.5 9h10m-4-4 4 4-4 4" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /></svg>;
@@ -1002,7 +979,7 @@ function App() {
   const pageService = services.find((service) => servicePaths[service.id] === path);
   const startPageRequirements = (trigger) => startRequirements(trigger, pageService?.id);
   if (path.startsWith(showcasePath)) {
-    return <Suspense fallback={<p className="container" role="status">Loading automotive showcase…</p>}><AutomotiveShowcase path={path} brand={<Brand />} /></Suspense>;
+    return <Suspense fallback={<p className="container" role="status">Loading automotive showcase…</p>}><AutomotiveShowcase path={path} /></Suspense>;
   }
   const showProjectBanner = path !== '/portfolio/' && !(path.startsWith('/case-studies/') && path !== '/case-studies/');
 

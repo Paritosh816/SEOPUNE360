@@ -26,7 +26,6 @@ const stories = {
   },
   'garnet-skoda': {
     badge: 'High-Intent Test-Drive & Model Funnel',
-    cover: '/images/client-projects/garnet-skoda-feature.jpg',
     summary: 'A model-focused dealership website designed to bring high-intent Škoda buyers to showroom enquiries across Mumbai and Navi Mumbai.',
     quote: 'SEOPUNE360 brought sharper structure to how prospective buyers explore models and connect with our showroom team online, elevating enquiry quality.',
     attribution: 'Showroom Digital Team, Garnet Skoda',
