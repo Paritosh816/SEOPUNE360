@@ -97,8 +97,11 @@ const auditItems = [
 const originalBrandingPath = '/images/business-branding/originals/';
 const brandingProjects = [
   {
-    id: 'era-infratech', name: 'ERA Infratech', category: 'Logo exploration & identity',
-    description: 'Logo variations, stationery and brand mockups for ERA Infratech.',
+    id: 'era-infratech',
+    sourceBoards: [
+      ['Original logo variations', 'Era Infratech Logofolio-02.jpg'],
+      ['Original identity presentation', 'Era Infratech Logofolio_Artboard 1.jpg'],
+    ],
     artworks: [
       { src: '/images/business-branding/era-infratech-02.jpg', fullSize: originalBrandingPath + encodeURIComponent('ERA Infratech 02 - Logo variations.jpg'), width: 1200, height: 786, alt: 'ERA Infratech logo on white, red and navy backgrounds', label: 'Logo variations' },
       { src: '/images/business-branding/era-infratech-01.jpg', fullSize: originalBrandingPath + encodeURIComponent('ERA Infratech 01 - Business card.jpg'), width: 1200, height: 786, alt: 'Construction professional holding a red ERA Infratech business card', label: 'Business card mockup' },
@@ -107,8 +110,7 @@ const brandingProjects = [
     ],
   },
   {
-    id: 'fpt', name: 'FPT Powertrain Technologies', category: 'Brand guidelines & campaign artwork',
-    description: 'Brand guidelines and Original Reman campaign artwork for the India office.',
+    id: 'fpt',
     artworks: [
       { src: projectDetails.fpt.logo, fullSize: projectDetails.fpt.logo, width: 1600, height: 703, alt: 'FPT Powertrain Technologies logo on a red background', label: 'Logo artwork' },
       ...[
@@ -134,8 +136,7 @@ const brandingProjects = [
     ],
   },
   {
-    id: 'kj-group', name: 'KJ Group', category: 'Brand identity & applications',
-    description: 'A brand identity presentation with logo variations and application mockups.',
+    id: 'kj-group',
     artworks: [
       { src: '/images/business-branding/kj-group-logo-variations.jpg', fullSize: originalBrandingPath + encodeURIComponent('KJ Group Logo.jpg'), width: 1050, height: 1050, alt: 'KJ Group logo and color variations', label: 'Logo variations' },
       { src: '/images/business-branding/kj-group-brand-applications.jpg', fullSize: originalBrandingPath + encodeURIComponent('KJ Group Branding.jpg'), width: 823, height: 1050, alt: 'KJ Group brand identity and stationery applications', label: 'Brand applications' },
@@ -143,8 +144,8 @@ const brandingProjects = [
     ],
   },
   {
-    id: 'koriv-studio', name: 'Koriv Studio', category: 'Brand identity & applications',
-    description: 'A logo system and branded mockup artwork for Koriv Studio.',
+    id: 'koriv-studio',
+    sourceBoards: [['Original identity presentation', 'KS Logo.jpg']],
     artworks: [
       { src: '/images/business-branding/koriv-studio-02.jpg', fullSize: originalBrandingPath + encodeURIComponent('Koriv Studio 02 - Stacked logo.jpg'), width: 1200, height: 786, alt: 'Koriv Studio’s circular emblem above the stacked wordmark', label: 'Stacked logo' },
       { src: '/images/business-branding/koriv-studio-01.jpg', fullSize: originalBrandingPath + encodeURIComponent('Koriv Studio 01 - Colour palette.jpg'), width: 1200, height: 786, alt: 'Koriv Studio’s brown and orange colour swatches', label: 'Colour palette' },
@@ -293,7 +294,7 @@ function Header({ onStart }) {
             </div>
           </div>)}
         </nav>
-        <RequirementButton className="button header-call" onStart={onStart}>Start a project <span className="call-icon">↗</span></RequirementButton>
+        <RequirementButton className="button header-call" onStart={onStart}>Send a project brief <ArrowIcon /></RequirementButton>
         <button className={'menu-toggle' + (mobileOpen ? ' is-open' : '')} aria-label={mobileOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={mobileOpen} aria-controls="mobile-navigation" onClick={() => setMobileOpen((value) => !value)}>
           <span /><span /><span />
         </button>
@@ -307,7 +308,7 @@ function Header({ onStart }) {
           <RequirementButton className="button header-call mobile-call" onStart={(trigger) => {
             closeMenus();
             onStart(trigger.closest('.site-header').querySelector('.menu-toggle'));
-          }}>Start a project <span className="call-icon">↗</span></RequirementButton>
+          }}>Send a project brief <ArrowIcon /></RequirementButton>
         </div>
       </div>
     </header>
@@ -414,21 +415,24 @@ function CampaignJourney({ client }) {
 
 function ClientProjectPage({ client }) {
   const isBranding = client.serviceIds.includes('branding');
+  const sourceBoards = brandingProjects.find((project) => project.id === client.id)?.sourceBoards;
   const [failedImages, setFailedImages] = useState([]);
   const gallery = projectGallery(client).filter(item => !failedImages.includes(item.src));
   if (isBranding) gallery.sort((first, second) => artworkOrder.compare(decodeURIComponent(first.fullSize || first.src), decodeURIComponent(second.fullSize || second.src)));
   const related = clients.filter((item) => item.id !== client.id && item.serviceTypes.some((type) => client.serviceTypes.includes(type))).slice(0,3);
   return <section className="section project-story"><div className="container">
-    <div className="project-summary"><ClientLogo client={client} /><div><p className="eyebrow">Project scope</p><h2>{client.headline || client.name}</h2><div className="project-tags">{client.serviceTypes.map((type) => <span key={type}>{type}</span>)}{client.serviceNote && <span>{client.serviceNote}</span>}</div></div></div>
+    <div className="project-summary"><ClientLogo client={client} /><div><h2>Project scope</h2><div className="project-tags">{client.serviceTypes.map((type) => <span key={type}>{type}</span>)}{client.serviceNote && <span>{client.serviceNote}</span>}</div></div></div>
     <div className="project-overview"><div><p className="eyebrow">The project</p><p className="project-lead">{client.overview || client.description}</p></div><aside><h3>At a glance</h3><dl><dt>Client</dt><dd>{client.name}</dd><dt>Industry</dt><dd>{client.type}</dd><dt>Services</dt><dd>{client.service}</dd></dl>{(client.landing || client.website) && <a className="text-link" href={client.landing || client.website} target="_blank" rel="noopener noreferrer">{client.landing ? 'Visit landing page' : 'Visit client website'} <ArrowIcon /></a>}</aside></div>
     {gallery.length > 0 && <section className="project-gallery" aria-label={'Project visuals for ' + client.name}><div className="section-title-row"><div><p className="eyebrow">Work in context</p><h2>{client.campaign ? 'The landing experience.' : client.serviceIds.includes('branding') ? 'The identity, in detail.' : 'A closer look at the website.'}</h2></div></div>{gallery.map((item, index) => {
       const Figure = isBranding ? BrandingGalleryFigure : 'figure';
       return <Figure className="project-figure" key={item.src}><div className="project-frame"><div className="project-frame-bar"><span><i /><i /><i /></span><b>{item.title}</b><span>{String(index + 1).padStart(2,'0')}</span></div><a href={item.fullSize || item.src} target="_blank" rel="noopener noreferrer" aria-label={'View full-size ' + item.title}><img src={item.src} alt={item.caption} width={item.width} height={item.height} loading="lazy" decoding="async" onError={() => setFailedImages(previous => [...previous, item.src])} /></a></div><figcaption><span>{item.caption}</span>{item.url && <a href={item.url} target="_blank" rel="noopener noreferrer">View source page ↗</a>}</figcaption></Figure>;
-    })}</section>}
+    })}{sourceBoards && <details className="project-source-boards"><summary>Original artwork files</summary><ul>{sourceBoards.map(([label, filename]) => (
+      <li key={filename}><a className="text-link" href={originalBrandingPath + encodeURIComponent(filename)} target="_blank" rel="noopener noreferrer">{label} <ArrowIcon /></a></li>
+    ))}</ul></details>}</section>}
     {client.focus && <section className="project-focus"><p className="eyebrow">What matters in this project</p><h2>Clarity in <span>every detail.</span></h2><div className="project-focus-grid">{client.focus.map(([title,copy],index) => <article key={title}><span>0{index + 1}</span><h3>{title}</h3><p>{copy}</p></article>)}</div></section>}
     {client.campaign && <CampaignJourney client={client} />}
     {related.length > 0 && <section className="project-related"><p className="eyebrow">Explore more work</p><h2>Related client projects.</h2><div className="project-related-grid">{related.map((item, index) => <PortfolioCard key={item.id} item={item} priority={index < 3} />)}</div></section>}
-    <div className="project-end"><div><p className="eyebrow">Your next project</p><h2>Let’s create something <span>for your business.</span></h2></div><a className="button" href="/contact/">Discuss a project <ArrowIcon /></a><a className="text-link" href="/portfolio/">All client work <ArrowIcon /></a></div>
+    <a className="text-link" href="/portfolio/">Back to the portfolio <ArrowIcon /></a>
   </div></section>;
 }
 
@@ -448,7 +452,7 @@ function ServiceIllustration({ type }) {
 function BrandingPortfolio({ onStart }) {
   return <section className="section branding-portfolio" aria-labelledby="branding-work-title"><div className="container">
     <div className="branding-portfolio-heading"><p className="eyebrow">Selected brand work</p><h2 id="branding-work-title">Identity work, made <span>for real businesses.</span></h2><p>A selection of logo and brand identity artwork supplied for SEOPune360 client projects.</p></div>
-    <div className="branding-work-grid">{brandingProjects.map((project, index) => <PortfolioCard key={project.id} item={project} imageOnly priority={index < 3} />)}</div>
+    <div className="branding-work-grid">{brandingProjects.map((project, index) => <PortfolioCard key={project.id} item={clients.find((client) => client.id === project.id)} priority={index < 3} />)}</div>
     <div className="branding-work-cta"><p>Building a brand or refreshing the one you have?</p><RequirementButton className="button" onStart={onStart} serviceId="branding">Talk about your brand <ArrowIcon /></RequirementButton></div>
   </div></section>;
 }
@@ -776,6 +780,7 @@ function BrandingGalleryFigure({ children }) {
   const ref = useRef(null);
   const [revealed, setRevealed] = useState(false);
   useEffect(() => {
+    if (!('IntersectionObserver' in window) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const observer = new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting) return;
       setRevealed(true);
@@ -787,87 +792,19 @@ function BrandingGalleryFigure({ children }) {
   return <figure ref={ref} className="project-figure project-figure-artwork" data-revealed={revealed}>{children}</figure>;
 }
 
-function PortfolioCard({ item, imageOnly = false, priority = false, hidden = false }) {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
-  const [width, setWidth] = useState(320);
-  const [frameStatus, setFrameStatus] = useState('pending');
-  const [frameLoad, setFrameLoad] = useState('pending');
-  const [showProgress, setShowProgress] = useState(false);
-  const [failedArtwork, setFailedArtwork] = useState([]);
-  const brandingArtwork = item.artworks || brandingProjects.find(project => project.id === item.id)?.artworks;
-  const url = imageOnly || brandingArtwork?.length ? null : (item.url || item.website || item.landing);
-  const fallback = Boolean(url && (item.portfolioEmbed === 'blocked' || frameStatus === 'blocked' || frameLoad === 'failed'));
-  const livePreview = Boolean(url && item.portfolioEmbed !== 'blocked');
-  const gallery = brandingArtwork || projectGallery(item);
-  const availableArtwork = gallery.filter(({ src }) => !failedArtwork.includes(src));
-  const preview = fallback && item.portfolioPreview && !failedArtwork.includes(item.portfolioPreview) ? item.portfolioPreview : null;
-  const image = preview || (!url ? availableArtwork[0]?.src : null);
-  const destination = fallback ? url : '/case-studies/' + item.id + '/';
+function PortfolioCard({ item, priority = false, hidden = false }) {
+  const [failedImage, setFailedImage] = useState(null);
+  const artwork = brandingProjects.find(project => project.id === item.id)?.artworks[0];
+  const image = artwork?.src || item.portfolioPreview || item.gallery?.[0]?.src;
 
-  useEffect(() => {
-    const element = ref.current;
-    if (!element || !livePreview) return undefined;
-    const observer = new IntersectionObserver(entries => {
-      if (entries.some(entry => entry.isIntersecting)) { setVisible(true); observer.disconnect(); }
-    }, { rootMargin: '160px 0px' });
-    observer.observe(element);
-    const resize = new ResizeObserver(entries => {
-      const measured = entries[0]?.contentRect.width;
-      if (measured > 0) setWidth(measured);
-    });
-    resize.observe(element);
-    return () => { observer.disconnect(); resize.disconnect(); };
-  }, [livePreview]);
-  useEffect(() => {
-    if (!livePreview || !visible || !priority || hidden || fallback) return;
-    const origin = new URL(url).origin;
-    const exists = Array.from(document.querySelectorAll('link[rel="preconnect"]')).some(link => link.href === origin + '/');
-    if (!exists) {
-      const link = document.createElement('link');
-      link.rel = 'preconnect';
-      link.href = origin;
-      link.crossOrigin = 'anonymous';
-      document.head.appendChild(link);
-    }
-  }, [url, livePreview, visible, priority, hidden, fallback]);
-  useEffect(() => {
-    if (!visible || !livePreview) return undefined;
-    const controller = new AbortController();
-    const timeout = window.setTimeout(() => controller.abort(), 5000);
-    fetch('https://seopune360-audit-module.vercel.app/api/frame-check?url=' + encodeURIComponent(url), { signal: controller.signal })
-      .then(response => response.ok ? response.json() : Promise.reject())
-      .then(data => setFrameStatus(data.status === 'blocked' ? 'blocked' : data.status === 'allowed' ? 'allowed' : 'unknown'))
-      .catch(() => {})
-      .finally(() => window.clearTimeout(timeout));
-    return () => { window.clearTimeout(timeout); controller.abort(); };
-  }, [visible, url, livePreview]);
-  useEffect(() => {
-    if (!visible || !livePreview || fallback) return undefined;
-    setShowProgress(true);
-    const timer = window.setTimeout(() => setShowProgress(false), 1200);
-    return () => window.clearTimeout(timer);
-  }, [visible, livePreview, fallback]);
-  useEffect(() => {
-    if (!visible || !livePreview || fallback || hidden || frameLoad !== 'pending') return undefined;
-    const timer = window.setTimeout(() => setFrameLoad('failed'), 6500);
-    return () => window.clearTimeout(timer);
-  }, [visible, livePreview, fallback, hidden, frameLoad]);
-
-  return <a ref={ref} hidden={hidden} className="portfolio-card" href={destination}
-    {...(fallback ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
-
+  return <a hidden={hidden} className="portfolio-card" href={'/case-studies/' + item.id + '/'}>
     <span className="portfolio-visual">
-      {visible && livePreview && !fallback && <iframe title="" aria-hidden="true" tabIndex="-1" src={url} {...(priority ? { fetchPriority:'high' } : { loading:'lazy' })} sandbox="allow-scripts allow-same-origin allow-forms" onLoad={() => { setFrameLoad('loaded'); setShowProgress(false); }} onError={() => { setFrameLoad('failed'); setShowProgress(false); }} style={{ width:'1280px', height:'800px', transform:'scale(' + (width / 1280) + ')' }} />}
-      {showProgress && !fallback && <span className="portfolio-progress" aria-hidden="true" />}
-      {fallback && !preview && <span className="portfolio-live-fallback">
-        <strong>{new URL(url).hostname.replace(/^www\./, '')}</strong>
-        <span>Live site · Open this card <span aria-hidden="true">↗</span></span>
-      </span>}
-      {image && <img className={preview ? 'portfolio-homepage-capture' : undefined} src={image} alt="" loading="lazy" decoding="async" onError={() => setFailedArtwork(previous => [...previous, image])} />}
-      {!url && !image && <span className="portfolio-no-image"><ClientLogo client={item} /></span>}
+      {image && failedImage !== image
+        ? <img className={artwork ? undefined : 'portfolio-homepage-capture'} src={image} alt="" loading="lazy"
+          decoding="async" fetchPriority={priority ? 'high' : undefined} onError={() => setFailedImage(image)} />
+        : <span className="portfolio-no-image" aria-hidden="true"><ClientLogo client={item} /></span>}
     </span>
-    <span className="portfolio-card-copy"><strong>{item.name}</strong><span className="portfolio-service">{item.service || item.category || item.type}</span></span>
+    <span className="portfolio-card-copy"><strong>{item.name}</strong><span className="portfolio-service">{item.service}</span></span>
   </a>;
 }
 
@@ -890,7 +827,7 @@ function PageContent({ path, onStart }) {
     body = <><section className="section"><div className="container detail-layout"><div><p className="eyebrow">What’s included</p><h2>Focused work, <span>built around your goals.</span></h2><p>{serviceIntro(service.id) || service.summary}</p><RequirementButton className="button" onStart={onStart} serviceId={service.id}>Discuss this service <ArrowIcon /></RequirementButton></div><ul className="detail-points">{service.items.map((item) => <li key={item}><span>↗</span>{item}</li>)}</ul></div></section><ServiceDeliverables id={service.id} />{service.id === 'branding' ? <BrandingPortfolio onStart={onStart} /> : <ServiceClientPortfolio service={service} />}</>;
   } else if (page === 'services') items = services;
   else if (caseStudy) {
-    head = [caseStudy.category, caseStudy.label, 'client story.', caseStudy.copy];
+    head = [caseStudy.label + ' · ' + caseStudy.category, caseStudy.headline || caseStudy.label, '', caseStudy.copy];
     body = <ClientProjectPage key={caseStudy.id} client={caseStudy} />;
   } else if (page === 'case-studies') items = caseStudies;
   else if (page === 'portfolio' || page === 'products') items = clients;
@@ -938,7 +875,7 @@ function PageContent({ path, onStart }) {
   }
   if (!head) head = ['SEOPune360', 'A practical digital', 'growth partner.', 'Explore services, client stories, and ways to work together.'];
   useEffect(() => {
-    document.title = `${head[1]} ${head[2].replace(/[.]/g, '')} | SEOPune360`;
+    document.title = caseStudy ? `${caseStudy.label} Client Story | SEOPune360` : `${head[1]} ${head[2].replace(/[.]/g, '')} | SEOPune360`;
     window.scrollTo(0, 0);
   }, [path]);
   if (page === 'contact') return <ContactPage />;
@@ -949,7 +886,7 @@ function PageContent({ path, onStart }) {
     return <PortfolioCard key={item.id || item.name} item={item} priority={items.indexOf(item) < 3} />;
   };
   const titleParts = head[1].split(' ');
-  return <><InsideHero kicker={head[0]} title={titleParts.slice(0, Math.max(1, titleParts.length - 1)).join(' ')} accent={titleParts.length > 1 ? titleParts.slice(-1).join(' ') + (head[2] ? ' ' + head[2] : '') : head[2]} copy={head[3]} compact={page === 'portfolio'} />
+  return <><InsideHero kicker={head[0]} title={titleParts.slice(0, Math.max(1, titleParts.length - 1)).join(' ')} accent={titleParts.length > 1 ? titleParts.slice(-1).join(' ') + (head[2] ? ' ' + head[2] : '') : head[2]} copy={head[3]} compact={page === 'portfolio' || Boolean(caseStudy)} />
     {page === 'portfolio' && <Suspense fallback={null}><FeaturedDealerships /></Suspense>}
     {((page === 'case-studies' && !caseStudy) || page === 'portfolio') ? <CaseStudyExplorer /> : items.length > 0 && <section className="section"><ContentCards items={items} render={renderCard} />{page === 'industries' && !industry && <p className="container content-note">A published client case study is not currently listed for every sector.</p>}{industry && items.length === 0 && <div className="container empty-state"><h2>No published client case study for this category yet.</h2><p>We can still discuss the search and website needs of your business.</p><a className="button" href="/contact/">Talk with us <ArrowIcon /></a></div>}</section>}{body}</>;
 }
