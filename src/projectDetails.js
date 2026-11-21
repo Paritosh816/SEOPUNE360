@@ -82,6 +82,9 @@ export const projectDetails = {
     overview: 'The FPT Powertrain Technologies portfolio entry is scoped to branding work for the India office. The supplied artwork showcases the FPT identity in a strong red-and-white presentation. The original brand mark is retained so the client remains recognisable within the portfolio.',
     focus: [ ['India-office scope', 'This project is presented as local office branding support rather than a redesign of FPT’s worldwide identity.'], ['Original brand recognition', 'The FPT symbol and wordmark retain their original proportions and visual character.'], ['A focused artwork showcase', 'The supplied red-background composition provides a direct view of the branding artwork.'] ],
   },
+  'freshia': { logo: brand + 'freshia-01.jpg', logoLayout: 'sheet' },
+  'gaurav-vishwasrao': { logo: brand + 'gaurav-vishwasrao-01.jpg', logoLayout: 'sheet' },
+  'jijai-milk': { logo: brand + 'jijai-milk-01.jpg', logoLayout: 'sheet' },
   'koriv-studio': {
     logo: brand + 'ks-brand-identity.jpg', logoLayout: 'tall',
     headline: 'A detailed mark with a warm, crafted character.',

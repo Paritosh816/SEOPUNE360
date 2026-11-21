@@ -20,6 +20,9 @@ const routes = [
   ...automotiveProjects.filter(({ id }) => id !== 'shaw-toyota' && id !== 'shaw-tata')
     .map(({ id, name, description }) => [`/case-studies/${id}/`, `${name} client story`, description]),
   ['/case-studies/lusso-marco/', 'Lusso Marco Growth Marketing Case Study', 'Explore growth marketing and digital campaign work for Lusso Marco.'],
+  ['/case-studies/freshia/', 'Freshia Branding', 'Branding artwork for Freshia, presented across three supplied design boards.'],
+  ['/case-studies/gaurav-vishwasrao/', 'Gaurav Vishwasrao Branding', 'Logo and branding artwork for Gaurav Vishwasrao Architects, shown across three supplied design boards.'],
+  ['/case-studies/jijai-milk/', 'Jijai Milk Branding', 'Branding and packaging artwork for Jijai Milk, presented across two supplied pack designs.'],
   ['/portfolio/', 'Client Portfolio', 'Browse businesses represented in the current SEOPune360 client portfolio.'],
   ['/products/', 'Products & Platforms', 'Explore client products and platform journeys represented in SEOPune360 published work.'],
   ['/industries/', 'Industries', 'Explore the industries represented in the current SEOPune360 client portfolio.'],
