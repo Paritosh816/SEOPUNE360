@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Brand from './Brand.jsx';
+import AutomotiveMarquee from './AutomotiveMarquee.jsx';
 import { showcaseDealerships, showcasePath } from './automotiveShowcase.js';
 import { dealershipProof } from './dealershipProof.js';
 import './automotive-showcase.css';
@@ -46,39 +47,10 @@ function LiveSite({ dealer }) {
   return <a className="auto-link" href={dealer.website} target="_blank" rel="noopener noreferrer">View Live Site <span aria-hidden="true">↗</span></a>;
 }
 
-function ShowcaseIndex({ interactive }) {
-  const [featuredId, setFeaturedId] = useState('shaw-toyota');
-  const featured = showcaseDealerships.find((dealer) => dealer.id === featuredId);
-  const proof = dealershipProof[featured.id];
+function ShowcaseIndex() {
   return <>
-    <section className="auto-hero auto-container">
-      <div className="auto-hero-intro">
-        <p className="eyebrow">Automotive client showcase</p>
-        <h1>A growth system for <span>car dealerships.</span></h1>
-        <p>Connect dealership websites and dedicated landing pages with high-intent Google Search and Meta lead campaigns. Give buyers a clear route to call, enquire or request a test drive.</p>
-        <a className="auto-link" href="#dealerships">Explore the dealerships <span aria-hidden="true">↓</span></a>
-      </div>
-      <div className="auto-spotlight">
-        <div className="auto-spotlight-media"><Cover key={featured.id} dealer={featured} eager /></div>
-        <div className="auto-spotlight-copy" key={featured.id} aria-live="polite">
-          <p className="eyebrow">Featured dealership</p>
-          <h2>{featured.name}</h2>
-          <p>{featured.market}</p>
-          <div className="auto-link-row"><a className="auto-link" href={linkTo(featured)}>Explore project <span aria-hidden="true">↗</span></a><LiveSite dealer={featured} /></div>
-        </div>
-        <div className="auto-switches auto-feature-switch" role="group" aria-label="Featured dealership">
-          {showcaseDealerships.map((dealer) => interactive ? <button type="button" key={dealer.id} aria-pressed={dealer.id === featuredId}
-            onClick={() => setFeaturedId(dealer.id)}>{dealer.name}</button> : <a href={linkTo(dealer)} key={dealer.id}>{dealer.name}</a>)}
-        </div>
-      </div>
-    </section>
+    <AutomotiveMarquee />
     <div className="auto-container auto-index-body">
-      {proof && <section className="auto-summary" key={featuredId}>
-        <p className="eyebrow">{featured.name} · September & October</p>
-        <h2>Paid acquisition at a glance.</h2>
-        <MetricStrip items={proof.headlines} />
-        <p className="auto-note">{proof.note}</p>
-      </section>}
       <section className="auto-dealer-section" id="dealerships">
         <div className="auto-section-title"><p className="eyebrow">Selected work</p><h2>Explore the dealerships.</h2></div>
         <Reveal>
@@ -217,6 +189,6 @@ export default function AutomotiveShowcase({ path }) {
     </header>
     <main>{dealer ? <DealershipDetail dealer={dealer} interactive={interactive} /> : id
       ? <section className="auto-container auto-missing"><h1>Dealership not found</h1></section>
-      : <ShowcaseIndex interactive={interactive} />}</main>
+      : <ShowcaseIndex />}</main>
   </div>;
 }
