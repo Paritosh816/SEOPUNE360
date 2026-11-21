@@ -71,10 +71,10 @@ export const projectDetails = {
     gallery: [{ src: shots + 'hotel-shivtara-home.jpg', title: 'Hotel website', caption: 'Live homepage capture showing the property introduction and room-discovery links.', url: 'https://hotelshivtara.com/' }, { src: shots + 'hotel-shivtara-rooms.jpg', title: 'Room browsing', caption: 'The room page combines photographs with amenities and direct enquiry links.', url: 'https://hotelshivtara.com/rooms.html' }],
   },
   'era-infratech': {
-    logo: brand + 'era-infratech-logo-variations.jpg', logoLayout: 'sheet',
+    logo: brand + 'era-infratech-02.jpg', logoLayout: 'sheet',
     headline: 'A bold identity for an infrastructure-focused brand.',
-    overview: 'ERA Infratech’s branding work is presented through the supplied logo variations and identity artboard. A strong red wordmark, deep-blue supporting colour and a distinctive cut within the lettering give the identity a clear focal point.',
-    focus: [ ['A strong primary mark', 'The compact ERA lettering creates an immediately visible centre for the identity.'], ['Colour consistency', 'White, red and blue treatments show the mark across contrasting backgrounds.'], ['Identity presentation', 'The accompanying artboard brings the visual direction together in one project presentation.'] ],
+    overview: 'ERA Infratech’s branding pairs a bold red wordmark with a deep navy accent. The gallery shows how the identity carries through business cards, stationery and a cityscape mockup.',
+    focus: [ ['A strong primary mark', 'The compact ERA lettering gives the identity a distinct silhouette.'], ['Colour consistency', 'White, red and navy treatments show the mark across contrasting backgrounds.'], ['Brand applications', 'Business cards, letterhead and envelopes show the identity in print. The cityscape mockup shows how the white mark reads over photography.'] ],
   },
   fpt: {
     logo: brand + 'originals/FPT.jpeg', logoLayout: 'dark',
