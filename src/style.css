@@ -1570,3 +1570,14 @@ a.content-card:hover { transform:translateY(-4px); border-color:rgba(51,225,208,
 .agency-linkedin { display:flex; align-items:center; gap:9px; width:max-content; margin-top:20px; color:var(--muted-strong); font-size:.9rem; font-weight:600; }
 .agency-linkedin:hover,.agency-linkedin:focus-visible { color:var(--aqua); }
 .contact-direct-icon svg { flex:none; width:20px; height:20px; }
+
+/* Artwork stays inside the card and never intercepts pointer or touch input. */
+.portfolio-artwork { position:absolute; inset:0; overflow:hidden; container-type:size; pointer-events:none; }
+.portfolio-artwork-stack { display:flex; flex-direction:column; width:100%; animation:portfolio-artwork-pan 18s ease-in-out infinite alternate; animation-play-state:paused; }
+.portfolio-artwork-stack[data-playing="true"] { animation-play-state:running; }
+.portfolio-visual .portfolio-artwork img { position:static; flex:none; width:100%; height:auto; min-height:100cqh; object-fit:cover; object-position:top; pointer-events:none; }
+@keyframes portfolio-artwork-pan {
+  0%, 12% { transform:translateY(0); }
+  88%, 100% { transform:translateY(min(0px, calc(100cqh - 100%))); }
+}
+@media (prefers-reduced-motion:reduce) { .portfolio-artwork-stack { animation:none; } }
