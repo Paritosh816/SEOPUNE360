@@ -1,3 +1,5 @@
+import { showcaseDealerships } from './automotiveShowcase.js';
+
 const shots = '/images/client-projects/';
 const logos = '/images/client-logos/';
 const brand = '/images/business-branding/';
@@ -5,8 +7,27 @@ const brand = '/images/business-branding/';
 // Screenshots are captures of public pages. Campaign diagrams are explanatory,
 // not screenshots of ad accounts or evidence of measured performance.
 export const projectDetails = {
+  ...Object.fromEntries(showcaseDealerships.map(({ id, name, website, cover, headline, description, challenge, execution }) => [
+    id, {
+      website,
+      headline,
+      overview: description + ' ' + challenge,
+      focus: execution,
+      gallery: [{ src: cover, title: 'Dealership website', caption: 'A capture of the ' + name + ' website.', url: website }],
+    },
+  ])),
+  'shaw-tata-indore': {
+    headline: 'A local starting point for Tata car buyers in Indore.',
+    overview: 'Shaw Tata’s Indore site brings the local model range, showroom location and test-drive options together for prospective buyers.',
+    focus: [
+      ['Model discovery', 'Vehicle pages help visitors compare the Tata range.'],
+      ['Showroom information', 'Local outlet details help visitors plan a visit or contact the dealership.'],
+      ['Test-drive enquiries', 'Direct routes from vehicle discovery to a test-drive or pricing enquiry.'],
+    ],
+    gallery: [{ src: shots + 'shaw-tata-indore-home.jpg', title: 'Indore dealership website', caption: 'The Shaw Tata Indore homepage and its showroom enquiry options.' }],
+  },
   'ananya-rishtey': {
-    logo: logos + 'ananya-rishtey.png', website: 'https://www.ananyarishtey.com/', portfolioEmbed: 'blocked',
+    logo: logos + 'ananya-rishtey.png', website: 'https://www.ananyarishtey.com/',
     portfolioPreview: shots + 'ananya-rishtey-homepage.jpg',
     headline: 'A warmer introduction to finding a life partner.',
     overview: 'Ananya Rishtey introduces a matrimony app through a website built around a personal decision. Warm colours, expressive typography and animated phone previews give visitors an approachable introduction to the product before they explore its features and plans.',
@@ -34,7 +55,7 @@ export const projectDetails = {
     focus: [ ['A distinctive monogram', 'The building-inspired symbol connects the initials with the real-estate category.'], ['Consistent colour treatments', 'Light, orange and dark-blue variations show how the identity can remain recognisable on different backgrounds.'], ['Brand applications', 'The supplied project artwork shows the identity across stationery and presentation mockups.'] ],
   },
   'lusso-marco': {
-    logo: logos + 'lusso-marco.svg', website: 'https://lussomarco.com/', portfolioEmbed: 'blocked',
+    logo: logos + 'lusso-marco.svg', website: 'https://lussomarco.com/',
     portfolioPreview: shots + 'lusso-marco-homepage.jpg',
     landing: 'https://lussomarco.com/products/noxious', campaign: 'commerce',
     headline: 'From fragrance discovery to product consideration.',
@@ -43,7 +64,7 @@ export const projectDetails = {
     gallery: [{ src: shots + 'lusso-marco-landing.jpg', title: 'Noxious product destination', caption: 'Actual capture of the supplied Noxious page. Availability and pricing reflect the page at capture time.', url: 'https://lussomarco.com/products/noxious' }],
   },
   'shaw-toyota': {
-    logo: logos + 'shaw-toyota.webp', website: 'https://shawtoyotapune.com/',
+    logo: logos + 'shaw-toyota.webp', website: showcaseDealerships.find((dealer) => dealer.id === 'shaw-toyota').website,
     landing: 'https://shawtoyotapune.com/new-cars/toyota-urban-cruiser-hyryder.html', campaign: 'leads',
     headline: 'A focused path from model interest to enquiry.',
     overview: 'Shaw Toyota’s portfolio scope is PPC lead generation. The supplied Urban Cruiser Hyryder page shows the destination of a model-specific customer journey, bringing together vehicle imagery, variant information and a visible route to request an offer from the dealership.',
