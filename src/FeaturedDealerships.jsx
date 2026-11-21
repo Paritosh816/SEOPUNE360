@@ -74,6 +74,10 @@ export default function FeaturedDealerships() {
   }, []);
 
   useEffect(() => {
+    setFocused(root.current.contains(document.activeElement));
+  }, [active]);
+
+  useEffect(() => {
     if (!rotating) return;
     const timer = window.setTimeout(() => {
       setDirection('next');
