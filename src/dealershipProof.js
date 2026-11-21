@@ -1,6 +1,6 @@
 const assetRoot = '/automotive-showcase/proof/';
 const metric = (label, value, context) => ({ label, value, context });
-const capture = (dealer, month, file, title) => ({ src: assetRoot + dealer + '/' + month + '-' + file + '.png', title });
+const capture = (dealer, month, file, title) => ({ src: assetRoot + dealer + '/' + month + '-' + file + '-full.png', title });
 
 const toyotaSeptember = { conversions: 1114.06, calls: 80, meta: 377 };
 const toyotaOctober = { conversions: 1854.01, calls: 84, meta: 343 };

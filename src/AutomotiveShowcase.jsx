@@ -64,16 +64,7 @@ function LiveSite({ dealer }) {
   return <a className="auto-link" href={dealer.website} target="_blank" rel="noopener noreferrer">View Live Site <span aria-hidden="true">↗</span></a>;
 }
 
-function DealershipCTA({ onStart }) {
-  return <section className="auto-cta">
-    <div><h2>Scale your dealership enquiries and test-drive bookings.</h2><p>Tell us where you sell or service vehicles and which enquiries you want more of. We’ll reply by email.</p></div>
-    <button className="button" type="button" aria-haspopup="dialog" onClick={(event) => onStart(event.currentTarget, 'leads', 'Automobile')}>
-      Share your requirements <span aria-hidden="true">↗</span>
-    </button>
-  </section>;
-}
-
-function ShowcaseIndex({ onStart }) {
+function ShowcaseIndex() {
   const [featuredId, setFeaturedId] = useState('shaw-toyota');
   const featured = showcaseDealerships.find((dealer) => dealer.id === featuredId);
   const proof = dealershipProof[featured.id];
@@ -119,7 +110,6 @@ function ShowcaseIndex({ onStart }) {
           </div>
         </Reveal>
       </section>
-      <DealershipCTA onStart={onStart} />
     </div>
   </>;
 }
@@ -142,7 +132,7 @@ function ProofLightbox({ capture, onClose }) {
         <button type="button" onClick={() => ref.current.close()} aria-label="Close dashboard preview" autoFocus>×</button>
       </div>
     </header>
-    <div className="auto-lightbox-scroll"><img src={capture.src} width="1600" height="900" style={{ width: zoom + '%' }} alt={capture.title + ' with account and billing details redacted'} /></div>
+    <div className="auto-lightbox-scroll"><img src={capture.src} width="1600" height="900" style={{ width: zoom + '%' }} alt={capture.title + ' with account identifiers masked'} /></div>
   </dialog>;
 }
 
@@ -157,7 +147,7 @@ function DashboardProof({ proof, dealer }) {
     opener.current?.focus({ preventScroll: true });
   }
   return <section className="auto-proof" aria-labelledby="auto-proof-heading">
-    <div className="auto-section-title"><p className="eyebrow">Paid acquisition proof</p><h2 id="auto-proof-heading">2-Month Performance Snapshot</h2><p>September and October dashboards for {dealer.name}. Sensitive account, campaign, and spending details have been removed from the images.</p></div>
+    <div className="auto-section-title"><p className="eyebrow">Paid acquisition proof</p><h2 id="auto-proof-heading">2-Month Performance Snapshot</h2><p>September and October dashboards for {dealer.name}. Account identifiers are masked. Campaign columns, dates and charts appear in their original layout.</p></div>
     <div className="auto-proof-controls">
       <div className="auto-switches" role="group" aria-label="Dashboard month">{months.map((item) => (
         <button type="button" key={item} aria-pressed={item === month} onClick={() => setMonth(item)}>{item}</button>
@@ -182,13 +172,11 @@ function DashboardProof({ proof, dealer }) {
   </section>;
 }
 
-function DealershipDetail({ dealer, onStart }) {
+function DealershipDetail({ dealer }) {
   const proof = dealershipProof[dealer.id];
-  const related = showcaseDealerships.filter((item) => item.id !== dealer.id);
   return <>
     <section className="auto-hero auto-container auto-detail-hero">
       <div className="auto-hero-intro">
-        <a className="auto-link" href={showcasePath}>← All dealerships</a>
         <p className="eyebrow">{dealer.name} · {dealer.market}</p>
         <h1>{dealer.headline}</h1>
         {proof && <MetricStrip items={proof.headlines} />}
@@ -202,7 +190,7 @@ function DealershipDetail({ dealer, onStart }) {
         <div><p className="eyebrow">Dealership challenge</p><p>{dealer.challenge}</p></div>
       </section>
       <section className="auto-execution">
-        <div className="auto-section-title"><p className="eyebrow">Execution</p><h2>Brand, website and enquiry funnel.</h2></div>
+        <div className="auto-section-title"><p className="eyebrow">Digital &amp; funnel execution</p><h2>Brand, website and enquiry funnel.</h2></div>
         <Reveal><div className="auto-execution-grid">{dealer.execution.map(([title, text]) => (
           <article key={title}><h3>{title}</h3><p>{text}</p></article>
         ))}</div></Reveal>
@@ -211,18 +199,19 @@ function DealershipDetail({ dealer, onStart }) {
         <DashboardProof dealer={dealer} proof={proof} />
         <section className="auto-summary"><p className="eyebrow">Results summary</p><h2>What the dashboards report.</h2><p>{proof.note}</p></section>
       </>}
-      <nav className="auto-next" aria-label="Explore another dealership">
-        <h2>Explore another dealership.</h2>
-        <div>{related.map((item) => <a className="auto-link" key={item.id} href={linkTo(item)}>{item.name} <span aria-hidden="true">↗</span></a>)}</div>
-      </nav>
-      <DealershipCTA onStart={onStart} />
     </div>
   </>;
 }
 
-export default function AutomotiveShowcase({ path, onStart }) {
+export default function AutomotiveShowcase({ path, brand }) {
   const id = path.slice(showcasePath.length).replace(/\/$/, '');
   const dealer = showcaseDealerships.find((item) => item.id === id);
-  if (id && !dealer) return <section className="auto-container auto-missing"><h1>Dealership not found</h1><a className="auto-link" href={showcasePath}>View the automotive showcase ↗</a></section>;
-  return <div className="auto-showcase">{dealer ? <DealershipDetail dealer={dealer} onStart={onStart} /> : <ShowcaseIndex onStart={onStart} />}</div>;
+  return <div className="auto-showcase">
+    <header className="auto-pitch-header auto-container">
+      {brand}{id && <a className="auto-link" href={showcasePath}>← Back to Automotive Showcase</a>}
+    </header>
+    <main>{dealer ? <DealershipDetail dealer={dealer} /> : id
+      ? <section className="auto-container auto-missing"><h1>Dealership not found</h1></section>
+      : <ShowcaseIndex />}</main>
+  </div>;
 }
