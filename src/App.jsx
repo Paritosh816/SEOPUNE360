@@ -1,7 +1,8 @@
 import { automotiveProjects } from './automotiveProjects.js';
-import { useEffect, useState, useRef } from 'react';
+import { useCallback, useEffect, useState, useRef } from 'react';
 import { projectDetails } from './projectDetails';
 import ServiceDeliverables, { serviceIntro } from './ServiceDeliverables';
+import ServiceRequirementFlow from './ServiceRequirementFlow';
 const CONTACT_EMAIL = 'seopune360@gmail.com';
 const LINKEDIN_URL = 'https://www.linkedin.com/company/seopune-360/';
 function LinkedInIcon() { return <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false" fill="currentColor"><path d="M20.45 2H3.55A1.55 1.55 0 0 0 2 3.55v16.9C2 21.3 2.7 22 3.55 22h16.9c.85 0 1.55-.7 1.55-1.55V3.55C22 2.7 21.3 2 20.45 2ZM8.08 18.75H5.1V9.2h2.98v9.55ZM6.59 7.89a1.73 1.73 0 1 1 0-3.46 1.73 1.73 0 0 1 0 3.46Zm12.16 10.86h-2.98V14.1c0-1.11-.02-2.55-1.56-2.55-1.56 0-1.8 1.22-1.8 2.47v4.73H9.43V9.2h2.86v1.3h.04a3.14 3.14 0 0 1 2.83-1.55c3.03 0 3.59 2 3.59 4.59v5.21Z" /></svg>; }
@@ -266,7 +267,12 @@ const navigationGroups = [
   },
 ];
 
-function Header() {
+function RequirementButton({ onStart, serviceId, industry, className, children }) {
+  return <button type="button" aria-haspopup="dialog" className={'requirement-launch ' + className}
+    onClick={(event) => onStart(event.currentTarget, serviceId, industry)}>{children}</button>;
+}
+
+function Header({ onStart }) {
   const [openMenu, setOpenMenu] = useState('');
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobileGroup, setMobileGroup] = useState('');
@@ -307,7 +313,7 @@ function Header() {
             </div>
           </div>)}
         </nav>
-        <a className="button header-call" href="/contact/">Book a Call <span className="call-icon">↗</span></a>
+        <RequirementButton className="button header-call" onStart={onStart}>Start a project <span className="call-icon">↗</span></RequirementButton>
         <button className={'menu-toggle' + (mobileOpen ? ' is-open' : '')} aria-label={mobileOpen ? 'Close navigation' : 'Open navigation'} aria-expanded={mobileOpen} aria-controls="mobile-navigation" onClick={() => setMobileOpen((value) => !value)}>
           <span /><span /><span />
         </button>
@@ -318,7 +324,10 @@ function Header() {
             <button className="accordion-trigger" aria-expanded={mobileGroup === group.id} onClick={() => setMobileGroup((current) => current === group.id ? '' : group.id)}>{group.label}<span /></button>
             {mobileGroup === group.id && <div className="accordion-content">{mobileLinks(group).map(([label, href]) => <a href={href} key={label} onClick={closeMenus}>{label}<ArrowIcon /></a>)}</div>}
           </div>)}
-          <a className="button header-call mobile-call" href="/contact/" onClick={closeMenus}>Book a Call <span className="call-icon">↗</span></a>
+          <RequirementButton className="button header-call mobile-call" onStart={(trigger) => {
+            closeMenus();
+            onStart(trigger.closest('.site-header').querySelector('.menu-toggle'));
+          }}>Start a project <span className="call-icon">↗</span></RequirementButton>
         </div>
       </div>
     </header>
@@ -358,7 +367,7 @@ function ScrollShowreel({ onCinema }) {
   </section>;
 }
 
-function Hero({ onPlayShowreel }) {
+function Hero({ onPlayShowreel, onStart }) {
   return <section className="hero" id="top">
     <div className="container hero-grid">
       <div className="hero-copy">
@@ -373,8 +382,12 @@ function Hero({ onPlayShowreel }) {
           </form>
           <small>Up to 25 pages · PageSpeed · Keyword rankings & competitors</small>
         </div>
-        <div className="hero-actions"><a className="button" href="/contact/">Discuss your project <ArrowIcon /></a><a className="text-link" href="#clients">Explore client work ↓</a></div>
-        <div className="hero-service-links"><a href="/services/seo/">Search visibility</a><a href="/services/website-development/">Website experience</a><a href="/services/lead-generation/">Qualified enquiries</a></div>
+        <div className="hero-actions"><RequirementButton className="button" onStart={onStart}>Discuss your project <ArrowIcon /></RequirementButton><a className="text-link" href="#clients">Explore client work ↓</a></div>
+        <div className="hero-service-links">
+          <RequirementButton className="hero-service-option" onStart={onStart} serviceId="seo">Search visibility</RequirementButton>
+          <RequirementButton className="hero-service-option" onStart={onStart} serviceId="development">Website experience</RequirementButton>
+          <RequirementButton className="hero-service-option" onStart={onStart} serviceId="leads">Qualified enquiries</RequirementButton>
+        </div>
       </div>
       <ScrollShowreel onCinema={onPlayShowreel} />
     </div>
@@ -452,28 +465,28 @@ function ServiceIllustration({ type }) {
   </div>;
 }
 
-function BrandingPortfolio() {
+function BrandingPortfolio({ onStart }) {
   return <section className="section branding-portfolio" aria-labelledby="branding-work-title"><div className="container">
     <div className="branding-portfolio-heading"><p className="eyebrow">Selected brand work</p><h2 id="branding-work-title">Identity work, made <span>for real businesses.</span></h2><p>A selection of logo and brand identity artwork supplied for SEOPune360 client projects.</p></div>
     <div className="branding-work-grid">{brandingProjects.map((project, index) => <PortfolioCard key={project.id} item={project} imageOnly priority={index < 3} />)}</div>
-    <div className="branding-work-cta"><p>Building a brand or refreshing the one you have?</p><a className="button" href="/contact/">Talk about your brand <ArrowIcon /></a></div>
+    <div className="branding-work-cta"><p>Building a brand or refreshing the one you have?</p><RequirementButton className="button" onStart={onStart} serviceId="branding">Talk about your brand <ArrowIcon /></RequirementButton></div>
   </div></section>;
 }
 
-function Services({ activeService, setActiveService }) {
+function Services({ activeService, setActiveService, onStart }) {
   const current = services.find((service) => service.id === activeService) || services[0];
   return (
     <section className="services-section section" id="services">
       <div className="container">
-        <div className="section-title-row"><div><p className="eyebrow">Our services</p><h2>Everything you need to <span>grow online.</span></h2><p>Choose a service to explore the work behind it.</p></div><a className="text-link" href={'mailto:' + CONTACT_EMAIL + '?subject=SEOPune360%20services'}>Talk to our team <ArrowIcon /></a></div>
+        <div className="section-title-row"><div><p className="eyebrow">Our services</p><h2>Everything you need to <span>grow online.</span></h2><p>Choose a service to tell us what you need.</p></div><RequirementButton className="button button-outline" onStart={onStart}>Start a project <ArrowIcon /></RequirementButton></div>
         <div className="service-showcase">
           <div className="service-band" key={current.id} id="service-showcase">
             <ServiceIllustration type={current.type} />
-            <div className="service-band-copy"><span className="service-number">{current.number} / 06</span><h3>{current.title}</h3><p>{current.summary}</p><a href={servicePaths[current.id]}>Explore this service <ArrowIcon /></a></div>
+            <div className="service-band-copy"><span className="service-number">{current.number} / 06</span><h3>{current.title}</h3><p>{current.summary}</p><RequirementButton className="text-link" onStart={onStart} serviceId={current.id}>Start project <ArrowIcon /></RequirementButton><a href={servicePaths[current.id]}>Service details <ArrowIcon /></a></div>
             <ul className="service-points">{current.items.map((item) => <li key={item}><span>↗</span>{item}</li>)}</ul>
           </div>
-          <div className="service-list" role="tablist" aria-label="Choose a service">
-            {services.map((service) => <button className={'service-row' + (activeService === service.id ? ' active' : '')} key={service.id} role="tab" id={'service-tab-' + service.id} aria-selected={activeService === service.id} aria-controls="service-showcase" onMouseEnter={() => setActiveService(service.id)} onFocus={() => setActiveService(service.id)} onClick={() => setActiveService(service.id)}><span className="row-number">({service.number})</span><span className="row-title">{service.title}</span><span className="row-arrow"><ArrowIcon /></span></button>)}
+          <div className="service-list" role="group" aria-label="Choose a service">
+            {services.map((service) => <button type="button" className={'service-row' + (activeService === service.id ? ' active' : '')} key={service.id} aria-haspopup="dialog" onMouseEnter={() => setActiveService(service.id)} onFocus={() => setActiveService(service.id)} onClick={(event) => { setActiveService(service.id); onStart(event.currentTarget, service.id); }}><span className="row-number" aria-hidden="true">({service.number})</span><span className="row-title">{service.title}</span><span className="row-arrow"><ArrowIcon /></span></button>)}
           </div>
         </div>
       </div>
@@ -545,11 +558,11 @@ function AuditSection() {
   );
 }
 
-function Footer({ onCookieSettings, onLegal }) {
+function Footer({ onCookieSettings, onLegal, onStart }) {
   const year = new Date().getFullYear();
   return (
     <footer className="site-footer" id="footer">
-      <div className="footer-cta"><div className="container footer-cta-inner"><div><p className="eyebrow">Your next growth chapter starts here</p><h2>Let’s make your online presence work harder.</h2></div><a className="button footer-button" href="/contact/">Book a Call <ArrowIcon /></a></div></div>
+      <div className="footer-cta"><div className="container footer-cta-inner"><div><p className="eyebrow">Your next growth chapter starts here</p><h2>Let’s make your online presence work harder.</h2></div><RequirementButton className="button footer-button" onStart={onStart}>Start a project <ArrowIcon /></RequirementButton></div></div>
       <div className="container footer-main"><div className="footer-brand-col"><Brand footer /><p>SEO, websites, and growth support for businesses ready to move forward.</p><a className="footer-email" href={'mailto:' + CONTACT_EMAIL}>{CONTACT_EMAIL} <ArrowIcon /></a><div className="footer-social"><a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" aria-label="SEOPUNE360 on LinkedIn"><LinkedInIcon /></a></div></div>
         <div className="footer-column"><h3>Services</h3>{services.map((service) => <a href={servicePaths[service.id]} key={service.id}>{service.title}</a>)}</div>
         <div className="footer-column"><h3>Explore</h3><a href="/#showreel-story">Client Showreel</a><a href="/case-studies/">Case Studies</a><a href="/growth-plan/">Build my growth plan</a><a href="/portfolio/">Client Portfolio</a><a href="/products/">Products &amp; Platforms</a><a href="/industries/">Industries</a><a href="/process/">How We Work</a><a href="/about/">About Us</a><a href="/sitemap/">Sitemap</a></div>
@@ -868,7 +881,7 @@ function AutomotivePortfolio() {
   return <div className="automotive-grid">{automotiveProjects.map(({ id }, index) => <PortfolioCard key={id} item={clients.find(client => client.id === id)} priority={index < 3} />)}</div>;
 }
 
-function PageContent({ path }) {
+function PageContent({ path, onStart }) {
   const parts = path.split('/').filter(Boolean);
   const page = parts[0] || '';
   const service = page === 'services' && parts[1] ? services.find((item) => servicePaths[item.id] === path) : null;
@@ -880,7 +893,7 @@ function PageContent({ path }) {
   let body = null;
   if (service) {
     head = ['Our services', service.title, 'for business growth.', service.summary];
-    body = <><section className="section"><div className="container detail-layout"><div><p className="eyebrow">What’s included</p><h2>Focused work, <span>built around your goals.</span></h2><p>{serviceIntro(service.id) || service.summary}</p><a className="button" href="/contact/">Discuss this service <ArrowIcon /></a></div><ul className="detail-points">{service.items.map((item) => <li key={item}><span>↗</span>{item}</li>)}</ul></div></section><ServiceDeliverables id={service.id} />{service.id === 'branding' ? <BrandingPortfolio /> : <ServiceClientPortfolio service={service} />}</>;
+    body = <><section className="section"><div className="container detail-layout"><div><p className="eyebrow">What’s included</p><h2>Focused work, <span>built around your goals.</span></h2><p>{serviceIntro(service.id) || service.summary}</p><RequirementButton className="button" onStart={onStart} serviceId={service.id}>Discuss this service <ArrowIcon /></RequirementButton></div><ul className="detail-points">{service.items.map((item) => <li key={item}><span>↗</span>{item}</li>)}</ul></div></section><ServiceDeliverables id={service.id} />{service.id === 'branding' ? <BrandingPortfolio onStart={onStart} /> : <ServiceClientPortfolio service={service} />}</>;
   } else if (page === 'services') items = services;
   else if (caseStudy) {
     head = [caseStudy.category, caseStudy.label, 'client story.', caseStudy.copy];
@@ -889,7 +902,7 @@ function PageContent({ path }) {
   else if (page === 'portfolio' || page === 'products') items = clients;
   else if (industry && industry.id === 'Automobile') {
     head = ['Automotive lead generation', 'More local enquiries', 'for your dealership.', 'We help car dealerships and service centres attract local customers through SEO, dedicated websites, landing pages and strong paid promotions.'];
-    body = <><section className="section"><div className="container detail-layout"><div><p className="eyebrow">More conversations with customers</p><h2>Turn local searches into <span>calls and enquiries.</span></h2><p>From being found online to making it easy for customers to contact your team, we help put your dealership in front of the right people.</p><a className="button" href="/contact/?source=automotive#enquiry">Get in touch</a></div><div><p>Looking to grow sales enquiries or service bookings? Let’s discuss your dealership and the customers you want to reach.</p><a className="text-link" href="tel:+918483837969">Call +91 8483837969 <ArrowIcon /></a></div></div></section>
+    body = <><section className="section"><div className="container detail-layout"><div><p className="eyebrow">More conversations with customers</p><h2>Turn local searches into <span>calls and enquiries.</span></h2><p>From being found online to making it easy for customers to contact your team, we help put your dealership in front of the right people.</p><RequirementButton className="button" onStart={onStart} serviceId="leads" industry="Automobile">Share your dealership requirements</RequirementButton></div><div><p>Looking to grow sales enquiries or service bookings? Let’s discuss your dealership and the customers you want to reach.</p><a className="text-link" href="tel:+918483837969">Call +91 8483837969 <ArrowIcon /></a></div></div></section>
       <section className="section"><div className="container"><p className="eyebrow">Our automotive experience</p><h2>Automotive businesses <span>we have worked with.</span></h2><p>Explore the automotive websites in our portfolio, from dealerships to service centres across Pune, Thane and Indore.</p><AutomotivePortfolio /></div></section>
       <section className="section"><div className="container"><p className="eyebrow">How we help</p><h2>What we can offer <span>your dealership.</span></h2><div className="content-card-grid">
         <article className="content-card"><h2>SEO</h2><p>Help local customers find your dealership when they search for cars, showrooms and service centres online.</p></article>
@@ -936,7 +949,7 @@ function PageContent({ path }) {
   }, [path]);
   if (page === 'contact') return <ContactPage />;
   const renderCard = (item) => {
-    if (page === 'services') return <a className="content-card" href={servicePaths[item.id]} key={item.id}><span className="card-number">{item.number} / 06</span><h2>{item.title}</h2><p>{item.summary}</p><span className="text-link">Explore service <ArrowIcon /></span></a>;
+    if (page === 'services') return <article className="content-card service-requirement-card" key={item.id}><h2>{item.title}</h2><p>{item.summary}</p><RequirementButton className="text-link" onStart={onStart} serviceId={item.id}>Start {item.title} project <ArrowIcon /></RequirementButton></article>;
     if (page === 'industries' && !industry) return <a className="content-card" href={industryPath(item.id)} key={item.id}><span className="card-number">SECTOR</span><h2>{item.label}</h2><p>Explore the client work and digital growth needs represented in this sector.</p><span className="text-link">Explore industry <ArrowIcon /></span></a>;
     if (page === 'case-studies') return <a className="content-card" href={'/case-studies/' + item.id + '/'} key={item.id}><span className="card-number">{item.category}</span><h2>{item.label}</h2><p>{item.copy}</p><span className="text-link">Read client story <ArrowIcon /></span></a>;
     return <PortfolioCard key={item.id || item.name} item={item} priority={items.indexOf(item) < 3} />;
@@ -957,15 +970,28 @@ function App() {
     try { return !window.localStorage.getItem('seopune360-cookie-preferences'); } catch { return true; }
   });
   const [legalTitle, setLegalTitle] = useState('');
+  const [requirementRequest, setRequirementRequest] = useState(null);
+  const opener = useRef(null);
+  const startRequirements = useCallback((trigger, serviceId, industry) => {
+    opener.current = trigger;
+    setRequirementRequest({ serviceId, industry });
+  }, []);
+  const closeRequirements = useCallback(() => {
+    setRequirementRequest(null);
+    opener.current?.focus({ preventScroll: true });
+  }, []);
+  const pageService = services.find((service) => servicePaths[service.id] === path);
+  const startPageRequirements = (trigger) => startRequirements(trigger, pageService?.id);
 
   return <div className="page-shell">
-    <Header />
-    <main>{path === '/' ? <><Hero onPlayShowreel={() => setShowreelOpen(true)} /><ClientSelector activeIndustry={activeIndustry} setActiveIndustry={setActiveIndustry} /><Services activeService={activeService} setActiveService={setActiveService} /><CaseStudies activeCase={activeCase} setActiveCase={setActiveCase} /><Process /><WhyUs /><AuditSection /></> : <PageContent path={path} />}</main>
-    <Footer onCookieSettings={() => setCookieOpen(true)} onLegal={setLegalTitle} />
+    <Header onStart={startPageRequirements} />
+    <main>{path === '/' ? <><Hero onPlayShowreel={() => setShowreelOpen(true)} onStart={startRequirements} /><ClientSelector activeIndustry={activeIndustry} setActiveIndustry={setActiveIndustry} /><Services activeService={activeService} setActiveService={setActiveService} onStart={startRequirements} /><CaseStudies activeCase={activeCase} setActiveCase={setActiveCase} /><Process /><WhyUs /><AuditSection /></> : <PageContent path={path} onStart={startRequirements} />}</main>
+    <Footer onCookieSettings={() => setCookieOpen(true)} onLegal={setLegalTitle} onStart={startPageRequirements} />
     {cookieNoticeOpen && <CookieNotice onAccept={() => { applyCookiePreferences({ analytics: true, marketing: true, functional: true }); setCookieNoticeOpen(false); }} onReject={() => { applyCookiePreferences({ analytics: false, marketing: false, functional: false }); setCookieNoticeOpen(false); }} onSettings={() => setCookieOpen(true)} />}
     {showreelOpen && <ShowreelModal onClose={() => setShowreelOpen(false)} />}
     {cookieOpen && <CookieDialog onClose={() => setCookieOpen(false)} onSaved={() => setCookieNoticeOpen(false)} />}
     {legalTitle && <LegalDialog title={legalTitle} onClose={() => setLegalTitle('')} />}
+    <ServiceRequirementFlow request={requirementRequest} onClose={closeRequirements} services={services} clients={clients} servicePaths={servicePaths} contactEmail={CONTACT_EMAIL} />
   </div>;
 }
 
