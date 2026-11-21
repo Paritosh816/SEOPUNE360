@@ -812,18 +812,21 @@ function PortfolioCard({ item, imageOnly = false, priority = false, hidden = fal
   const [visible, setVisible] = useState(false);
   const [width, setWidth] = useState(320);
   const [frameStatus, setFrameStatus] = useState('pending');
+  const [frameLoad, setFrameLoad] = useState('pending');
   const [showProgress, setShowProgress] = useState(false);
   const [failedArtwork, setFailedArtwork] = useState([]);
   const brandingArtwork = item.artworks || brandingProjects.find(project => project.id === item.id)?.artworks;
   const url = imageOnly || brandingArtwork?.length ? null : (item.url || item.website || item.landing);
+  const fallback = Boolean(url && (item.portfolioEmbed === 'blocked' || frameStatus === 'blocked' || frameLoad === 'failed'));
+  const livePreview = Boolean(url && item.portfolioEmbed !== 'blocked');
   const gallery = brandingArtwork || projectGallery(item);
   const availableArtwork = gallery.filter(({ src }) => !failedArtwork.includes(src));
   const image = !url ? availableArtwork[0]?.src : null;
-  const destination = '/case-studies/' + item.id + '/';
+  const destination = fallback ? url : '/case-studies/' + item.id + '/';
 
   useEffect(() => {
     const element = ref.current;
-    if (!element || !url) return undefined;
+    if (!element || !livePreview) return undefined;
     const observer = new IntersectionObserver(entries => {
       if (entries.some(entry => entry.isIntersecting)) { setVisible(true); observer.disconnect(); }
     }, { rootMargin: '160px 0px' });
@@ -834,9 +837,9 @@ function PortfolioCard({ item, imageOnly = false, priority = false, hidden = fal
     });
     resize.observe(element);
     return () => { observer.disconnect(); resize.disconnect(); };
-  }, [url]);
+  }, [livePreview]);
   useEffect(() => {
-    if (!url || !visible || !priority || hidden) return;
+    if (!livePreview || !visible || !priority || hidden || fallback) return;
     const origin = new URL(url).origin;
     const exists = Array.from(document.querySelectorAll('link[rel="preconnect"]')).some(link => link.href === origin + '/');
     if (!exists) {
@@ -846,30 +849,40 @@ function PortfolioCard({ item, imageOnly = false, priority = false, hidden = fal
       link.crossOrigin = 'anonymous';
       document.head.appendChild(link);
     }
-  }, [url, visible, priority, hidden]);
+  }, [url, livePreview, visible, priority, hidden, fallback]);
   useEffect(() => {
-    if (!visible || !url) return undefined;
+    if (!visible || !livePreview) return undefined;
     const controller = new AbortController();
     const timeout = window.setTimeout(() => controller.abort(), 5000);
     fetch('https://seopune360-audit-module.vercel.app/api/frame-check?url=' + encodeURIComponent(url), { signal: controller.signal })
       .then(response => response.ok ? response.json() : Promise.reject())
       .then(data => setFrameStatus(data.status === 'blocked' ? 'blocked' : data.status === 'allowed' ? 'allowed' : 'unknown'))
-      .catch(() => { if (ref.current) setFrameStatus('unknown'); })
+      .catch(() => {})
       .finally(() => window.clearTimeout(timeout));
     return () => { window.clearTimeout(timeout); controller.abort(); };
-  }, [visible, url]);
+  }, [visible, url, livePreview]);
   useEffect(() => {
-    if (!visible || !url || frameStatus === 'blocked') return undefined;
+    if (!visible || !livePreview || fallback) return undefined;
     setShowProgress(true);
     const timer = window.setTimeout(() => setShowProgress(false), 1200);
     return () => window.clearTimeout(timer);
-  }, [visible, url, frameStatus === 'blocked']);
+  }, [visible, livePreview, fallback]);
+  useEffect(() => {
+    if (!visible || !livePreview || fallback || hidden || frameLoad !== 'pending') return undefined;
+    const timer = window.setTimeout(() => setFrameLoad('failed'), 6500);
+    return () => window.clearTimeout(timer);
+  }, [visible, livePreview, fallback, hidden, frameLoad]);
 
-  return <a ref={ref} hidden={hidden} className="portfolio-card" href={destination}>
+  return <a ref={ref} hidden={hidden} className="portfolio-card" href={destination}
+    {...(fallback ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
 
     <span className="portfolio-visual">
-      {visible && url && frameStatus !== 'blocked' && <iframe title="" aria-hidden="true" tabIndex="-1" src={url} {...(priority ? { fetchPriority:'high' } : { loading:'lazy' })} sandbox="allow-scripts allow-same-origin allow-forms" onLoad={() => setShowProgress(false)} onError={() => { setFrameStatus('unknown'); setShowProgress(false); }} style={{ width:'1280px', height:'800px', transform:'scale(' + (width / 1280) + ')' }} />}
-      {showProgress && frameStatus !== 'blocked' && <span className="portfolio-progress" aria-hidden="true" />}
+      {visible && livePreview && !fallback && <iframe title="" aria-hidden="true" tabIndex="-1" src={url} {...(priority ? { fetchPriority:'high' } : { loading:'lazy' })} sandbox="allow-scripts allow-same-origin allow-forms" onLoad={() => { setFrameLoad('loaded'); setShowProgress(false); }} onError={() => { setFrameLoad('failed'); setShowProgress(false); }} style={{ width:'1280px', height:'800px', transform:'scale(' + (width / 1280) + ')' }} />}
+      {showProgress && !fallback && <span className="portfolio-progress" aria-hidden="true" />}
+      {fallback && <span className="portfolio-live-fallback">
+        <strong>{new URL(url).hostname.replace(/^www\./, '')}</strong>
+        <span>Live site · Open this card <span aria-hidden="true">↗</span></span>
+      </span>}
       {image && <img src={image} alt="" loading="lazy" decoding="async" onError={() => setFailedArtwork(previous => [...previous, image])} />}
       {!url && !image && <span className="portfolio-no-image"><ClientLogo client={item} /></span>}
     </span>
