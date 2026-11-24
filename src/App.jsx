@@ -192,6 +192,25 @@ const servicePaths = {
 };
 const industryPath = (industry) => '/industries/' + industry.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '/';
 
+const serviceNextSteps = {
+  seo: <p>Run a <a href="/audit/">free website SEO audit</a> to spot technical and on-page issues, or explore <a href={servicePaths.geo}>AI search and GEO</a> if you also want to improve how answer engines discover your business.</p>,
+  geo: <p>Use the <a href="/audit/">website audit’s AI search readiness checks</a> to review your business schema and content structure. If crawling or indexing needs attention first, start with <a href={servicePaths.seo}>technical and on-page SEO</a>.</p>,
+  leads: <p>See how <a href="/case-studies/shaw-toyota/">Shaw Toyota approached dealership enquiries</a>. If you’re preparing the destination for your own campaigns, explore <a href={servicePaths.development}>website and landing page development</a>.</p>,
+  branding: <p>See the <a href="/case-studies/kj-group/">KJ Group visual identity project</a> for an example of applying a brand across formats. To bring a new identity online, explore <a href={servicePaths.development}>business website development</a>.</p>,
+  development: <p>See the <a href="/case-studies/intellidant/">IntelliDant product website</a> for an example of organising a complex offer. If you’re updating an existing site, run a <a href="/audit/">website health audit</a> before deciding what to rebuild.</p>,
+  growth: <p>Use the <a href="/growth-plan/">90-day growth planner</a> to sequence your work. If your priority is turning paid traffic into enquiries, explore <a href={servicePaths.leads}>lead generation and conversion tracking</a>.</p>,
+};
+
+const industryNextSteps = {
+  'Matrimonial': <p>Give prospective members and vendors clear routes through your site. See the <a href="/case-studies/ananya-rishtey/">Ananya Rishtey registration and website project</a> for an example of explaining a platform before asking users to sign up.</p>,
+  'Healthcare': <p>Make clinic and product information easy to find and verify. Explore <a href={servicePaths.seo}>local search and on-page SEO</a> and see how the <a href="/case-studies/intellidant/">IntelliDant website presented its dental software to clinics</a>.</p>,
+  'Real Estate': <p>Help prospective clients find project pages, understand what each development offers, and reach the right team. A <a href="/audit/">website SEO audit</a> can identify technical and navigation issues on an existing site.</p>,
+  'Hospitality': <p>Keep room details, location, and contact information easy to find on mobile. Explore the <a href="/case-studies/hotel-shivtara/">Hotel Shivtara website in Jejuri</a> and see how <a href={servicePaths.seo}>local search optimization</a> fits alongside a hotel website.</p>,
+  'Manufacturing Industry': <p>Help procurement teams find product specifications, applications, and enquiry details. Explore <a href={servicePaths.development}>website development for complex services and products</a> and see the <a href="/case-studies/fpt/">FPT India visual identity work</a>.</p>,
+  'Infratech': <p>Give buyers separate paths to your capabilities, past work, and tender or enquiry details. See the <a href="/case-studies/adi-dev/">A.D.I DEV construction support website</a> for a related B2B example.</p>,
+  'D2C / Lifestyle': <p>Make the transition from product discovery to a product page clear. Explore the <a href="/case-studies/lusso-marco/">Lusso Marco growth marketing case study</a> and see how <a href={servicePaths.growth}>growth planning</a> connects campaigns with the website experience.</p>,
+};
+
 function ArrowIcon() {
   return <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3.5 9h10m-4-4 4 4-4 4" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /></svg>;
 }
@@ -438,7 +457,13 @@ function ClientProjectPage({ client }) {
   const related = clients.filter((item) => item.id !== client.id && item.serviceTypes.some((type) => client.serviceTypes.includes(type))).slice(0,3);
   return <section className="section project-story"><div className="container">
     <div className="project-summary"><ClientLogo client={client} /><div><h2>Project scope</h2><div className="project-tags">{client.serviceTypes.map((type) => <span key={type}>{type}</span>)}{client.serviceNote && <span>{client.serviceNote}</span>}</div></div></div>
-    <div className="project-overview"><div><p className="eyebrow">The project</p><p className="project-lead">{client.overview || client.description}</p></div><aside><h3>At a glance</h3><dl><dt>Client</dt><dd>{client.name}</dd><dt>Industry</dt><dd>{client.type}</dd><dt>Services</dt><dd>{client.service}</dd></dl>{(client.landing || client.website) && <a className="text-link" href={client.landing || client.website} target="_blank" rel="noopener noreferrer">{client.landing ? 'Visit landing page' : 'Visit client website'} <ArrowIcon /></a>}</aside></div>
+    <div className="project-overview"><div><p className="eyebrow">The project</p><p className="project-lead">{client.overview || client.description}</p></div>
+      <aside><h3>At a glance</h3><dl className="context-links">
+        <dt>Client</dt><dd>{client.name}</dd>
+        <dt>Industry</dt><dd>{client.industries.map((name, index) => <span key={name}>{index > 0 && ' · '}<a href={industryPath(name)}>{name === 'Automobile' ? 'Automotive marketing' : name}</a></span>)}</dd>
+        <dt>Services</dt><dd>{client.serviceIds.map((id, index) => <span key={id}>{index > 0 && ' · '}<a href={servicePaths[id]}>{services.find((item) => item.id === id).title}</a></span>)}{client.serviceNote && ' (' + client.serviceNote + ')'}</dd>
+      </dl>{(client.landing || client.website) && <a className="text-link" href={client.landing || client.website} target="_blank" rel="noopener noreferrer">{client.landing ? 'Visit landing page' : 'Visit client website'} <ArrowIcon /></a>}</aside>
+    </div>
     {gallery.length > 0 && <section className="project-gallery" aria-label={'Project visuals for ' + client.name}><div className="section-title-row"><div><p className="eyebrow">Work in context</p><h2>{client.campaign ? 'The landing experience.' : client.serviceIds.includes('branding') ? 'The identity, in detail.' : 'A closer look at the website.'}</h2></div></div>{gallery.map((item, index) => {
       const Figure = isBranding ? BrandingGalleryFigure : 'figure';
       return <Figure className="project-figure" key={item.src}><div className="project-frame"><div className="project-frame-bar"><span><i /><i /><i /></span><b>{item.title}</b><span>{String(index + 1).padStart(2,'0')}</span></div><a href={item.fullSize || item.src} target="_blank" rel="noopener noreferrer" aria-label={'View full-size ' + item.title}><img src={item.src} alt={item.caption} width={item.width} height={item.height} loading="lazy" decoding="async" onError={() => setFailedImages(previous => [...previous, item.src])} /></a></div><figcaption><span>{item.caption}</span>{item.url && <a href={item.url} target="_blank" rel="noopener noreferrer">View source page ↗</a>}</figcaption></Figure>;
@@ -529,6 +554,7 @@ function Process() {
   return <section className="process-section section" id="process"><div className="container">
     <div className="section-title-row"><div><p className="eyebrow">Our approach</p><h2>Find the gap.<br /><span>Fix what matters.</span></h2></div><p className="section-intro">A shared process for search, websites and campaigns. Scope and timing are agreed around your project.</p></div>
     <div className="delivery-stages">{stages.map(([title, copy, outcome]) => <article key={title}><h3>{title}</h3><p>{copy}</p><span>{outcome} <ArrowIcon /></span></article>)}</div>
+    <p className="context-links process-links">Get a baseline with a <a href="/audit/">website health audit</a>, then use the <a href="/growth-plan/">90-day growth planner</a> to decide what to tackle first.</p>
   </div></section>;
 }
 
@@ -873,7 +899,7 @@ function PageContent({ path, onStart }) {
   let body = null;
   if (service) {
     head = ['Our services', service.title, 'for business growth.', service.summary];
-    body = <><section className="section"><div className="container detail-layout"><div><p className="eyebrow">What’s included</p><h2>Focused work, <span>built around your goals.</span></h2><p>{serviceIntro(service.id) || service.summary}</p><RequirementButton className="button" onStart={onStart} serviceId={service.id}>Discuss this service <ArrowIcon /></RequirementButton></div><ul className="detail-points">{service.items.map((item) => <li key={item}><span>↗</span>{item}</li>)}</ul></div></section><ServiceDeliverables id={service.id} />{service.id === 'branding' ? <BrandingPortfolio onStart={onStart} /> : <ServiceClientPortfolio service={service} />}</>;
+    body = <><section className="section"><div className="container detail-layout"><div><p className="eyebrow">What’s included</p><h2>Focused work, <span>built around your goals.</span></h2><p>{serviceIntro(service.id) || service.summary}</p><div className="context-links">{serviceNextSteps[service.id]}</div><RequirementButton className="button" onStart={onStart} serviceId={service.id}>Discuss this service <ArrowIcon /></RequirementButton></div><ul className="detail-points">{service.items.map((item) => <li key={item}><span>↗</span>{item}</li>)}</ul></div></section><ServiceDeliverables id={service.id} />{service.id === 'branding' ? <BrandingPortfolio onStart={onStart} /> : <ServiceClientPortfolio service={service} />}</>;
   } else if (page === 'services') items = services;
   else if (caseStudy) {
     head = [caseStudy.label + ' · ' + caseStudy.category, caseStudy.headline || caseStudy.label, '', caseStudy.copy];
@@ -885,21 +911,21 @@ function PageContent({ path, onStart }) {
     body = <><section className="section"><div className="container detail-layout"><div><p className="eyebrow">More conversations with customers</p><h2>Turn local searches into <span>calls and enquiries.</span></h2><p>From being found online to making it easy for customers to contact your team, we help put your dealership in front of the right people.</p><RequirementButton className="button" onStart={onStart} serviceId="leads" industry="Automobile">Share your dealership requirements</RequirementButton></div><div><p>Looking to grow sales enquiries or service bookings? Let’s discuss your dealership and the customers you want to reach.</p><a className="text-link" href="tel:+918483837969">Call +91 8483837969 <ArrowIcon /></a></div></div></section>
       <section className="section"><div className="container"><p className="eyebrow">Our automotive experience</p><h2>Automotive businesses <span>we have worked with.</span></h2><p>Explore the automotive websites in our portfolio, from dealerships to service centres across Pune, Thane and Indore.</p><AutomotivePortfolio /></div></section>
       <section className="section"><div className="container"><p className="eyebrow">How we help</p><h2>What we can offer <span>your dealership.</span></h2><div className="content-card-grid">
-        <article className="content-card"><h2>SEO</h2><p>Help local customers find your dealership when they search for cars, showrooms and service centres online.</p></article>
+        <article className="content-card"><h2>SEO</h2><p className="context-links">Help local customers find your dealership when they search for cars, showrooms and service centres online. Explore our <a href={servicePaths.seo}>local and technical SEO services</a>.</p></article>
         <article className="content-card"><h2>Google Business Profile</h2><p>Manage and improve your profile so customers can find your business on Google Search and Maps and contact your team.</p></article>
-        <article className="content-card"><h2>Dedicated websites and landing pages</h2><p>Make it easy for customers to explore your offering, call your team or submit an enquiry.</p></article>
+        <article className="content-card"><h2>Dedicated websites and landing pages</h2><p className="context-links">Use <a href={servicePaths.development}>website and landing page development</a> to make it easier for customers to explore your offering, call your team or submit an enquiry.</p></article>
         <article className="content-card"><h2>GEO visibility</h2><p>Help more potential customers discover your dealership through relevant searches.</p></article>
-        <article className="content-card"><h2>Paid advertising</h2><p>Promote a model, offer or location to reach more interested customers when you need additional enquiries.</p></article>
+        <article className="content-card"><h2>Paid advertising</h2><p className="context-links">Promote a model, offer or location with <a href={servicePaths.leads}>Google Ads and Meta Ads lead generation</a>.</p></article>
         <article className="content-card"><h2>Calls and enquiries</h2><p>Give your sales and service teams more opportunities to speak with potential customers by phone or through website enquiries.</p></article>
       </div></div></section><section className="section"><div className="container detail-layout"><div><p className="eyebrow">Let’s talk</p><h2>Ready to grow <span>your dealership?</span></h2><p>Tell us about your business and the customers you want to reach.</p><a className="button" href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">Talk to us on WhatsApp</a></div><div><p><a href="tel:+918483837969">+91 8483837969</a></p><p><a href="mailto:seopune360@gmail.com">seopune360@gmail.com</a></p><a className="text-link" href="/contact/">Contact our team <ArrowIcon /></a></div></div></section></>;
   }
   else if (industry) {
     head = [industry.label + ' digital growth', 'Digital experiences', 'for ' + industry.label + '.', 'Explore the client work currently published for this sector, and the services that can support its next stage.'];
     items = clients.filter((client) => client.industries.includes(industry.label));
-    body = <section className="section"><div className="container">{items.length === 0 ? <div className="empty-state"><h2>No published client case study for this category yet.</h2><p>We can still discuss the search and website needs of your business.</p><a className="button" href="/contact/">Talk with us <ArrowIcon /></a></div> : <><p className="eyebrow">Relevant services</p><div className="simple-links">{services.filter((item) => items.some((client) => client.serviceIds.includes(item.id))).map((item) => <a href={servicePaths[item.id]} key={item.id}>{item.title}<ArrowIcon /></a>)}</div></>}</div></section>;
+    body = <section className="section"><div className="container">{items.length === 0 ? <div className="empty-state"><h2>No published client case study for this category yet.</h2><p>We can still discuss the search and website needs of your business.</p><a className="button" href="/contact/">Talk with us <ArrowIcon /></a></div> : <><h2>Relevant services</h2><div className="context-links industry-next-steps">{industryNextSteps[industry.id]}</div><div className="simple-links">{services.filter((item) => items.some((client) => client.serviceIds.includes(item.id))).map((item) => <a href={servicePaths[item.id]} key={item.id}>{item.title}<ArrowIcon /></a>)}</div></>}</div></section>;
   } else if (page === 'industries') items = industries.filter((item) => item.id !== 'All industries');
   else if (page === 'process') body = <Process />;
-  else if (page === 'about') body = <WhyUs />;
+  else if (page === 'about') body = <><WhyUs /><div className="container context-links about-work-links"><p>Explore <a href="/case-studies/">published client projects</a> or see <a href="/process/">how we plan and deliver a project</a>.</p></div></>;
   else if (page === 'contact') body = null;
   else if (page === 'growth-plan') body = <GrowthPlanPage />;
   else if (page === 'sitemap') {
@@ -915,6 +941,7 @@ function PageContent({ path, onStart }) {
         ['How We Work', '/process/'],
         ['Contact', '/contact/'],
         ['Build my growth plan', '/growth-plan/'],
+        ['Free website SEO audit', '/audit/'],
       ]],
       ['Services', services.map((item) => [item.title, servicePaths[item.id]])],
       ['Client Stories', caseStudies.map((item) => [item.label, `/case-studies/${item.id}/`])],
@@ -929,7 +956,7 @@ function PageContent({ path, onStart }) {
   }, [path]);
   if (page === 'contact') return <ContactPage />;
   const renderCard = (item) => {
-    if (page === 'services') return <article className="content-card service-requirement-card" key={item.id}><h2>{item.title}</h2><p>{item.summary}</p><RequirementButton className="text-link" onStart={onStart} serviceId={item.id}>Start {item.title} project <ArrowIcon /></RequirementButton></article>;
+    if (page === 'services') return <article className="content-card service-requirement-card" key={item.id}><h2 className="context-links"><a href={servicePaths[item.id]}>{item.title}</a></h2><p>{item.summary}</p><RequirementButton className="text-link" onStart={onStart} serviceId={item.id}>Start {item.title} project <ArrowIcon /></RequirementButton></article>;
     if (page === 'industries' && !industry) return <a className="content-card" href={industryPath(item.id)} key={item.id}><span className="card-number">SECTOR</span><h2>{item.label}</h2><p>Explore the client work and digital growth needs represented in this sector.</p><span className="text-link">Explore industry <ArrowIcon /></span></a>;
     if (page === 'case-studies') return <a className="content-card" href={'/case-studies/' + item.id + '/'} key={item.id}><span className="card-number">{item.category}</span><h2>{item.label}</h2><p>{item.copy}</p><span className="text-link">Read client story <ArrowIcon /></span></a>;
     return <PortfolioCard key={item.id || item.name} item={item} priority={items.indexOf(item) < 3} />;

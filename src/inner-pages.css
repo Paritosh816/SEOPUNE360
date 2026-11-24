@@ -1,3 +1,6 @@
+.industry-next-steps { max-width: 68ch; margin-block: 12px 24px; }
+.about-work-links { margin-bottom: 32px; }
+
 /* Human-readable website sitemap */
 .sitemap-content { padding-top: clamp(60px,7vw,100px); }
 .sitemap-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; }

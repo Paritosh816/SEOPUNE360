@@ -101,6 +101,9 @@ h3 { font-size: 1.35rem; line-height: 1.2; letter-spacing: -.035em; }
   transition: gap .2s ease, color .2s ease;
 }
 .text-link:hover { gap: 15px; color: #a9ffed; }
+.context-links a { color: var(--aqua); text-decoration: underline; text-underline-offset: .18em; }
+.context-links a:hover { color: #a9ffed; }
+.process-links { margin-top: 24px; }
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
