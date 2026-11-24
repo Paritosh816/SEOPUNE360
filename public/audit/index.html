@@ -872,8 +872,14 @@
           <input type="text" id="domain-input" class="seo360-input" placeholder="Enter your website URL (e.g. example.com)" required />
           <button type="submit" class="seo360-btn-primary">Scan my website</button>
         </form>
-    <div class="seo360-subnote" id="audit-mode-note">
-      <strong>Live audit</strong> • Crawl up to 75 HTML pages, check PageSpeed, and explore keyword rankings and niche competitors.
+        <div class="seo360-subnote" id="audit-mode-note">
+          <strong>Live audit</strong> • Crawl up to 75 HTML pages, check PageSpeed, and explore keyword rankings and niche competitors.
+        </div>
+        <div class="seo360-subnote">
+          <h2>What will the website audit show?</h2>
+          <p>The audit checks which public pages the crawler can reach, whether pages have useful titles and descriptions, and whether links and canonical URLs work as expected. It also reviews the homepage’s mobile and desktop performance and checks business schema and AI search readiness.</p>
+          <p>After the scan, open Crawl Diagnostics to find the affected URLs. Use the 30/60/90-day roadmap to prioritize fixes. For example, repair a broken page before rewriting its title. Run the scan again after publishing a fix to see what changed.</p>
+          <p>Want help implementing the findings? Explore our <a href="/services/seo/">SEO services</a> or <a href="/growth-plan/">build a growth plan</a>.</p>
         </div>
       </div>
     </div>
@@ -948,17 +954,18 @@
               <div class="cta-avatar">360</div>
             </div>
             <div class="cta-box-title">Want us to fix these for you?</div>
-            <a href="/contact" class="btn-book">📅 Book a call</a>
+            <a href="/contact/" class="btn-book">📅 Book a call</a>
           </div>
           <div>
             <div style="font-size: 0.85rem; font-weight: 700;">Share this audit</div>
             <div class="share-row">
-              <button class="share-icon-btn" onclick="navigator.clipboard.writeText(window.location.href)">🔗</button>
-              <a class="share-icon-btn" href="https://www.linkedin.com/sharing/share-offsite/" target="_blank">in</a>
-              <a class="share-icon-btn" href="https://x.com/intent/tweet" target="_blank">𝕏</a>
-              <a class="share-icon-btn" href="https://www.facebook.com/sharer/sharer.php" target="_blank">f</a>
-              <a class="share-icon-btn" href="https://wa.me/918483837969" target="_blank">💬</a>
+              <button type="button" class="share-icon-btn" id="copy-audit-link" aria-label="Copy audit link">🔗</button>
+              <a class="share-icon-btn" id="share-audit-linkedin" aria-label="Share audit on LinkedIn" target="_blank" rel="noopener noreferrer">in</a>
+              <a class="share-icon-btn" id="share-audit-x" aria-label="Share audit on X" target="_blank" rel="noopener noreferrer">𝕏</a>
+              <a class="share-icon-btn" id="share-audit-facebook" aria-label="Share audit on Facebook" target="_blank" rel="noopener noreferrer">f</a>
+              <a class="share-icon-btn" id="share-audit-whatsapp" aria-label="Share audit on WhatsApp" target="_blank" rel="noopener noreferrer">💬</a>
             </div>
+            <p id="share-audit-status" role="status"></p>
           </div>
         </aside>
 
@@ -1150,6 +1157,22 @@
       document.getElementById("stage-scanning").classList.add("hidden");
       document.getElementById("stage-error").classList.add("hidden");
       document.getElementById("stage-report").classList.remove("hidden");
+      const auditUrl = new URL("/audit/", location.origin);
+      auditUrl.searchParams.set("domain", window.activeAuditResult?.scan.website || document.getElementById("domain-input").value.trim());
+      const encoded = encodeURIComponent(auditUrl.href);
+      document.getElementById("share-audit-linkedin").href = "https://www.linkedin.com/sharing/share-offsite/?url=" + encoded;
+      document.getElementById("share-audit-x").href = "https://x.com/intent/tweet?url=" + encoded;
+      document.getElementById("share-audit-facebook").href = "https://www.facebook.com/sharer/sharer.php?u=" + encoded;
+      document.getElementById("share-audit-whatsapp").href = "https://wa.me/?text=" + encoded;
+      document.getElementById("copy-audit-link").onclick = async () => {
+        const status = document.getElementById("share-audit-status");
+        try {
+          await navigator.clipboard.writeText(auditUrl.href);
+          status.textContent = "Audit link copied.";
+        } catch {
+          status.textContent = auditUrl.href;
+        }
+      };
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 

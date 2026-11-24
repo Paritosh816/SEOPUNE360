@@ -1,11 +1,12 @@
 import { automotiveProjects } from './src/automotiveProjects.js';
 import { showcaseDealerships, showcasePath } from './src/automotiveShowcase.js';
 import { homeSchema, siteUrl } from './src/home-readiness.js';
-import { createServer, defineConfig } from 'vite';
+import { createServer, defineConfig, minify } from 'vite';
+import { transform } from 'lightningcss';
 import react from '@vitejs/plugin-react';
 import { createElement } from 'react';
 import { renderToReadableStream, renderToString } from 'react-dom/server';
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 
 const routes = [
@@ -113,6 +114,28 @@ async function writePrerenderedPages(outputDirectory, homeTemplate) {
   }
 }
 
+async function prepareAuditPage(outputDirectory) {
+  const directory = join(outputDirectory, 'audit');
+  const minifyCss = (filename, code) => transform({ filename, code, minify: true }).code;
+  const filenames = await readdir(directory);
+  await Promise.all(filenames.filter(name => /\.(css|js)$/.test(name)).map(async name => {
+    const path = join(directory, name);
+    const source = await readFile(path);
+    const compressed = name.endsWith('.css')
+      ? minifyCss(name, source)
+      : (await minify(name, source.toString('utf8'))).code;
+    await writeFile(path, compressed);
+  }));
+  const auditPath = join(directory, 'index.html');
+  const auditApiUrl = (process.env.VITE_AUDIT_API_URL || '').trim();
+  const auditHtml = await readFile(auditPath, 'utf8');
+  const page = auditHtml
+    .replace(/<style>([\s\S]*?)<\/style>/, (_, css) => `<style>${minifyCss('audit-inline.css', Buffer.from(css))}</style>`)
+    .replace(/<meta name="seo360-audit-api-url" content=""\s*\/>/, () =>
+      `<meta name="seo360-audit-api-url" content="${auditApiUrl.replaceAll('&', '&amp;').replaceAll('"', '&quot;')}" />`);
+  await writeFile(auditPath, page, 'utf8');
+}
+
 function staticRoutePages() {
   return {
     name: 'seopune360-static-route-pages',
@@ -165,17 +188,7 @@ function staticRoutePages() {
       ].join('\n');
       await writeFile(join(outputDirectory, 'sitemap.xml'), sitemap, 'utf8');
 
-      const auditApiUrl = (process.env.VITE_AUDIT_API_URL || '').trim();
-      if (auditApiUrl) {
-        const auditPath = join(outputDirectory, 'audit', 'index.html');
-        const auditHtml = await readFile(auditPath, 'utf8');
-        const escapedApiUrl = auditApiUrl.replaceAll('&', '&amp;').replaceAll('"', '&quot;');
-        const configuredAuditHtml = auditHtml.replace(
-          /<meta name="seo360-audit-api-url" content=""\s*\/>/,
-          `<meta name="seo360-audit-api-url" content="${escapedApiUrl}" />`,
-        );
-        await writeFile(auditPath, configuredAuditHtml, 'utf8');
-      }
+      await prepareAuditPage(outputDirectory);
     },
   };
 }
