@@ -68,6 +68,13 @@ async function writePrerenderedPages(outputDirectory, homeTemplate) {
       .replace(mount, () => `<div id="root" data-prerendered="home">${homeContent}</div>`);
     await writeFile(join(outputDirectory, 'index.html'), home, 'utf8');
 
+    for (const [path] of routes.filter(([path]) => /^\/services\/[^/]+\/$/.test(path))) {
+      const file = join(outputDirectory, path.slice(1), 'index.html');
+      const page = await readFile(file, 'utf8');
+      const content = renderToString(createElement(App, { pathname: path }));
+      await writeFile(file, page.replace(mount, () => `<div id="root" data-prerendered="${path}">${content}</div>`), 'utf8');
+    }
+
     const { default: AutomotiveShowcase } = await renderer.ssrLoadModule('/src/AutomotiveShowcase.jsx');
     for (const [path, title, description] of showcaseRoutes) {
       const canonical = `https://seopune360.com${path}`;

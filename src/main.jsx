@@ -9,7 +9,9 @@ const app = (
     <App pathname={window.location.pathname} />
   </React.StrictMode>
 );
-if (root.dataset.prerendered === 'home' && window.location.pathname === '/') {
+const pathname = window.location.pathname.replace(/\/+$/, '') + '/';
+const prerenderedPath = root.dataset.prerendered === 'home' ? '/' : root.dataset.prerendered;
+if (prerenderedPath === pathname) {
   ReactDOM.hydrateRoot(root, app);
 } else {
   ReactDOM.createRoot(root).render(app);
