@@ -216,6 +216,7 @@
 
     .seo360-input {
       flex: 1;
+      min-width: 0;
       background: transparent;
       border: none;
       outline: none;
@@ -256,6 +257,7 @@
     }
 
     .seo360-subnote strong { color: var(--seo360-primary); }
+    .seo360-subnote a { color: var(--seo360-primary); text-underline-offset: 0.18em; }
 
     /* Stage 2: Laser Viewfinder Scanner */
     #stage-scanning {
@@ -827,8 +829,13 @@
     .badge-Low { background: rgba(55, 214, 255, .14); color: #a5f3fc; }
 
     @media (max-width: 960px) {
-      .seo360-home-grid, .report-hero-grid, .report-body-grid { grid-template-columns: 1fr; }
+      .seo360-home-grid { grid-template-columns: minmax(0, 1fr); }
+      .report-hero-grid, .report-body-grid { grid-template-columns: 1fr; }
       .report-sidebar { position: static; }
+    }
+    @media (max-width: 480px) {
+      .seo360-input-group { flex-direction: column; align-items: stretch; }
+      .seo360-input { width: 100%; }
     }
       @media (max-width: 960px) { .audit-roadmap-grid { grid-template-columns: 1fr; } }
 </style>
