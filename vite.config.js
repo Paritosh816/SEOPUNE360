@@ -4,7 +4,7 @@ import { homeSchema, siteUrl } from './src/home-readiness.js';
 import { createServer, defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { createElement } from 'react';
-import { renderToString } from 'react-dom/server';
+import { renderToReadableStream, renderToString } from 'react-dom/server';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 
@@ -20,7 +20,14 @@ const routes = [
   ['/case-studies/ananya-rishtey/', 'Ananya Rishtey Website Development', 'Explore a matrimony website with visual storytelling, animated product previews, and vendor registration pages.'],
   ['/case-studies/intellidant/', 'IntelliDant Website Development', 'Explore a dental software website with product presentation, plan comparisons, and clinic registration pages.'],
   ['/case-studies/adi-dev/', 'A.D.I DEV Website Development', 'Explore an Australian B2B construction support website with service, enquiry, and careers journeys.'],
-  ...['kj-group', 'shaw-tata', 'shaw-toyota', 'krishna-clinic', 'hotel-shivtara', 'era-infratech', 'fpt', 'koriv-studio'].map((id) => [`/case-studies/${id}/`, `${id.replaceAll('-', ' ')} client story`, 'Explore the SEOPune360 client project and its service scope.']),
+  ['/case-studies/kj-group/', 'KJ Group Branding', 'Browse the KJ Group visual identity project, including logo variations and examples of the brand in use.'],
+  ['/case-studies/shaw-tata/', 'Shaw Tata Lead Generation', 'See how SEOPune360 used paid campaigns to support vehicle discovery and enquiries for Shaw Tata.'],
+  ['/case-studies/shaw-toyota/', 'Shaw Toyota Lead Generation', 'Explore the paid advertising campaign for Shaw Toyota, designed to reach prospective buyers and encourage dealership enquiries.'],
+  ['/case-studies/krishna-clinic/', 'Krishna Classical Homoeopathy Clinic', 'Explore the website, social media and growth marketing work for Krishna Classical Homoeopathy Clinic.'],
+  ['/case-studies/hotel-shivtara/', 'Hotel Shivtara Website Development', 'See the website work for Hotel Shivtara in Jejuri, with hotel information for guests planning their stay.'],
+  ['/case-studies/era-infratech/', 'ERA Infratech Branding', 'See the ERA Infratech branding project, from logo variations to stationery and brand mockups.'],
+  ['/case-studies/fpt/', 'FPT Powertrain Technologies Branding', 'View brand guidelines and campaign artwork prepared for the India office of FPT Powertrain Technologies.'],
+  ['/case-studies/koriv-studio/', 'Koriv Studio Logo Design', 'Explore Koriv Studio’s logo design through identity artwork and branded mockups.'],
   ...automotiveProjects.filter(({ id }) => id !== 'shaw-toyota' && id !== 'shaw-tata')
     .map(({ id, name, description }) => [`/case-studies/${id}/`, `${name} client story`, description]),
   ['/case-studies/lusso-marco/', 'Lusso Marco Growth Marketing Case Study', 'Explore growth marketing and digital campaign work for Lusso Marco.'],
@@ -68,10 +75,18 @@ async function writePrerenderedPages(outputDirectory, homeTemplate) {
       .replace(mount, () => `<div id="root" data-prerendered="home">${homeContent}</div>`);
     await writeFile(join(outputDirectory, 'index.html'), home, 'utf8');
 
-    for (const [path] of routes.filter(([path]) => /^\/services\/[^/]+\/$/.test(path))) {
+    for (const [path] of routes) {
       const file = join(outputDirectory, path.slice(1), 'index.html');
       const page = await readFile(file, 'utf8');
-      const content = renderToString(createElement(App, { pathname: path }));
+      const element = createElement(App, { pathname: path });
+      let content;
+      if (path === '/portfolio/') {
+        const stream = await renderToReadableStream(element);
+        await stream.allReady;
+        content = await new Response(stream).text();
+      } else {
+        content = renderToString(element);
+      }
       await writeFile(file, page.replace(mount, () => `<div id="root" data-prerendered="${path}">${content}</div>`), 'utf8');
     }
 

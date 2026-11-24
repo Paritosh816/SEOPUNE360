@@ -711,13 +711,19 @@ function ContactPage() {
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState(false);
   const [formError, setFormError] = useState('');
-  const [formStartedAt] = useState(() => Date.now());
-  const [automotive] = useState(() => new URLSearchParams(window.location.search).get('source') === 'automotive');
-  const [planContext] = useState(() => {
-    if (new URLSearchParams(window.location.search).get('growth-plan') !== '1') return null;
-    try { return JSON.parse(window.sessionStorage.getItem('seopune360-growth-plan') || 'null'); }
-    catch { return null; }
-  });
+  const [formStartedAt, setFormStartedAt] = useState('');
+  const [automotive, setAutomotive] = useState(false);
+  const [planContext, setPlanContext] = useState(null);
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setFormStartedAt(Date.now());
+    setAutomotive(params.get('source') === 'automotive');
+    if (params.get('growth-plan') === '1') {
+      try {
+        setPlanContext(JSON.parse(window.sessionStorage.getItem('seopune360-growth-plan') || 'null'));
+      } catch { /* The visitor can still fill out the form manually. */ }
+    }
+  }, []);
 
   async function handleContactSubmit(event) {
     event.preventDefault();
