@@ -26,9 +26,21 @@
         } catch (error) { /* Keep optional storage denied if preferences cannot be read. */ }
         gtag('consent', 'default', consent);
         gtag('js', new Date());
+        var started = false;
+        window.startOptionalTags = function () {
+          if (started) return;
+          started = true;
+          window.dataLayer.push({'gtm.start': Date.now(), event: 'gtm.js'});
+          var script = document.createElement('script');
+          script.async = true;
+          script.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-M3TLNNDD';
+          document.head.appendChild(script);
+        };
+        if (consent.analytics_storage === 'granted' || consent.ad_storage === 'granted') {
+          window.startOptionalTags();
+        }
       })();
     </script>
-    <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-M3TLNNDD"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"

@@ -102,9 +102,11 @@ function staticRoutePages() {
   return {
     name: 'seopune360-static-route-pages',
     apply: 'build',
-    async writeBundle(outputOptions) {
+    async writeBundle(outputOptions, bundle) {
       const outputDirectory = outputOptions.dir || 'dist';
       const html = await readFile(join(outputDirectory, 'index.html'), 'utf8');
+      const innerCss = Object.keys(bundle).find(name => /(?:^|\/)inner-pages-[^/]+\.css$/.test(name));
+      if (!innerCss) throw new Error('Missing the inner-page stylesheet.');
       for (const [path, title, description] of routes) {
         const canonical = `https://seopune360.com${path}`;
         const escapedTitle = title.replaceAll('&', '&amp;');
@@ -114,7 +116,7 @@ function staticRoutePages() {
           .replace(/(<meta\s+name="description"\s+content=")[^"]*("\s*\/>)/, `$1${escapedDescription}$2`)
           .replace(/(<meta\s+property="og:title"\s+content=")[^"]*("\s*\/>)/, `$1${escapedTitle} | SEOPune360$2`)
           .replace(/<meta property="og:url" content="[^"]*" \/>/, `<meta property="og:url" content="${canonical}" />`)
-          .replace('</head>', `<link rel="canonical" href="${canonical}" />\n  </head>`);
+          .replace('</head>', `<link rel="canonical" href="${canonical}" />\n  <link rel="stylesheet" href="/${innerCss}" />\n  </head>`);
         const outputPath = join(outputDirectory, path.slice(1), 'index.html');
         await mkdir(dirname(outputPath), { recursive: true });
         await writeFile(outputPath, page, 'utf8');
@@ -169,6 +171,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: resolve('index.html'),
+        'inner-pages': resolve('src/inner-pages.css'),
         showcase: resolve('automotive-showcase/index.html'),
       },
     },

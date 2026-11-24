@@ -10,6 +10,7 @@ const app = (
   </React.StrictMode>
 );
 const pathname = window.location.pathname.replace(/\/+$/, '') + '/';
+if (import.meta.env.DEV && pathname !== '/') import('./inner-pages.css');
 const prerenderedPath = root.dataset.prerendered === 'home' ? '/' : root.dataset.prerendered;
 if (prerenderedPath === pathname) {
   ReactDOM.hydrateRoot(root, app);
