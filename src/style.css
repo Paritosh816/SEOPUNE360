@@ -1562,3 +1562,16 @@ a.content-card:hover { transform:translateY(-4px); border-color:rgba(51,225,208,
 @media (prefers-reduced-motion:reduce) {
   .project-figure-artwork[data-revealed="true"] { animation:none; }
 }
+
+.home-question-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 24px;
+}
+.home-questions .content-card { display: flex; flex-direction: column; }
+.home-questions .content-card p { margin-bottom: 1rem; }
+.home-questions .text-link { margin-top: auto; }
+@media (max-width: 860px) {
+  .home-question-grid { grid-template-columns: 1fr; }
+}

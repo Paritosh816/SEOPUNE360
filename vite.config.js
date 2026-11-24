@@ -1,5 +1,6 @@
 import { automotiveProjects } from './src/automotiveProjects.js';
 import { showcaseDealerships, showcasePath } from './src/automotiveShowcase.js';
+import { homeSchema, siteUrl } from './src/home-readiness.js';
 import { createServer, defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { createElement } from 'react';
@@ -42,7 +43,7 @@ const showcaseRoutes = [
   ...showcaseDealerships.map(({ id, name, headline }) => [showcasePath + id + '/', name + ' Dealership Showcase', headline]),
 ];
 
-async function writeShowcasePages(outputDirectory) {
+async function writePrerenderedPages(outputDirectory, homeTemplate) {
   const template = await readFile(join(outputDirectory, 'automotive-showcase', 'index.html'), 'utf8');
   const mount = '<div id="root"></div>';
   if (!template.includes(mount)) throw new Error('Missing automotive showcase mount in the built HTML.');
@@ -55,6 +56,18 @@ async function writeShowcasePages(outputDirectory) {
     server: { middlewareMode: true, hmr: false, watch: null, ws: false },
   });
   try {
+    const { default: App } = await renderer.ssrLoadModule('/src/App.jsx');
+    const homeContent = renderToString(createElement(App, { pathname: '/' }));
+    const schema = JSON.stringify(homeSchema).replaceAll('<', '\\u003c');
+    if (!homeTemplate.includes(mount) || !homeTemplate.includes('id="site-structured-data"')) {
+      throw new Error('Missing homepage mount or structured-data script in the built HTML.');
+    }
+    const home = homeTemplate
+      .replace(/(<script type="application\/ld\+json" id="site-structured-data">)[\s\S]*?(<\/script>)/, (_,start,end) => start + schema + end)
+      .replace('</head>', () => `  <link rel="canonical" href="${siteUrl}" />\n  </head>`)
+      .replace(mount, () => `<div id="root" data-prerendered="home">${homeContent}</div>`);
+    await writeFile(join(outputDirectory, 'index.html'), home, 'utf8');
+
     const { default: AutomotiveShowcase } = await renderer.ssrLoadModule('/src/AutomotiveShowcase.jsx');
     for (const [path, title, description] of showcaseRoutes) {
       const canonical = `https://seopune360.com${path}`;
@@ -99,7 +112,7 @@ function staticRoutePages() {
         await mkdir(dirname(outputPath), { recursive: true });
         await writeFile(outputPath, page, 'utf8');
       }
-      await writeShowcasePages(outputDirectory);
+      await writePrerenderedPages(outputDirectory, html);
 
       const industryRedirects = {
         matrimony: 'matrimonial', 'healthcare-technology': 'healthcare', 'construction-support': 'real-estate',

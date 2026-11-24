@@ -54,14 +54,15 @@ export default function FeaturedDealerships() {
   const [paused, setPaused] = useState(false);
   const [visible, setVisible] = useState(false);
   const [revealed, setRevealed] = useState(false);
-  const [tabVisible, setTabVisible] = useState(() => !document.hidden);
-  const [reduced, setReduced] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  const [tabVisible, setTabVisible] = useState(true);
+  const [reduced, setReduced] = useState(false);
   const slide = slides[active];
   const rotating = visible && tabVisible && !hovered && !focused && !paused && !expanded && !reduced;
 
   useEffect(() => {
     const query = window.matchMedia('(prefers-reduced-motion: reduce)');
     const onMotionChange = () => setReduced(query.matches);
+    onMotionChange();
     query.addEventListener('change', onMotionChange);
     const reveal = (inView) => {
       setVisible(inView);
@@ -78,6 +79,7 @@ export default function FeaturedDealerships() {
 
   useEffect(() => {
     const update = () => setTabVisible(!document.hidden);
+    update();
     document.addEventListener('visibilitychange', update);
     return () => document.removeEventListener('visibilitychange', update);
   }, []);

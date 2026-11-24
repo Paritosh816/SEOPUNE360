@@ -8,7 +8,7 @@ import { showcasePath } from './automotiveShowcase.js';
 const AutomotiveShowcase = lazy(() => import('./AutomotiveShowcase.jsx'));
 const FeaturedDealerships = lazy(() => import('./FeaturedDealerships.jsx'));
 const CONTACT_EMAIL = 'seopune360@gmail.com';
-const LINKEDIN_URL = 'https://www.linkedin.com/company/seopune-360/';
+import { homeQuestions, linkedInUrl as LINKEDIN_URL } from './home-readiness.js';
 function LinkedInIcon() { return <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false" fill="currentColor"><path d="M20.45 2H3.55A1.55 1.55 0 0 0 2 3.55v16.9C2 21.3 2.7 22 3.55 22h16.9c.85 0 1.55-.7 1.55-1.55V3.55C22 2.7 21.3 2 20.45 2ZM8.08 18.75H5.1V9.2h2.98v9.55ZM6.59 7.89a1.73 1.73 0 1 1 0-3.46 1.73 1.73 0 0 1 0 3.46Zm12.16 10.86h-2.98V14.1c0-1.11-.02-2.55-1.56-2.55-1.56 0-1.8 1.22-1.8 2.47v4.73H9.43V9.2h2.86v1.3h.04a3.14 3.14 0 0 1 2.83-1.55c3.03 0 3.59 2 3.59 4.59v5.21Z" /></svg>; }
 const SHOWREEL_PATH = '/media/seopune360-showreel-short.mp4';
 
@@ -354,7 +354,7 @@ function Hero({ onPlayShowreel, onStart }) {
       <div className="hero-copy">
         <p className="eyebrow">SEO · Websites · Lead generation</p>
         <h1>From first search<br />to <span>real enquiries.</span></h1>
-        <p className="hero-lead">Help customers discover your business, understand your offer, and take the next step. Bring search, website development, and lead generation together with SEOPune360.</p>
+        <p className="hero-lead">SEOPUNE360 is a digital marketing agency in Pune, Maharashtra. We help businesses across India with SEO, AI search, website development, and lead generation.</p>
         <div className="hero-scanner">
           <label htmlFor="hero-scan-url">Laser Viewfinder · Free website scan</label>
           <form className="hero-scan-form" action="/audit/" method="get">
@@ -372,6 +372,21 @@ function Hero({ onPlayShowreel, onStart }) {
       </div>
       <ScrollShowreel onCinema={onPlayShowreel} />
     </div>
+  </section>;
+}
+
+function HomeQuestions() {
+  return <section className="section container home-questions" id="faq" aria-labelledby="home-faq-title">
+    <p className="eyebrow">Frequently asked questions</p>
+    <h2 id="home-faq-title">Search, websites and enquiries</h2>
+    <div className="home-question-grid">
+      {homeQuestions.map(({question,answer,link,label}) => <article className="content-card" key={question}>
+        <h3>{question}</h3>
+        <p>{answer}</p>
+        <a className="text-link" href={link}>{label}</a>
+      </article>)}
+    </div>
+    <a className="agency-linkedin" href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer"><LinkedInIcon /> Follow SEOPune360 on LinkedIn</a>
   </section>;
 }
 
@@ -891,17 +906,22 @@ function PageContent({ path, onStart }) {
     {((page === 'case-studies' && !caseStudy) || page === 'portfolio') ? <CaseStudyExplorer /> : items.length > 0 && <section className="section"><ContentCards items={items} render={renderCard} />{page === 'industries' && !industry && <p className="container content-note">A published client case study is not currently listed for every sector.</p>}{industry && items.length === 0 && <div className="container empty-state"><h2>No published client case study for this category yet.</h2><p>We can still discuss the search and website needs of your business.</p><a className="button" href="/contact/">Talk with us <ArrowIcon /></a></div>}</section>}{body}</>;
 }
 
-function App() {
-  const cleanPath = window.location.pathname.replace(/\/+$/, '');
+function App({ pathname = '/' }) {
+  const cleanPath = pathname.replace(/\/+$/, '');
   const path = cleanPath ? cleanPath + '/' : '/';
   const [activeIndustry, setActiveIndustry] = useState('All industries');
   const [activeService, setActiveService] = useState('seo');
   const [activeCase, setActiveCase] = useState(caseStudies[0].id);
   const [showreelOpen, setShowreelOpen] = useState(false);
   const [cookieOpen, setCookieOpen] = useState(false);
-  const [cookieNoticeOpen, setCookieNoticeOpen] = useState(() => {
-    try { return !window.localStorage.getItem('seopune360-cookie-preferences'); } catch { return true; }
-  });
+  const [cookieNoticeOpen, setCookieNoticeOpen] = useState(false);
+  useEffect(() => {
+    try {
+      setCookieNoticeOpen(!window.localStorage.getItem('seopune360-cookie-preferences'));
+    } catch {
+      setCookieNoticeOpen(true);
+    }
+  }, []);
   const [legalTitle, setLegalTitle] = useState('');
   const [requirementRequest, setRequirementRequest] = useState(null);
   const opener = useRef(null);
@@ -922,7 +942,7 @@ function App() {
 
   return <div className="page-shell">
     <Header onStart={startPageRequirements} />
-    <main>{path === '/' ? <><Hero onPlayShowreel={() => setShowreelOpen(true)} onStart={startRequirements} /><ClientSelector activeIndustry={activeIndustry} setActiveIndustry={setActiveIndustry} /><Services activeService={activeService} setActiveService={setActiveService} onStart={startRequirements} /><CaseStudies activeCase={activeCase} setActiveCase={setActiveCase} /><Process /><WhyUs /><AuditSection /></> : <PageContent path={path} onStart={startRequirements} />}</main>
+    <main>{path === '/' ? <><Hero onPlayShowreel={() => setShowreelOpen(true)} onStart={startRequirements} /><ClientSelector activeIndustry={activeIndustry} setActiveIndustry={setActiveIndustry} /><Services activeService={activeService} setActiveService={setActiveService} onStart={startRequirements} /><CaseStudies activeCase={activeCase} setActiveCase={setActiveCase} /><Process /><WhyUs /><HomeQuestions /><AuditSection /></> : <PageContent path={path} onStart={startRequirements} />}</main>
     <Footer onCookieSettings={() => setCookieOpen(true)} onLegal={setLegalTitle} onStart={startPageRequirements} showProjectBanner={showProjectBanner} />
     {cookieNoticeOpen && <CookieNotice onAccept={() => { applyCookiePreferences({ analytics: true, marketing: true, functional: true }); setCookieNoticeOpen(false); }} onReject={() => { applyCookiePreferences({ analytics: false, marketing: false, functional: false }); setCookieNoticeOpen(false); }} onSettings={() => setCookieOpen(true)} />}
     {showreelOpen && <ShowreelModal onClose={() => setShowreelOpen(false)} />}
