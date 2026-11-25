@@ -5,8 +5,8 @@
   const donut = (score, label) => { const color=score>=70?'#2dd4bf':score>=40?'#f59e0b':'#fb7185', dash=Math.max(0,Math.min(100,score))*2.64; return `<div class="aeo-donut" style="--aeo:${color}"><svg viewBox="0 0 100 100" aria-label="${esc(label)} ${score} out of 100"><circle cx="50" cy="50" r="42"></circle><circle class="aeo-ring" cx="50" cy="50" r="42" pathLength="100" style="stroke-dasharray:${score} 100"></circle></svg><strong>${score}<small>/100</small></strong></div>`; };
   const action = (n, priority, title, copy) => `<article class="aeo-action"><span>${n}</span><div><b class="aeo-priority">${esc(priority)}</b><h4>${esc(title)}</h4><p>${esc(copy)}</p></div></article>`;
   window.renderAeoDashboard = result => {
-    const aeo=result?.aeoGeo; if (!aeo) return;
     document.getElementById('aeo-geo-readiness')?.remove();
+    const aeo=result?.aeoGeo; if (!aeo) return;
     const schema=aeo.schema||{}, checks=Object.fromEntries((schema.checks||[]).map(c=>[c.label,c.present]));
     const details=Object.fromEntries((schema.fields||[]).map(c=>[c.field,c.present]));
     const answer=(aeo.checks||[]).find(c=>c.id==='answers')?.detail||{};

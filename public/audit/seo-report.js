@@ -24,7 +24,7 @@
     const panel = document.getElementById("seo-intelligence");
     panel.classList.remove("hidden");
     if (!result.internalLinkEquity || !result.keywordAnalysis) {
-      panel.innerHTML = "<h2>Search intelligence</h2><p>This scan service has not returned the search analysis yet. Try again after its update completes.</p>";
+      panel.innerHTML = "<h2>Search intelligence</h2><p>Keyword and link analysis were unavailable for this scan.</p>";
       return;
     }
     const equity = result.internalLinkEquity;

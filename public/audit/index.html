@@ -1235,8 +1235,7 @@
       const pages = Array.isArray(scan?.pages) ? scan.pages : [];
       const analyzed = Number(scan?.pagesAnalyzed || 0);
       const attempted = Number(scan?.pagesAttempted || pages.length);
-      const limit = Number(scan?.pageLimit || 75);
-      const note = scan?.truncated ? ` The crawl reached its ${limit}-page limit; run another audit to continue reviewing priority pages.` : "";
+      const note = scan?.truncated ? " Additional pages may be available beyond this sample." : "";
       document.getElementById("scan-summary").textContent = `Analyzed ${analyzed} HTML page(s) and checked ${attempted} page request(s).${note}`;
       document.getElementById("crawl-pages").innerHTML = pages.map((page) => {
         const status = page.robotsBlocked ? "Robots" : page.status || "Error";
@@ -1311,8 +1310,12 @@
       window.activeAuditResult = result;
       const domain = new URL(result.scan.website).hostname.replace(/^www\./, "");
       document.getElementById("report-title").innerHTML = `Live audit for <br /><span class="domain-accent" id="report-domain">${escapeHtml(domain)}</span>`;
-      document.getElementById("report-verdict").textContent = `Live crawl analyzed ${result.scan.pagesAnalyzed} page(s) across up to ${result.scan.pageLimit} URLs. PageSpeed Insights ran on mobile and desktop where available.`;
-      document.getElementById("score-source").textContent = "Live crawl + Lighthouse";
+      const coverage = `Laser Scan analyzed ${result.scan.pagesAnalyzed} page(s).`;
+      document.getElementById("report-verdict").textContent = result.scan.partial
+        ? `${coverage} ${result.scan.partialReason}`
+        : coverage;
+      document.getElementById("score-source").textContent = result.scan.partial ? "Partial audit score"
+        : result.pageSpeed?.status === "complete" ? "Live crawl + Lighthouse" : "Live crawl";
       document.getElementById("overall-score").textContent = result.overallScore;
       renderHeroBars(result.overallScore);
       renderPageSpeed(result.pageSpeed);
@@ -1327,7 +1330,12 @@
       if (pdfButton && !pdfButton.dataset.bound) { pdfButton.dataset.bound = '1'; pdfButton.addEventListener('click', () => openLeadGate('pdf')); }
       drawRadar();
       showReport();
-      document.getElementById('jump-links').insertAdjacentHTML('afterbegin', '<li><a href="#equity-heading">Important pages</a></li><li><a href="#keywords-heading">Keywords & competitors</a></li><li><a href="#traffic-heading">Traffic & top pages</a></li><li><a href="#crawl-diagnostics">Crawl diagnostics</a></li>');
+      const sections = [['equity-heading', 'Important pages'], ['keywords-heading', 'Keywords & competitors'], ['traffic-heading', 'Traffic & top pages'], ['crawl-diagnostics', 'Crawl diagnostics']];
+      const links = sections.filter(([id]) => {
+        const target = document.getElementById(id);
+        return target && !target.closest('.hidden');
+      }).map(([id, label]) => `<li><a href="#${id}">${label}</a></li>`);
+      document.getElementById('jump-links').insertAdjacentHTML('afterbegin', links.join(''));
     }
 
     function renderSampleReport(domain) {
@@ -1421,18 +1429,25 @@
           body: JSON.stringify({ website: targetUrl.href, ...(keywords ? { keywords } : {}) }),
           signal: AbortSignal.timeout(65000),
         });
-        const result = await response.json();
-        if (!response.ok) throw new Error(result.error || `The audit service returned an error (${response.status}).`);
-        if (!result.scan || !Array.isArray(result.categories)) throw new Error("The audit service returned an incomplete report. Please try again.");
+        const result = await response.json().catch(() => null);
+        if (!response.ok) {
+          const message = response.status === 504 ? "The audit service timed out before returning a report. Please retry."
+            : `The audit service returned HTTP ${response.status}. Please retry.`;
+          throw new Error(result?.error || message);
+        }
+        if (!result?.scan || !Array.isArray(result.categories)) throw new Error("The audit service returned an incomplete report. Please try again.");
         clearInterval(progressTimer);
         document.getElementById("scan-progress").style.width = "100%";
         document.getElementById("scan-subtitle").textContent = "Live audit complete";
         document.getElementById("vf-status").textContent = "Your live crawl and checks are ready.";
         vfImg.classList.add("visible");
-        setTimeout(() => renderLiveReport(result), 350);
+        renderLiveReport(result);
       } catch (error) {
         clearInterval(progressTimer);
-        showScanError(error.message || "The audit service could not reach this website. Please try again.");
+        const message = error.name === "TimeoutError" ? "The browser timed out waiting for the audit service. Please retry."
+          : error instanceof TypeError ? "The browser could not receive a report from the audit service. Check your connection and retry."
+          : error.message || "The scan could not finish. Please retry.";
+        showScanError(message);
       }
     }
 
