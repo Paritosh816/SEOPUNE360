@@ -195,10 +195,10 @@ const industryPath = (industry) => '/industries/' + industry.toLowerCase().repla
 const serviceNextSteps = {
   seo: <p>Run a <a href="/audit/">free website SEO audit</a> to spot technical and on-page issues, or explore <a href={servicePaths.geo}>AI search and GEO</a> if you also want to improve how answer engines discover your business.</p>,
   geo: <p>Use the <a href="/audit/">website audit’s AI search readiness checks</a> to review your business schema and content structure. If crawling or indexing needs attention first, start with <a href={servicePaths.seo}>technical and on-page SEO</a>.</p>,
-  leads: <p>See how <a href="/case-studies/shaw-toyota/">Shaw Toyota approached dealership enquiries</a>. If you’re preparing the destination for your own campaigns, explore <a href={servicePaths.development}>website and landing page development</a>.</p>,
+  leads: <p>See how <a href="/case-studies/shaw-toyota/">Shaw Toyota approached dealership enquiries</a> and explore <a href={industryPath('Automobile')}>automotive lead generation</a>. If you’re preparing a campaign destination, see how we approach <a href={servicePaths.development}>website and landing page development</a>.</p>,
   branding: <p>See the <a href="/case-studies/kj-group/">KJ Group visual identity project</a> for an example of applying a brand across formats. To bring a new identity online, explore <a href={servicePaths.development}>business website development</a>.</p>,
-  development: <p>See the <a href="/case-studies/intellidant/">IntelliDant product website</a> for an example of organising a complex offer. If you’re updating an existing site, run a <a href="/audit/">website health audit</a> before deciding what to rebuild.</p>,
-  growth: <p>Use the <a href="/growth-plan/">90-day growth planner</a> to sequence your work. If your priority is turning paid traffic into enquiries, explore <a href={servicePaths.leads}>lead generation and conversion tracking</a>.</p>,
+  development: <p>See the <a href="/case-studies/intellidant/">IntelliDant product website</a> for an example of organising a complex offer, or explore <a href={industryPath('Hospitality')}>hotel website priorities</a> for a different type of customer journey. If you’re updating an existing site, run a <a href="/audit/">website health audit</a> before deciding what to rebuild.</p>,
+  growth: <p>Use the <a href="/growth-plan/">90-day growth planner</a> to sequence your work. Explore <a href={industryPath('D2C / Lifestyle')}>D2C campaign and product-page journeys</a> for an ecommerce example, or see <a href={servicePaths.leads}>lead generation and conversion tracking</a> if your priority is enquiries.</p>,
 };
 
 const industryNextSteps = {
@@ -210,6 +210,56 @@ const industryNextSteps = {
   'Infratech': <p>Give buyers separate paths to your capabilities, past work, and tender or enquiry details. See the <a href="/case-studies/adi-dev/">A.D.I DEV construction support website</a> for a related B2B example.</p>,
   'D2C / Lifestyle': <p>Make the transition from product discovery to a product page clear. Explore the <a href="/case-studies/lusso-marco/">Lusso Marco growth marketing case study</a> and see how <a href={servicePaths.growth}>growth planning</a> connects campaigns with the website experience.</p>,
 };
+
+const industryQuestions = {
+  'Matrimonial': [
+    ['What should people see before they register?', <>Explain who the platform is for, how profiles are created, and which features are available on each plan. Put privacy and verification information where people can read it before submitting personal details.</>],
+    ['Should members and vendors use the same sign-up flow?', <>Give each group its own entry point when their requirements differ. Members may want to see features and plans first. Vendors may need to understand acceptance criteria and what happens after they apply. Use <a href={servicePaths.development}>website development</a> to plan both paths alongside the public pages.</>],
+  ],
+  'Healthcare': [
+    ['What should a clinic website make easy to find?', <>Put consultation types, locations, practitioner information, and appointment options where a patient can find them without scrolling through unrelated details. See how the <a href="/case-studies/krishna-clinic/">Krishna Clinic website organises consultation and location information</a>.</>],
+    ['What can we track without collecting patient details?', <>Count actions such as clicks to call or open a booking page. Keep patient details, symptoms, and form contents out of analytics events. Start with a <a href="/audit/">public website audit</a> for navigation and page structure.</>],
+  ],
+  'Real Estate': [
+    ['What belongs on each development page?', <>Include the specific location, property types, information the client can verify, and a way to contact the right team. Use separate pages when developments have different audiences. The <a href="/case-studies/kj-group/">KJ Group identity project</a> shows how one recognisable brand can carry across different materials.</>],
+    ['Where should a project ad send visitors?', <>Send visitors to a page about the advertised development, with its location and a clear enquiry action. Our <a href={servicePaths.leads}>lead generation service</a> covers campaign and landing-page planning together.</>],
+  ],
+  'Hospitality': [
+    ['What helps guests decide whether to enquire?', <>Show room types, amenities, location, and practical details such as check-in or parking. Keep the call or enquiry option visible on mobile and make the same facts easy to find from both the room page and the homepage.</>],
+    ['What should a hotel check before a redesign?', <>Compare the hotel name, contact details, and location across the website and its business listings. Then use the <a href="/audit/">free website audit</a> to review the existing pages for missing descriptions, broken links, and mobile performance issues.</>],
+  ],
+  'Manufacturing Industry': [
+    ['How should we organise a large product range?', <>Group products by the categories and applications your buyers use. Give important products their own page with specifications and an enquiry route. Link each datasheet from the product page so a buyer can check both together.</>],
+    ['What makes a manufacturing enquiry easier to qualify?', <>Ask for the application, quantity or project requirements, and a contact method. Explain what the sales team will need for a quote. Consider <a href={servicePaths.leads}>lead generation and conversion tracking</a> if different product families need separate enquiries.</>],
+  ],
+  'Infratech': [
+    ['How can contractors find the right capability quickly?', <>Give each major capability a page that describes the work, what clients should supply, and where to enquire. Group past work by the capability it demonstrates. Our <a href={servicePaths.development}>website development service</a> can help organise these paths.</>],
+    ['What should accompany a project portfolio?', <>Add scope, context, and the role your team played where those details can be shared. Distinguish technical project work from visual identity examples such as the <a href="/case-studies/era-infratech/">ERA Infratech branding project</a>.</>],
+  ],
+  'D2C / Lifestyle': [
+    ['Where should a product campaign send shoppers?', <>Send a product-specific ad to the matching product page, with price, availability, and delivery information easy to find. Start with <a href={servicePaths.leads}>campaign and landing-page planning</a> if different products need different messages.</>],
+    ['What should we check before increasing campaign spend?', <>Review product-page visits, add-to-cart events, and checkout starts together to see where shoppers drop off. Also check that the imagery and product details match what buyers see in the ad. The <a href="/case-studies/jijai-milk/">Jijai Milk packaging project</a> is an example of a product identity applied across two packs.</>],
+  ],
+  'Automobile': [
+    ['Where should ads for a specific model send prospective buyers?', <>Use a model page with variant details, the dealership location, and a clear route to request an offer or test drive. See the <a href="/case-studies/shaw-toyota/">Shaw Toyota Hyryder campaign journey</a> for a model-specific example.</>],
+    ['Should sales and service enquiries use the same form?', <>Give buyers and service customers separate paths when different teams handle the enquiries. Track calls, test-drive requests, and service appointments separately so you can see which campaigns produce each outcome. The <a href="/case-studies/garve-honda-service/">Garve Honda Service case study</a> covers a service-centre website.</>],
+  ],
+};
+
+function IndustryQuestions({ industry }) {
+  const questions = industryQuestions[industry];
+  if (!questions) return null;
+
+  return <section className="industry-questions" aria-labelledby="industry-questions-heading">
+    <h2 id="industry-questions-heading">Questions to ask before you start</h2>
+    <div className="content-card-grid">
+      {questions.map(([question, answer]) => <article key={question} className="content-card context-links">
+        <h3>{question}</h3>
+        <p>{answer}</p>
+      </article>)}
+    </div>
+  </section>;
+}
 
 function ArrowIcon() {
   return <svg viewBox="0 0 18 18" aria-hidden="true"><path d="M3.5 9h10m-4-4 4 4-4 4" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" /></svg>;
@@ -914,15 +964,17 @@ function PageContent({ path, onStart }) {
         <article className="content-card"><h2>SEO</h2><p className="context-links">Help local customers find your dealership when they search for cars, showrooms and service centres online. Explore our <a href={servicePaths.seo}>local and technical SEO services</a>.</p></article>
         <article className="content-card"><h2>Google Business Profile</h2><p>Manage and improve your profile so customers can find your business on Google Search and Maps and contact your team.</p></article>
         <article className="content-card"><h2>Dedicated websites and landing pages</h2><p className="context-links">Use <a href={servicePaths.development}>website and landing page development</a> to make it easier for customers to explore your offering, call your team or submit an enquiry.</p></article>
-        <article className="content-card"><h2>GEO visibility</h2><p>Help more potential customers discover your dealership through relevant searches.</p></article>
+        <article className="content-card"><h2>GEO visibility</h2><p className="context-links">Keep dealership locations, service areas, and model information easy for search tools to interpret. Explore <a href={servicePaths.geo}>AI search and GEO services</a>.</p></article>
         <article className="content-card"><h2>Paid advertising</h2><p className="context-links">Promote a model, offer or location with <a href={servicePaths.leads}>Google Ads and Meta Ads lead generation</a>.</p></article>
         <article className="content-card"><h2>Calls and enquiries</h2><p>Give your sales and service teams more opportunities to speak with potential customers by phone or through website enquiries.</p></article>
-      </div></div></section><section className="section"><div className="container detail-layout"><div><p className="eyebrow">Let’s talk</p><h2>Ready to grow <span>your dealership?</span></h2><p>Tell us about your business and the customers you want to reach.</p><a className="button" href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">Talk to us on WhatsApp</a></div><div><p><a href="tel:+918483837969">+91 8483837969</a></p><p><a href="mailto:seopune360@gmail.com">seopune360@gmail.com</a></p><a className="text-link" href="/contact/">Contact our team <ArrowIcon /></a></div></div></section></>;
+      </div><IndustryQuestions industry={industry.id} /></div></section><section className="section"><div className="container detail-layout"><div><p className="eyebrow">Let’s talk</p><h2>Ready to grow <span>your dealership?</span></h2><p>Tell us about your business and the customers you want to reach.</p><a className="button" href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">Talk to us on WhatsApp</a></div><div><p><a href="tel:+918483837969">+91 8483837969</a></p><p><a href="mailto:seopune360@gmail.com">seopune360@gmail.com</a></p><a className="text-link" href="/contact/">Contact our team <ArrowIcon /></a></div></div></section></>;
   }
   else if (industry) {
     head = [industry.label + ' digital growth', 'Digital experiences', 'for ' + industry.label + '.', 'Explore the client work currently published for this sector, and the services that can support its next stage.'];
     items = clients.filter((client) => client.industries.includes(industry.label));
-    body = <section className="section"><div className="container">{items.length === 0 ? <div className="empty-state"><h2>No published client case study for this category yet.</h2><p>We can still discuss the search and website needs of your business.</p><a className="button" href="/contact/">Talk with us <ArrowIcon /></a></div> : <><h2>Relevant services</h2><div className="context-links industry-next-steps">{industryNextSteps[industry.id]}</div><div className="simple-links">{services.filter((item) => items.some((client) => client.serviceIds.includes(item.id))).map((item) => <a href={servicePaths[item.id]} key={item.id}>{item.title}<ArrowIcon /></a>)}</div></>}</div></section>;
+    body = <section className="section"><div className="container">{items.length === 0 ? <div className="empty-state"><h2>No published client case study for this category yet.</h2><p>We can still discuss the search and website needs of your business.</p><a className="button" href="/contact/">Talk with us <ArrowIcon /></a></div> : <><h2>Relevant services</h2><div className="context-links industry-next-steps">{industryNextSteps[industry.id]}</div><div className="simple-links">{services.filter((item) => items.some((client) => client.serviceIds.includes(item.id))).map((item) => <a href={servicePaths[item.id]} key={item.id}>{item.title}<ArrowIcon /></a>)}</div></>}
+      <IndustryQuestions industry={industry.id} />
+    </div></section>;
   } else if (page === 'industries') items = industries.filter((item) => item.id !== 'All industries');
   else if (page === 'process') body = <Process />;
   else if (page === 'about') body = <><WhyUs /><div className="container context-links about-work-links"><p>Explore <a href="/case-studies/">published client projects</a> or see <a href="/process/">how we plan and deliver a project</a>.</p></div></>;
